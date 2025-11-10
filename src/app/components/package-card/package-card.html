@@ -1,0 +1,63 @@
+<div class="bg-white rounded-sm p-4 lg:p-8 dark:bg-background-1">
+  @let package = packageInput(); @if(package){
+  <div class="flex items-start gap-3 lg:gap-5 mb-3 lg:mb-5">
+    <div class="py-6 lg:py-12 px-4 lg:px-8 rounded-sm bg-package-card">
+      <img class="w-24 lg:w-auto" src="/images/package-placeholder.svg" />
+    </div>
+    <div class="flex-1 flex flex-col gap-3">
+      <span class="badge badge-sm lg:badge-lg min-w-16 lg:min-w-25 lg:h-9 rounded-full">{{
+        package.departmentName
+      }}</span>
+      <div class="flex items-center gap-1">
+        <span
+          class="iconify solar--stopwatch-play-broken text-base-content text-lg lg:text-2xl"
+        ></span>
+        <span class="text-xs lg:text-sm text-base-content">{{ package.courseCount }}</span>
+        <span class="text-xs lg:text-sm text-base-content">كورس</span>
+      </div>
+      <div class="flex items-center gap-1 text-secondary">
+        <span class="font-bold text-2xl lg:text-4xl">{{
+          (package.discountPrice || package.originalPrice) * currency.value | number : '1.0-0'
+        }}</span
+        ><span [class]="{ 'font-saudi-riyal': isSaudi, 'text-2xl': isSaudi }">{{
+          currency.code
+        }}</span>
+      </div>
+      @if(package.discountPrice && package.originalPrice){
+      <div class="flex items-center gap-1 text-base-content text-xs lg:text-base">
+        <span class="line-through">{{
+          package.originalPrice * currency.value | number : '1.0-0'
+        }}</span
+        ><span [class]="{ 'font-saudi-riyal': isSaudi, 'text-2xl': isSaudi }">{{
+          currency.code
+        }}</span>
+      </div>
+      }
+      <div class="border-b-[.5px] border-b-base-content"></div>
+      <div class="flex items-center gap-1">
+        <span class="iconify solar--user-circle-broken text-lg lg:text-xl text-base-content"></span>
+        <h5 class="text-xs lg:text-sm text-base-content">
+          {{ package.firstName + ' ' + package.familyName }}
+        </h5>
+      </div>
+    </div>
+  </div>
+  <a
+    class="font-bold text-base lg:text-xl text-black cursor-pointer"
+    [routerLink]="['/package', package.id]"
+    >{{ package.packageName_AR }}</a
+  >
+  } @else {
+  <div class="flex gap-3 lg:gap-5 mb-3 lg:mb-5">
+    <div class="skeleton flex-1"></div>
+    <div class="flex-1 flex flex-col gap-3">
+      <div class="skeleton badge-sm lg:badge-lg min-w-16 lg:min-w-25 lg:h-9 rounded-full"></div>
+      <div class="skeleton w-full h-4 lg:h-6"></div>
+      <div class="skeleton w-full h-8 lg:h-10"></div>
+      <div class="skeleton w-full h-4 lg:h-6"></div>
+      <div class="skeleton w-full h-3 lg:h-5"></div>
+    </div>
+  </div>
+  <div class="skeleton w-full h-5 lg:h-7"></div>
+  }
+</div>

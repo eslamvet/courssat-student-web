@@ -1,0 +1,129 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss';
+@plugin "daisyui";
+@plugin "@iconify/tailwind4" {
+  prefixes: solar, ic, gg, fluent;
+}
+
+@plugin "daisyui/theme" {
+  name: 'light';
+  default: true;
+  prefersdark: false;
+  color-scheme: 'light';
+  --color-primary: #0a3e6e;
+  --color-secondary: #f8b100;
+  --color-base-100: #f8fcff;
+  --color-base-200: #9494940d;
+  --color-base-300: #94949414;
+  --color-base-content: #949494;
+  --color-primary-content: #fff;
+  --color-secondary-content: #fff;
+  --color-accent-content: #fff;
+  --color-info-content: #fff;
+  --color-success-content: #fff;
+  --color-warning-content: #fff;
+  --color-error-content: #fff;
+  --color-neutral: #fff;
+  --color-neutral-content: #949494;
+  --color-black: #000;
+}
+
+@plugin "daisyui/theme" {
+  name: 'dark';
+  default: false;
+  prefersdark: true;
+  color-scheme: 'dark';
+  --color-primary: #0a3e6e;
+  --color-secondary: #f8b100;
+  --color-base-100: #111111;
+  --color-base-200: #333333;
+  --color-base-300: #222;
+  --color-base-content: #ffffffcc;
+  --color-primary-content: #fff;
+  --color-secondary-content: #fff;
+  --color-accent-content: #fff;
+  --color-info-content: #fff;
+  --color-success-content: #fff;
+  --color-warning-content: #fff;
+  --color-error-content: #fff;
+  --color-neutral: #393936;
+  --color-neutral-content: #fff;
+  --color-black: #fff;
+}
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@font-face {
+  font-family: 'STC';
+  src: url('/fonts/STC-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'STC';
+  src: url('/fonts/STC-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'STC';
+  src: url('/fonts/STC-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'saudi_riyal';
+  src: url('/fonts/saudi_riyal_regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'saudi_riyal_bold';
+  src: url('/fonts/saudi_riyal_bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --body-1: #696969;
+}
+
+[data-theme='dark'] {
+  --body-1: #d3d3d3;
+}
+
+@theme inline {
+  --default-font-family: 'STC', sans-serif;
+  --color-package-card: #fffbee;
+  --color-body-1: var(--body-1);
+  --color-body-2: #b8b8b8;
+  --color-body-3: #d3d3d3;
+  --color-body-4: #8b8b8b;
+  --color-custom-1: #ebebeb;
+  --color-custom-2: #d4d4d4;
+  --color-background-1: #656565;
+  --font-saudi-riyal: 'saudi_riyal';
+  --font-saudi-riyal-bold: 'saudi_riyal_bold';
+  --color-dark-primary: #0a3e6e33;
+}
+
+@layer utilities {
+  .container {
+    margin: 0 auto;
+  }
+
+  @media (max-width: 640px) {
+    .container {
+      width: calc(100% - 54px);
+    }
+  }
+}

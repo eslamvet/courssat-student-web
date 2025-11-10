@@ -1,0 +1,14 @@
+<section class="mb-12 lg:mb-14">
+  <div class="flex justify-center mb-6 lg:mb-8">
+    <ng-content></ng-content>
+  </div>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 lg:gap-5">
+    @for(course of courses();track $index){
+    <app-course-card [course]="course" />
+    } @empty {
+    <div role="alert" class="col-span-4 alert alert-info justify-center alert-soft">
+      <span>لا توجد كورسات جديدة حالياً.</span>
+    </div>
+    }
+  </div>
+</section>

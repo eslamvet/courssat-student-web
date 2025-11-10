@@ -1,0 +1,79 @@
+<div class="navbar z-10 bg-neutral shadow-sm p-0 lg:p-2">
+  <div class="container flex flex-wrap lg:flex-nowrap">
+    <div class="navbar-start justify-center lg:justify-start w-full lg:w-1/2">
+      <a class="cursor-pointer lg:mt-1.5" routerLink="/">
+        <img class="w-29 h-3.5 lg:w-auto lg:h-auto" src="/images/logo-{{ currentTheme() }}.svg" />
+      </a>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+      <ul class="menu text-base menu-horizontal px-1">
+        <li>
+          <a
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="[&.active]:text-secondary [&.active]:font-bold hover:text-secondary hover:bg-transparent"
+            >الرئيسيه</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/about-us"
+            routerLinkActive="active"
+            class="[&.active]:text-secondary [&.active]:font-bold hover:text-secondary hover:bg-transparent"
+            >من نحن</a
+          >
+        </li>
+        @if(isLoggedIn()){
+        <li>
+          <a
+            routerLink="/profile/my-courses"
+            routerLinkActive="active"
+            class="[&.active]:text-secondary [&.active]:font-bold hover:text-secondary hover:bg-transparent"
+            >كورساتي</a
+          >
+        </li>
+        }
+      </ul>
+    </div>
+    <div class="navbar-end w-full lg:gap-3 lg:w-1/2 gap-1">
+      <div class="flex-1 text-start lg:hidden">
+        <label for="main-drawer" aria-label="open sidebar" class="drawer-overlay">
+          <span
+            class="iconify rotate-180 align-middle fluent--list-20-regular text-black text-2xl"
+          ></span>
+        </label>
+      </div>
+      <button class="cursor-pointer">
+        <span class="iconify align-middle ic--round-search text-black text-2xl"></span>
+      </button>
+      @if(isLoggedIn()){
+      <a class="indicator cursor-pointer hidden lg:inline-block" routerLink="/cart">
+        <span class="iconify solar--cart-5-linear align-middle text-black text-2xl"></span>
+        <span class="badge badge-sm indicator-item text-secondary">8</span>
+      </a>
+      <div class="dropdown dropdown-end">
+        <div class="cursor-pointer hidden lg:inline-block" tabindex="0" role="button">
+          <span
+            class="iconify align-middle solar--user-circle-broken text-black text-[22px]"
+          ></span>
+        </div>
+        <ul tabindex="0" class="menu dropdown-content bg-neutral z-1 mt-4 w-52 p-2 shadow">
+          <li>
+            <a routerLink="/profile">الملف الشخصي</a>
+          </li>
+          <li><a routerLink="/profile/course-favourites">المفضلة</a></li>
+          <li><a (click)="logoutHandler()">تسجيل الخروج</a></li>
+        </ul>
+      </div>
+      }
+      <div class="hidden lg:inline-block border border-base-content h-4/5 border-dashed mx-2"></div>
+      <button class="cursor-pointer h-7.5 w-7.5 lg:w-auto lg:h-auto" (click)="toggleThemeHandler()">
+        <span class="iconify align-middle gg--dark-mode text-black text-2xl lg:text-3xl"></span>
+      </button>
+      @if(!isLoggedIn()){
+      <a class="cursor-pointer ms-1" routerLink="/auth/login">إشترك الآن</a>
+      }
+    </div>
+  </div>
+</div>

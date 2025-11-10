@@ -1,0 +1,22 @@
+<div>
+  <app-hero-section />
+  <div class="container">
+    <app-categories-section />
+    <app-new-courses-section [courses]="popularCourses()">
+      <div class="flex flex-col items-end">
+        <h2 class="text-2xl lg:text-[45px] text-center text-primary font-bold">
+          الكورسات الأكثر <span class="text-secondary">مشاهدة</span>
+        </h2>
+        <img class="w-17 lg:w-auto" src="/images/check.svg" />
+      </div>
+    </app-new-courses-section>
+    <app-new-courses-section [courses]="newCourses()">
+      <h2 class="text-2xl lg:text-[45px] text-center text-primary font-bold">
+        الكورسات <span class="text-secondary">الحديثة</span>
+      </h2>
+    </app-new-courses-section>
+  </div>
+  <app-packages-section [packageJsonData]="packageJsonData()" />
+  <app-instructor-section />
+  <app-course-reviews />
+</div>

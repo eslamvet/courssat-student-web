@@ -1,0 +1,40 @@
+<section class="container pb-14 lg:pb-24">
+  <h2 class="text-primary text-center text-2xl lg:text-[45px] font-bold mb-8 lg:mb-14">
+    آراء طلابنا
+  </h2>
+  <div class="grid grid-cols-1 gap-5 lg:grid-cols-3 gap-x-6 lg:gap-y-10">
+    @for(review of reviews(); track $index){
+    <div
+      class="relative z-10 shadow-xs flex flex-col gap-3 lg:gap-4 bg-white dark:bg-background-1 rounded-lg pt-5 px-5 lg:pt-8 lg:px-8 pb-4 before:absolute before:-top-1 before:left-2.5 before:right-2.5 before:rounded-tr-lg before:rounded-tl-lg before:content-[''] before:border lg:before:border-2 before:border-primary dark:before:border-secondary"
+    >
+      @if(review){
+      <div class="flex gap-4 items-center mb-1">
+        <div
+          class="w-12.5 lg:w-17 h-12.5 lg:h-17 flex items-center justify-center rounded-full border border-dashed border-secondary"
+        >
+          <img class="w-6 lg:w-auto" src="/images/review.svg" />
+        </div>
+        <h3 class="flex-1 lg:text-xl font-bold text-black">{{ review.course__title }}</h3>
+      </div>
+      <p class="text-body-3 text-xs lg:text-lg">
+        {{ review.review }}
+      </p>
+      <div class="border-b-[.5px] border-b-base-content border-dashed"></div>
+      <div class="flex items-center gap-1">
+        <span class="iconify solar--user-circle-broken text-lg lg:text-xl text-base-content"></span>
+        <h5 class="text-xs lg:text-sm text-base-content">{{ review.person__name }}</h5>
+      </div>
+      }@else {
+      <div class="flex gap-3 lg:gap-4 items-center">
+        <div class="skeleton w-12.5 lg:w-17 h-12.5 lg:h-17 rounded-full"></div>
+        <div class="skeleton flex-1 h-5 lg:h-7"></div>
+      </div>
+      <div class="skeleton w-full h-4 lg:h-6"></div>
+      <div class="skeleton w-full h-4 lg:h-6"></div>
+      <div class="skeleton w-1/2 h-4 lg:h-6"></div>
+      <div class="skeleton w-full h-3 lg:h-5 mb-1 lg:mb-2"></div>
+      }
+    </div>
+    }
+  </div>
+</section>
