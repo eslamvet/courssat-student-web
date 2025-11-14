@@ -1,8 +1,8 @@
-<div class="drawer">
+<div class="drawer min-h-screen overflow-x-hidden">
   <input id="main-drawer" type="checkbox" class="drawer-toggle" />
-  <div class="drawer-content flex relative flex-col min-h-screen overflow-x-hidden">
+  <div class="drawer-content">
     <app-header />
-    <main class="flex-1 min-h-[620px] lg:min-h-[385px]">
+    <main class="min-h-[620px] lg:min-h-[385px]" [class.h-full]="!(isHomeUrl$ | async)">
       <router-outlet></router-outlet>
     </main>
     <app-footer />

@@ -4,10 +4,11 @@ import { Course } from '@models/course';
 import { ImgUrlPipe } from '@pipes/img-url-pipe';
 import { CurrencyService } from '@services/currency-service';
 import { getUserCountry } from '@utils/helpers';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-course-card',
-  imports: [ImgUrlPipe, NgOptimizedImage, DecimalPipe],
+  imports: [ImgUrlPipe, NgOptimizedImage, DecimalPipe, RouterLink],
   templateUrl: './course-card.html',
   styleUrl: './course-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

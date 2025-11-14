@@ -7,7 +7,7 @@ import { Course } from '@models/course';
 import { PackagesSection } from './packages-section/packages-section';
 import { InstructorSection } from './instructor-section/instructor-section';
 import { CourseReviews } from './course-reviews/course-reviews';
-import { delay, forkJoin, noop, retry } from 'rxjs';
+import { forkJoin, noop, retry } from 'rxjs';
 import { PackageService } from '@services/package-service';
 import { PackageData } from '@models/package';
 import { getUserCountry } from '@utils/helpers';
@@ -40,7 +40,7 @@ export class Home implements OnInit {
       this.packageService.getLatestPackages(100),
       this.packageService.getCoursePackageJson(),
     ])
-      .pipe(delay(10000), retry(3))
+      .pipe(retry(3))
       .subscribe({
         next: ([{ popularCourseIds, newCourseIds }, courses, packages, packageJsonData]) => {
           const {

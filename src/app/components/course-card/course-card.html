@@ -14,7 +14,10 @@
       </h5>
     </div>
     <div class="card-actions">
-      <a class="btn btn-sm lg:btn-md btn-primary w-full px-1 lg:px-4">
+      <a
+        [routerLink]="['/course', course.id]"
+        class="btn btn-sm lg:btn-md btn-primary w-full px-1 lg:px-4"
+      >
         <span>إشترك الآن</span>
         <span class="text-secondary ms-0.5"
           >{{ (course.discountPrice || course.originalPrice) * currency.value | number : '1.0-0'

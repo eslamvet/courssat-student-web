@@ -11,6 +11,11 @@ export const routes: Routes = [
     loadComponent: () => import('./screens/about-us/about-us').then((c) => c.AboutUs),
   },
   {
+    path: 'course/:courseId',
+    loadComponent: () =>
+      import('./screens/course-details/course-details').then((c) => c.CourseDetails),
+  },
+  {
     path: 'cart',
     loadComponent: () => import('./screens/cart/cart').then((c) => c.Cart),
   },
