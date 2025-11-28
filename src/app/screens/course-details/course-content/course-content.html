@@ -1,1 +1,64 @@
-<p>course-content works!</p>
+@let hasAccess = isPaid() || user()?.roleType == 1 || instructorId() == user()?.id;
+<ul class="list-none bg-base-200 p-6 rounded-sm">
+  @for(topic of topics(); track topic.id) {
+  <li
+    class="collapse collapse-arrow border-dashed border-b-base-content rounded-none after:border-dashed"
+    [class]="{
+      'border-b': !$last
+    }"
+  >
+    <input type="checkbox" />
+    <div class="collapse-title flex gap-4">
+      <div
+        class="w-6 h-6 rounded-full flex items-center justify-center"
+        [class]="{
+          'bg-secondary': topic.isWatched || topic.isActive,
+          'bg-base-400': !topic.isWatched
+        }"
+      >
+        @if(topic.isWatched) {
+        <span class="iconify ic--check text-neutral text-xl"></span>
+        }
+      </div>
+      <div class="text-xl flex-1 text-base-content" [class]="{ 'text-secondary': topic.isActive }">
+        {{ topic.topicName_AR }}
+      </div>
+    </div>
+    <div class="collapse-content text-sm">
+      <ul class="list">
+        @for(lesson of topic.lessonList; track lesson.id) {
+        <li class="ps-4">
+          <a class="list-row after:hidden px-0 cursor-pointer group">
+            <div
+              class="w-6 h-6 rounded-full flex items-center justify-center"
+              [class]="{
+                'bg-secondary': lesson.isWatched || lesson.isActive,
+                'bg-base-400': !lesson.isWatched
+              }"
+            >
+              @if(lesson.isWatched) {
+              <span class="iconify ic--check text-neutral text-xl"></span>
+              }
+            </div>
+            <div
+              class="text-xl group-hover:text-secondary text-base-content"
+              [class]="{ 'text-secondary': lesson.isActive }"
+              (click)="(lesson.public || hasAccess) && setActiveLesson.emit(lesson.id)"
+            >
+              {{ lesson.name_AR }}
+            </div>
+            <span
+              class="iconify text-2xl text-base-content"
+              [class]="{
+                'lets-icons--view': lesson.public || hasAccess,
+                'si--lock-line': !(lesson.public || hasAccess)
+              }"
+            ></span>
+          </a>
+        </li>
+        }
+      </ul>
+    </div>
+  </li>
+  }
+</ul>

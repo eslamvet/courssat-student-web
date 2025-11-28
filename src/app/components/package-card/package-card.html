@@ -23,7 +23,7 @@
           currency.code
         }}</span>
       </div>
-      @if(package.discountPrice && package.originalPrice){
+      @if(package.discountPrice < package.originalPrice){
       <div class="flex items-center gap-1 text-base-content text-xs lg:text-base">
         <span class="line-through">{{
           package.originalPrice * currency.value | number : '1.0-0'
@@ -43,7 +43,7 @@
     </div>
   </div>
   <a
-    class="font-bold text-base lg:text-xl text-black cursor-pointer"
+    class="font-bold text-base lg:text-xl text-body-5 cursor-pointer"
     [routerLink]="['/package', package.id]"
     >{{ package.packageName_AR }}</a
   >

@@ -1,20 +1,15 @@
-import { Component, inject } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { Header } from '@components/header/header';
 import { Footer } from '@components/footer/footer';
 import { SidenavMenu } from '@components/sidenav-menu/sidenav-menu';
-import { filter, map } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { Toaster } from '@components/toaster/toaster';
+import { Loader } from '@components/loader/loader';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Footer, SidenavMenu, AsyncPipe],
+  imports: [RouterOutlet, Header, Footer, SidenavMenu, Toaster, Loader],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
-  isHomeUrl$ = inject(Router).events.pipe(
-    filter((ev) => ev instanceof NavigationEnd),
-    map((ev) => ev.urlAfterRedirects == '/')
-  );
-}
+export class App {}

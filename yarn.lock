@@ -774,10 +774,31 @@
   dependencies:
     "@iconify/types" "*"
 
+"@iconify-json/hugeicons@^1.2.17":
+  version "1.2.17"
+  resolved "https://registry.yarnpkg.com/@iconify-json/hugeicons/-/hugeicons-1.2.17.tgz#7c7f488bda5cfd0cd55a66bf1094b27173459f7a"
+  integrity sha512-Yp+XzYfWoSuE4HTSrVGbIobNooYfIOQAczgzpLcJGGhkkGed8pVtR8K0UZEg2ZEdrtObatcCcTVrnuOwlnJqMA==
+  dependencies:
+    "@iconify/types" "*"
+
 "@iconify-json/ic@^1.2.4":
   version "1.2.4"
   resolved "https://registry.npmjs.org/@iconify-json/ic/-/ic-1.2.4.tgz"
   integrity sha512-pzPMmrZrBQuwT7nmtrYdkttun8KalRGgZPIL1Ny9KpF2zjRGIUPN+npTfuD3lrgO/OnSwAoJWuekQwBpt/Cqrw==
+  dependencies:
+    "@iconify/types" "*"
+
+"@iconify-json/lets-icons@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@iconify-json/lets-icons/-/lets-icons-1.2.2.tgz#e6d1973ae906d666b7027ce382d505123fb40332"
+  integrity sha512-GBCeFoWNLA5v1ZRIM54cZGpE/lHtFcSJjxXXCi2W5SxkJoPDonNoLGf61/z8eNxiBkegynClvEgCAs0YjLeZkA==
+  dependencies:
+    "@iconify/types" "*"
+
+"@iconify-json/si@^1.2.15":
+  version "1.2.15"
+  resolved "https://registry.yarnpkg.com/@iconify-json/si/-/si-1.2.15.tgz#996a79ee1211693ebc52dec270499cd5952c3301"
+  integrity sha512-Om4wefKOXggAio3vbosBwpW1hb7H4U0BirnSO8sh0w+UUdrCdf4jBWAV07Ar3JVKDqTE1IQBCLpPCbd6kZd/5A==
   dependencies:
     "@iconify/types" "*"
 
@@ -1891,6 +1912,14 @@
   integrity sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==
   dependencies:
     "@types/node" "*"
+
+"@vimeo/player@^2.30.1":
+  version "2.30.1"
+  resolved "https://registry.yarnpkg.com/@vimeo/player/-/player-2.30.1.tgz#f78515b3899df99ddaad60beb10238c563d94b15"
+  integrity sha512-rbPMASxUPR6tq4KQatOqL2ZMUOA6hrDS9xReRoTNF/s1Ru+NZr+5qWS4xxHJ4cqwZF6Ri38/qOAQRe66sYY6bg==
+  dependencies:
+    native-promise-only "0.8.1"
+    weakmap-polyfill "2.0.4"
 
 "@vitejs/plugin-basic-ssl@2.1.0":
   version "2.1.0"
@@ -4034,6 +4063,11 @@ nanoid@^3.3.11:
   resolved "https://registry.npmjs.org/nanoid/-/nanoid-3.3.11.tgz"
   integrity sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==
 
+native-promise-only@0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/native-promise-only/-/native-promise-only-0.8.1.tgz#20a318c30cb45f71fe7adfbf7b21c99c1472ef11"
+  integrity sha512-zkVhZUA3y8mbz652WrL5x0fB0ehrBkulWT3TomAQ9iDtyXZvzKeEA6GPxAItBYeNYl5yngKRX612qHOhvMkDeg==
+
 negotiator@0.6.3:
   version "0.6.3"
   resolved "https://registry.npmjs.org/negotiator/-/negotiator-0.6.3.tgz"
@@ -4405,6 +4439,11 @@ pkg-types@^2.3.0:
     confbox "^0.2.2"
     exsolve "^1.0.7"
     pathe "^2.0.3"
+
+player.js@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/player.js/-/player.js-0.1.0.tgz#38a2647f022dbbccf2e97e85e1fddccc9ef498e8"
+  integrity sha512-pzWPiqw5b4kQCYhXyoLOZWidWcSySVJTqciDOtoH/MzY97piKnUme494dfczCAC7FLkMSPMH2HfhNJU9D/lVFw==
 
 postcss-media-query-parser@^0.2.3:
   version "0.2.3"
@@ -5264,6 +5303,11 @@ weak-lru-cache@^1.2.2:
   version "1.2.2"
   resolved "https://registry.npmjs.org/weak-lru-cache/-/weak-lru-cache-1.2.2.tgz"
   integrity sha512-DEAoo25RfSYMuTGc9vPJzZcZullwIqRDSI9LOy+fkCJPi6hykCnfKaXTuPBDuXAUcqHXyOgFtHNp/kB2FjYHbw==
+
+weakmap-polyfill@2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/weakmap-polyfill/-/weakmap-polyfill-2.0.4.tgz#bcc301e4c8eb4eda3e406f08f1a691093e407884"
+  integrity sha512-ZzxBf288iALJseijWelmECm/1x7ZwQn3sMYIkDr2VvZp7r6SEKuT8D0O9Wiq6L9Nl5mazrOMcmiZE/2NCenaxw==
 
 whatwg-encoding@^3.1.1:
   version "3.1.1"

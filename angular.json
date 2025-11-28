@@ -43,7 +43,19 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.css"]
+            "styles": ["src/styles.css"],
+            "scripts": [
+              {
+                "input": "node_modules/@vimeo/player/dist/player.min.js",
+                "bundleName": "vimeo-player",
+                "inject": false
+              },
+              {
+                "input": "node_modules/player.js/dist/player-0.1.0.min.js",
+                "bundleName": "bunny-player",
+                "inject": false
+              }
+            ]
           },
           "configurations": {
             "production": {
@@ -82,7 +94,8 @@
               "buildTarget": "courssat-web-app:build:production"
             },
             "development": {
-              "buildTarget": "courssat-web-app:build:development"
+              "buildTarget": "courssat-web-app:build:development",
+              "allowedHosts": [".ngrok-free.app"]
             }
           },
           "defaultConfiguration": "development"

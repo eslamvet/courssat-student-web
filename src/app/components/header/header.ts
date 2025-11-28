@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { CartService } from '@services/cart-service';
 import { ThemeService } from '@services/theme-service';
 import { UserService } from '@services/user-service';
 
@@ -11,12 +12,11 @@ import { UserService } from '@services/user-service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
-  isLoggedIn;
-  currentTheme;
-  constructor(private userService: UserService, private themeService: ThemeService) {
-    this.isLoggedIn = this.userService.isLoggedIn;
-    this.currentTheme = this.themeService.currentTheme;
-  }
+  userService = inject(UserService);
+  cart = inject(CartService).cart;
+  themeService = inject(ThemeService);
+  currentTheme = this.themeService.currentTheme;
+  user = this.userService.user;
 
   logoutHandler() {
     this.userService.logout();

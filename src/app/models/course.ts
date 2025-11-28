@@ -29,25 +29,34 @@ export type Course = {
   isPaied: boolean;
   topics: CourseTopic[];
   courseDataVMs: courseDataVM[];
-  reviewsRes: CourseReviewsRes;
+  reviews?: CourseReview[];
   updateUserCourses?: boolean;
   packageId?: number | null;
   userId: string;
   refresh?: boolean;
   showCoupon?: boolean;
+  paymentLabel?: string;
+  instructorBrief?: string;
+  redirect_url?: string;
+  openKeys: CourseKeyword[];
   currentPurchasedCourseId?: number;
-};
-
-export type CourseReviewsRes = {
-  loading: boolean;
-  data: ListApi<CourseReview>;
+  attachments?: { title: string; data: CourseAttachment[] }[];
+  relatedCourses?: Course[];
+  priceBeforeCoupon: number;
 };
 
 export type CourseTopic = {
   id: number;
   topicName_AR: string;
+  isActive?: boolean;
+  isWatched?: boolean;
   fileList?: CourseAttachment[];
   lessonList: CourseLesson[];
+};
+
+export type CourseKeyword = {
+  id: number;
+  name: string;
 };
 
 export type CourseLesson = {
@@ -59,7 +68,6 @@ export type CourseLesson = {
   fileName?: string;
   fileUrlName?: string;
   lessonType?: number;
-  cachedVideoUrl?: string;
   isActive?: boolean;
   isDisabled?: boolean;
   isWatched?: boolean;
@@ -68,6 +76,7 @@ export type CourseLesson = {
   courseId?: number;
   lIndex?: number;
   tIndex?: number;
+  public?: boolean;
 };
 
 export type courseDataVM = {
@@ -83,14 +92,14 @@ export type courseDataVMAnswer = {
 
 export type CourseReview = {
   id: number;
-  isLike?: boolean;
-  evaluationComment?: string;
+  isLike: boolean;
+  evaluationComment: string;
   firstName: string;
   familyName: string;
   imageURL: string;
   date: string | number;
   userId?: string;
-  courseId?: number;
+  courseId: number;
 };
 
 export type CourseAttachment = {
@@ -100,4 +109,31 @@ export type CourseAttachment = {
   attachmentLink?: string;
   attachmentFileName?: string;
   id: number;
+};
+
+export type CustomCourseData = {
+  id: number;
+  hourCount?: number;
+  lessonCount?: number;
+  studentsCount?: number;
+  likeCount?: number;
+  disLikeCount?: number;
+  sections_with_free_lessons: {
+    index: number;
+    free_lessons_indexes: number[];
+  }[];
+  reviews?: CourseReview[];
+  redirect_url?: string;
+};
+
+export type CustomCoursePrice = {
+  'course-id': number;
+  'egp-price': number;
+  'sar-price': number;
+};
+
+export type CustomCourseLabel = {
+  label: string;
+  allCourses: boolean;
+  course_ids: number[];
 };

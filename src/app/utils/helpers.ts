@@ -1,4 +1,7 @@
 import { inject } from '@angular/core';
+import { Course } from '@models/course';
+import { CoursePurchase } from '@models/CoursePurchase';
+import { User } from '@models/user';
 import { CurrencyService } from '@services/currency-service';
 import { UserService } from '@services/user-service';
 import { catchError, EMPTY, forkJoin, map } from 'rxjs';
@@ -27,4 +30,42 @@ export const appInitializerFn = () => {
 export const getUserCountry = () => {
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   return timezone == 'Africa/Cairo' ? 'EG' : timezone == 'Asia/Riyadh' ? 'SA' : 'Other';
+};
+
+export const generateOrderBody = (
+  user: User,
+  totalValue: number,
+  totalOriginalValue: number,
+  courses: Course[],
+  cobonId?: number,
+  stringify = false
+): CoursePurchase => {
+  const paymentDetailVMs = courses.map((c) => ({
+    id: 0,
+    courseImg: c.coverImageURL,
+    paymentId: 0,
+    courseName: c.courseName_AR,
+    courseId: c.packageId ? null : c.id,
+    packagesId: c.packageId ?? null,
+    originalValue: c.originalPrice,
+    totalValue: c.discountPrice!,
+    cobonId,
+    coupon: c.coupon,
+    instructorId: c.userId,
+    ...(c?.packageId && {
+      courseNames: c.relatedCourses?.map((c) => c.courseName_AR),
+      courseIds: c.relatedCourses?.map((c) => c.id),
+    }),
+  }));
+
+  return {
+    id: 0,
+    userId: user.id,
+    userName: user.firstName + (user.familyName ?? ''),
+    userEmail: user.email,
+    totalOriginalValue,
+    totalValue,
+    cobonId,
+    paymentDetailVMs: stringify ? JSON.stringify(paymentDetailVMs) : paymentDetailVMs,
+  };
 };

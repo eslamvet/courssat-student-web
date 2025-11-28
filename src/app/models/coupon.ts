@@ -7,6 +7,7 @@ export type Coupon = {
   userId: string;
   coboneCode: string;
   courseId: number | null;
+  success: boolean;
 };
 
 export const COUPONTYPE = {

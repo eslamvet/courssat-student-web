@@ -4,7 +4,7 @@
     <img [ngSrc]="course.coverImageURL | imgUrl" width="750" height="422" />
   </figure>
   <div class="card-body p-2.5 lg:p-4">
-    <h2 class="card-title text-sm lg:text-xl line-clamp-2 text-black font-bold flex-1">
+    <h2 class="card-title text-sm lg:text-xl line-clamp-2 text-body-5 font-bold flex-1">
       {{ course.courseName_AR }}
     </h2>
     <div class="flex items-center gap-1 lg:mb-2">
@@ -16,6 +16,7 @@
     <div class="card-actions">
       <a
         [routerLink]="['/course', course.id]"
+        [state]="{ title: course.courseName_AR }"
         class="btn btn-sm lg:btn-md btn-primary w-full px-1 lg:px-4"
       >
         <span>إشترك الآن</span>
@@ -25,7 +26,7 @@
             currency.code
           }}</span></span
         >
-        @if(!isMobile && course.originalPrice){
+        @if(!isMobile && course.discountPrice < course.originalPrice){
         <span class="line-through text-base-content text-sm"
           >{{ course.originalPrice * currency.value | number : '1.0-0'
           }}<span [class]="{ 'font-saudi-riyal': isSaudi, 'text-lg': isSaudi }">{{

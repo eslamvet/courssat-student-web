@@ -1,8 +1,8 @@
-<div class="drawer min-h-screen overflow-x-hidden">
+<div class="drawer min-h-screen overflow-y-auto overflow-x-hidden">
   <input id="main-drawer" type="checkbox" class="drawer-toggle" />
-  <div class="drawer-content">
+  <div class="drawer-content h-full flex flex-col">
     <app-header />
-    <main class="min-h-[620px] lg:min-h-[385px]" [class.h-full]="!(isHomeUrl$ | async)">
+    <main class="flex-1 min-h-[620px] lg:min-h-[385px]">
       <router-outlet></router-outlet>
     </main>
     <app-footer />
@@ -11,3 +11,5 @@
     <app-sidenav-menu />
   </div>
 </div>
+<app-toaster />
+<app-loader />

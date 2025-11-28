@@ -1,0 +1,39 @@
+<div
+  role="tablist"
+  class="tabs mb-8 rounded-sm border border-dashed items-center border-base-content h-17.5 px-3 gap-27"
+>
+  @let activeTapSignal = activeTap();
+  <a
+    role="tab"
+    class="tab text-xl/7.5 text-base-content"
+    [class]="{
+      'text-body-5': activeTapSignal === 'overview',
+      'text-2xl': activeTapSignal === 'overview',
+      'font-bold': activeTapSignal === 'overview'
+    }"
+    (click)="activeTap.set('overview')"
+    >تفاصيل الكورس</a
+  >
+  <a
+    role="tab"
+    class="tab text-xl/7.5 text-base-content"
+    [class]="{
+      'text-body-5': activeTapSignal === 'content',
+      'text-2xl': activeTapSignal === 'content',
+      'font-bold': activeTapSignal === 'content'
+    }"
+    (click)="activeTap.set('content')"
+    >محتوى الكورس</a
+  >
+  <a
+    role="tab"
+    class="tab text-xl/7.5 text-base-content"
+    [class]="{
+      'text-body-5': activeTapSignal === 'reviews',
+      'text-2xl': activeTapSignal === 'reviews',
+      'font-bold': activeTapSignal === 'reviews'
+    }"
+    (click)="activeTap.set('reviews')"
+    >التقييمات</a
+  >
+</div>

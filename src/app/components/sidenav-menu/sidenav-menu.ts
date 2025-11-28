@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, DestroyRef, DOCUMENT, Host, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  DOCUMENT,
+  Host,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { UserService } from '@services/user-service';
@@ -12,14 +20,13 @@ import { filter, fromEvent } from 'rxjs';
   },
   templateUrl: './sidenav-menu.html',
   styleUrl: './sidenav-menu.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidenavMenu implements AfterViewInit {
-  isLoggedIn;
+  userService = inject(UserService);
   document = inject(DOCUMENT);
   destroyRef = inject(DestroyRef);
-  constructor(private userService: UserService) {
-    this.isLoggedIn = this.userService.isLoggedIn;
-  }
+  user = this.userService.user;
 
   ngAfterViewInit(): void {
     fromEvent(this.document.getElementById('sidenav-menu')!, 'click')

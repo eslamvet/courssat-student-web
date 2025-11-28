@@ -1,1 +1,91 @@
-<p>course-reviews works!</p>
+<section>
+  @let reviews = reviewsResSignal().list;
+  <div
+    id="course-reviews-wrapper"
+    class="flex flex-col gap-6 mb-6 overflow-y-auto overflow-x-hidden"
+    [class.h-125]="reviews && reviews.length > 1"
+  >
+    @for(review of reviews;track review.id){
+    <div class="bg-base-200 rounded-sm px-8 py-6 flex gap-8">
+      <img src="/images/profile.png" class="w-16 h-16 rounded-full" />
+      <div class="flex-1">
+        <div class="flex justify-between mb-4">
+          <div>
+            <h4 class="text-xl text-body-5">مصطفى الأحمدي</h4>
+            <img class="inline-block me-3" src="/images/star.svg" />
+            <span class="align-sub text-base-content">(4.5)</span>
+          </div>
+          <div class="text-lg text-base-content">22/03/2024</div>
+        </div>
+        <p class="text-lg text-base-content mb-2">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non autem, corporis quo
+          corrupti, porro facilis sint modi delectus numquam ex cupiditate, sunt maiores adipisci.
+          Qui praesentium odio voluptatibus iste quidem.
+        </p>
+        <button class="text-lg underline text-secondary cursor-pointer">رد</button>
+      </div>
+    </div>
+    }
+  </div>
+  <form
+    [formGroup]="reviewForm"
+    class="bg-base-200 rounded-sm px-8 py-6 flex flex-col items-center"
+    (ngSubmit)="addCourseReviewHandler()"
+  >
+    <div
+      class="rating rating-xl"
+      (click)="isLikeReviewFormControl?.setValue(!isLikeReviewFormControl?.value)"
+    >
+      <input
+        type="radio"
+        class="mask mask-star-2 bg-orange-400"
+        aria-label="1 star"
+        [checked]="!!this.isLikeReviewFormControl?.value"
+      />
+      <input
+        type="radio"
+        class="mask mask-star-2 bg-orange-400"
+        aria-label="2 star"
+        [checked]="!!this.isLikeReviewFormControl?.value"
+      />
+      <input
+        type="radio"
+        class="mask mask-star-2 bg-orange-400"
+        aria-label="3 star"
+        [checked]="!!this.isLikeReviewFormControl?.value"
+      />
+      <input
+        type="radio"
+        class="mask mask-star-2 bg-orange-400"
+        aria-label="4 star"
+        [checked]="!!this.isLikeReviewFormControl?.value"
+      />
+      <input
+        type="radio"
+        class="mask mask-star-2 bg-orange-400"
+        aria-label="5 star"
+        [checked]="!!this.isLikeReviewFormControl?.value"
+      />
+    </div>
+    <div class="divider"></div>
+    <div class="self-stretch flex gap-4 mb-5">
+      <img class="w-16 h-16 rounded-full" src="/images/profile.png" />
+      <div class="flex-1">
+        <textarea
+          class="textarea textarea-ghost w-full validator"
+          required
+          placeholder="اكتب تقييماً هنا ..."
+          formControlName="evaluationComment"
+          rows="3"
+        ></textarea>
+        <div class="validator-hint">التقييم مطلوب</div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary px-6">
+      <span>حفظ</span>
+      @if(loading()){
+      <span class="loading loading-ring text-white"></span>
+      }
+    </button>
+  </form>
+</section>

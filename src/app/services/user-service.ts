@@ -10,17 +10,17 @@ import { iif, of, tap } from 'rxjs';
 export class UserService {
   router = inject(Router);
   http = inject(HttpClient);
-  private user = signal<Partial<User> | null>({
-    id: '1',
+  private userSignal = signal<Partial<User> | null>({
+    id: '18f17fac-5a3f-473b-b00a-a9aacef27426',
   });
-  readonly isLoggedIn = computed(() => !!this.user());
+  readonly user = this.userSignal.asReadonly();
 
   setUser(user: User | null) {
-    this.user.set(user);
+    this.userSignal.set(user);
   }
 
   getUser() {
-    return this.user();
+    return this.userSignal();
   }
 
   getUserProfile(userId?: string) {
@@ -28,7 +28,7 @@ export class UserService {
   }
 
   logout() {
-    this.user.set(null);
+    this.userSignal.set(null);
     localStorage.removeItem('auth_token');
     if (['/profile', '/cart', '/checkout'].some((url) => this.router.url.startsWith(url))) {
       this.router.navigateByUrl('/', { replaceUrl: true });

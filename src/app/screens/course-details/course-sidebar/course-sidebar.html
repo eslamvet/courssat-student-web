@@ -1,0 +1,114 @@
+<div class="flex flex-col gap-10">
+  <ul class="list-none px-6 py-4 border border-dashed rounded-sm">
+    <li class="flex items-center gap-2 mb-4">
+      <span class="iconify solar--alarm-play-broken text-secondary text-2xl"></span>
+      <span class="flex-1 text-base-content">عدد الدروس</span>
+      <span class="text-body-5 font-bold">{{ lessonCount() }} درساً</span>
+    </li>
+    <li class="flex items-center gap-2 mb-4">
+      <span class="iconify solar--clock-circle-broken text-secondary text-2xl"></span>
+      <span class="flex-1 text-base-content">عدد الساعات</span>
+      <span class="text-body-5 font-bold">{{ hourCount() }} ساعه</span>
+    </li>
+    <li class="flex items-center gap-2">
+      <span class="iconify solar--user-rounded-broken text-secondary text-2xl"></span>
+      <span class="flex-1 text-base-content">الطلاب المسجلين</span>
+      <span class="text-body-5 font-bold">{{ studentsCount() }} طالب</span>
+    </li>
+  </ul>
+  @if(!(isPaid() || user()?.roleType == 1 || instructorId() == user()?.id)){
+  <div class="flex flex-col gap-4">
+    @if(coursePaymentLabel() && !user()){
+    <div role="alert" class="alert alert-info alert-soft rounded-sm">
+      <span class="text-justify">{{ coursePaymentLabel() }}</span>
+    </div>
+    }
+    <button class="btn btn-lg btn-primary" (click)="purchaseCourseHandler()">
+      <span class="font-bold">{{ user() ? 'شراء الآن' : 'سجل الان' }}</span>
+      <span class="text-secondary font-bold"
+        >{{ (discountPrice() || originalPrice()) * currency.value | number : '1.0-0'
+        }}<span [class]="{ 'font-saudi-riyal': isSaudi, 'text-lg': isSaudi }">{{
+          currency.code
+        }}</span>
+      </span>
+      @if(discountPrice() < originalPrice()){
+      <span class="text-sm text-base-content line-through font-light"
+        >{{ originalPrice() * currency.value | number : '1.0-0'
+        }}<span [class]="{ 'font-saudi-riyal': isSaudi, 'text-lg': isSaudi }">{{
+          currency.code
+        }}</span>
+      </span>
+      }
+    </button>
+    @if(user() && !courseRedirectUrl()){
+    <button
+      class="btn btn-lg bg-base-500 border-dashed border-primary text-primary w-full"
+      (click)="addToCart.emit()"
+    >
+      إضافة الي سلة المشتريات
+    </button>
+    <div class="py-1 px-4 flex gap-7 bg-neutral">
+      <label class="input bg-transparent border-none shadow-none outline-none">
+        <span class="iconify hugeicons--coupon-01 text-2xl text-base-content"></span>
+        <input
+          type="text"
+          [formControl]="couponCode"
+          placeholder="أدخل رمز الكوبون"
+          [readOnly]="!!coupon()"
+          class="text-base-content placeholder:text-base-content placeholder:opacity-50"
+        />
+      </label>
+      <div class="border-r border-dashed border-base-content"></div>
+      <button
+        class="btn btn-link text-secondary px-0 no-underline"
+        (click)="applyCouponHandler()"
+        [disabled]="!couponCode.value || currentLoading() === 'apply-coupon'"
+      >
+        <span>{{ coupon() ? 'الغاء' : 'تفعيل' }}</span>
+        @if(currentLoading() === 'apply-coupon'){
+        <span class="loading loading-ring text-secondary"></span>
+        }
+      </button>
+    </div>
+    @if(coupon()?.coboneType == 2){
+    <div class="py-1 px-4 flex gap-7 bg-neutral">
+      <label class="input bg-transparent border-none shadow-none outline-none">
+        <span class="iconify hugeicons--coupon-01 text-2xl text-base-content"></span>
+        <input
+          type="number"
+          [formControl]="customPrice"
+          placeholder="ادفع كما تريد"
+          min="1"
+          class="text-base-content placeholder:text-base-content placeholder:opacity-50"
+        />
+      </label>
+      <div class="border-r border-dashed border-base-content"></div>
+      <button
+        class="btn btn-link text-secondary px-0 no-underline"
+        (click)="payAsYouWantHandler()"
+        [disabled]="!customPrice.value || currentLoading() === 'apply-min-price'"
+      >
+        <span>تعديل</span>
+        @if(currentLoading() === 'apply-min-price'){
+        <span class="loading loading-ring text-secondary"></span>
+        }
+      </button>
+    </div>
+    } }
+  </div>
+  }
+  <div class="p-4 border border-dashed rounded-sm">
+    <h4 class="text-xl text-body-5 font-bold mb-4">{{ instructorName() }}</h4>
+    <p class="text-base-content">
+      {{ instructorBrief() }}
+    </p>
+  </div>
+  <div class="p-4 border border-dashed rounded-sm">
+    <h4 class="text-xl text-body-5 font-bold mb-4">KeyWords</h4>
+    <div class="flex flex-wrap gap-3">
+      @for(keyword of keywords();track $index){
+      <div class="p-2 rounded-sm text-secondary bg-secondary-5">{{ keyword.name }}</div>
+      }
+    </div>
+  </div>
+</div>

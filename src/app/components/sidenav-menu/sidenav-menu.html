@@ -1,17 +1,17 @@
 <ul id="sidenav-menu" class="menu w-full px-5 pt-10">
-  <li class="text-black hover:bg-red-300 border-b-[.5px] border-dashed border-body-4">
+  <li class="text-body-5 hover:bg-red-300 border-b-[.5px] border-dashed border-body-4">
     <a class="py-3 focus:bg-transparent" routerLink="/">الرئيسية</a>
   </li>
-  <li class="text-black border-b-[.5px] border-dashed border-body-4">
+  <li class="text-body-5 border-b-[.5px] border-dashed border-body-4">
     <a class="py-3 hover:bg-transparent focus:bg-transparent" routerLink="/about-us">من نحن</a>
   </li>
-  @if(isLoggedIn()){
-  <li class="text-black border-b-[.5px] border-dashed border-body-4">
+  @if(user()){
+  <li class="text-body-5 border-b-[.5px] border-dashed border-body-4">
     <a class="py-3 hover:bg-transparent focus:bg-transparent" routerLink="/profile/my-courses"
       >كورساتي</a
     >
   </li>
-  <li class="text-black border-b-[.5px] border-dashed border-body-4">
+  <li class="text-body-5 border-b-[.5px] border-dashed border-body-4">
     <details>
       <summary class="py-3 hover:bg-transparent focus:bg-transparent">حسابي</summary>
       <ul>
@@ -30,16 +30,16 @@
       </ul>
     </details>
   </li>
-  <li class="text-black border-b-[.5px] border-dashed border-body-4">
+  <li class="text-body-5 border-b-[.5px] border-dashed border-body-4">
     <a class="py-3 hover:bg-transparent focus:bg-transparent" routerLink="/cart">سلة المشتريات</a>
   </li>
-  <li class="text-black border-b-[.5px] border-dashed border-body-4">
+  <li class="text-body-5 border-b-[.5px] border-dashed border-body-4">
     <a class="py-3 hover:bg-transparent focus:bg-transparent" (click)="logoutHandler()"
       >تسجيل خروج</a
     >
   </li>
   } @else {
-  <li class="text-black border-b-[.5px] border-dashed border-body-4">
+  <li class="text-body-5 border-b-[.5px] border-dashed border-body-4">
     <a class="py-3 hover:bg-transparent focus:bg-transparent" routerLink="/login">اشترك الان</a>
   </li>
   }

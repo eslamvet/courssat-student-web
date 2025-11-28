@@ -1,0 +1,14 @@
+<section class="pt-4 pb-24">
+  <h2 class="text-[45px] font-bold text-primary mb-6 lg:mb-8">
+    الكورسات <span class="text-secondary"> ذات الصلة</span>
+  </h2>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 lg:gap-5">
+    @for(course of courses();track $index){
+    <app-course-card [course]="course" />
+    } @empty {
+    <div role="alert" class="col-span-4 alert alert-info justify-center alert-soft">
+      <span>لا توجد كورسات جديدة حالياً.</span>
+    </div>
+    }
+  </div>
+</section>

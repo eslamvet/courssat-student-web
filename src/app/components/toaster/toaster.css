@@ -1,0 +1,5 @@
+/* @reference "tailwindcss";
+
+.alert-error {
+  @apply bg-rose-400 text-rose-950;
+} */

@@ -1,0 +1,31 @@
+<div class="z-50 toast toast-end min-w-1/2 max-w-3/4 lg:max-w-1/4 lg:min-w-80">
+  @for(toast of toasts(); track toast.id){
+  <div
+    class="alert"
+    [class]="{
+      'alert-success': toast.type == 'success',
+      'alert-info': toast.type == 'info',
+      'alert-error': toast.type == 'error'
+    }"
+  >
+    <span
+      class="iconify text-xl lg:text-3xl {{
+        toast.iconClass ??
+          (toast.type == 'error'
+            ? 'solar--danger-circle-outline'
+            : toast.type == 'info'
+            ? 'solar--info-circle-linear'
+            : 'solar--check-circle-outline')
+      }}"
+    ></span>
+    <div class="flex flex-col gap-1">
+      <h4 class="font-medium">{{ toast.title }}</h4>
+      @if(toast.message){
+      <p class="line-clamp-3 text-ellipsis">
+        {{ toast.message }}
+      </p>
+      }
+    </div>
+  </div>
+  }
+</div>

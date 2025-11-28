@@ -24,7 +24,7 @@
             >من نحن</a
           >
         </li>
-        @if(isLoggedIn()){
+        @if(user()){
         <li>
           <a
             routerLink="/profile/my-courses"
@@ -40,22 +40,22 @@
       <div class="flex-1 text-start lg:hidden">
         <label for="main-drawer" aria-label="open sidebar" class="drawer-overlay">
           <span
-            class="iconify rotate-180 align-middle fluent--list-20-regular text-black text-2xl"
+            class="iconify rotate-180 align-middle fluent--list-20-regular text-body-5 text-2xl"
           ></span>
         </label>
       </div>
       <button class="cursor-pointer">
-        <span class="iconify align-middle ic--round-search text-black text-2xl"></span>
+        <span class="iconify align-middle ic--round-search text-body-5 text-2xl"></span>
       </button>
-      @if(isLoggedIn()){
+      @if(user()){
       <a class="indicator cursor-pointer hidden lg:inline-block" routerLink="/cart">
-        <span class="iconify solar--cart-5-linear align-middle text-black text-2xl"></span>
-        <span class="badge badge-sm indicator-item text-secondary">8</span>
+        <span class="iconify solar--cart-5-linear align-middle text-body-5 text-2xl"></span>
+        <span class="badge badge-sm indicator-item text-secondary">{{ cart().items.length }}</span>
       </a>
       <div class="dropdown dropdown-end">
         <div class="cursor-pointer hidden lg:inline-block" tabindex="0" role="button">
           <span
-            class="iconify align-middle solar--user-circle-broken text-black text-[22px]"
+            class="iconify align-middle solar--user-circle-broken text-body-5 text-[22px]"
           ></span>
         </div>
         <ul tabindex="0" class="menu dropdown-content bg-neutral z-1 mt-4 w-52 p-2 shadow">
@@ -69,9 +69,9 @@
       }
       <div class="hidden lg:inline-block border border-base-content h-4/5 border-dashed mx-2"></div>
       <button class="cursor-pointer h-7.5 w-7.5 lg:w-auto lg:h-auto" (click)="toggleThemeHandler()">
-        <span class="iconify align-middle gg--dark-mode text-black text-2xl lg:text-3xl"></span>
+        <span class="iconify align-middle gg--dark-mode text-body-5 text-2xl lg:text-3xl"></span>
       </button>
-      @if(!isLoggedIn()){
+      @if(!user()){
       <a class="cursor-pointer ms-1" routerLink="/auth/login">إشترك الآن</a>
       }
     </div>
