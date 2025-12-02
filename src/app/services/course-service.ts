@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ListApi } from '@models/Api';
-import { Coupon } from '@models/coupon';
 import {
   Course,
   CourseReview,
@@ -61,7 +60,7 @@ export class CourseService {
     });
   }
 
-  getCoursesByDepartment(
+  getCoursesByDepartmentWithFilter(
     openKeys: string,
     departmentId: number,
     filterType: number,
@@ -88,5 +87,9 @@ export class CourseService {
 
   addCourseReview(review: Omit<CourseReview, 'firstName' | 'familyName' | 'imageURL' | 'date'>) {
     return this.http.post('/api/CourseEvaluation', review);
+  }
+
+  getAllCoursesByDepartmentId(departmentId: number) {
+    return this.http.get<Course[]>(`/api/Course/Department/${departmentId}`);
   }
 }

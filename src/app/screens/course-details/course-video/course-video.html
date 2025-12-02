@@ -1,5 +1,7 @@
+@let loading = courseLoading();
 <section>
   <div class="aspect-video mb-6 rounded-sm overflow-hidden">
+    @if(!loading){
     <iframe
       id="courssat-video-iframe"
       [src]="activeLesson()?.videoUrl | safeUrl : activeLesson()?.autoplay"
@@ -13,11 +15,19 @@
       (videoEnd)="videoEndHandler()"
     >
     </iframe>
+    } @else {
+    <div class="skeleton w-full h-full"></div>
+    }
   </div>
-  <div class="flex items-center gap-4 mb-8">
+  <div class="flex items-center justify-between gap-4 mb-8">
+    @if(!loading){
     <h2 class="text-4xl text-body-5 font-bold flex-1">{{ title() }}</h2>
     <button class="btn btn-circle btn-xl bg-base-200">
       <span class="iconify solar--bookmark-broken text-xl text-base-content"></span>
     </button>
+    } @else {
+    <div class="skeleton w-2/3 h-10"></div>
+    <div class="skeleton rounded-full w-14 h-14"></div>
+    }
   </div>
 </section>

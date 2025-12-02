@@ -1,16 +1,22 @@
-@let course = courseSignal();
+@let course = courseSignal(); @let loading = courseLoading();
 <div class="container">
-  <div class="grid grid-cols-4 gap-8 border-b border-b-base-content py-10">
+  <div class="grid grid-cols-4 gap-8 border-b-base-content py-10" [class.border-b]="!loading">
     <div class="col-span-3">
       <app-course-video
+        [courseLoading]="loading"
         [title]="course.courseName_AR"
         [activeLesson]="course.topics | activeLesson"
         (nextVideo)="loadNextVideoHandler($event)"
       />
+      @if(!loading){
       <app-course-tabs [(activeTap)]="activeTap" />
+      } @else {
+      <div class="skeleton w-full h-17.5 mb-8"></div>
+      }
       <ng-container>
         @switch (activeTap()) { @case ('overview'){
         <app-course-overview
+          [courseLoading]="loading"
           [description]="course.courseDescription_AR"
           [courseDataVMS]="course.courseDataVMs!"
         />
@@ -22,13 +28,19 @@
           (setActiveLesson)="setActiveLessonHandle($event)"
         />
         } @case ('reviews'){
-        <app-course-reviews [customReviews]="course.reviews" [courseId]="course.id" />
+        <app-course-reviews
+          [courseReviewsRes]="courseReviewsRes()"
+          [isPaid]="course.isPaied"
+          [courseId]="course.id"
+          (loadReviews)="getCourseReviews($event)"
+        />
         } @default { }}
       </ng-container>
     </div>
     <div>
       <app-course-sidebar
         [keywords]="course.openKeys!"
+        [courseLoading]="loading"
         [studentsCount]="course.studentsCount"
         [lessonCount]="course.lessonCount"
         [instructorBrief]="course.instructorBrief"
@@ -50,5 +62,5 @@
       />
     </div>
   </div>
-  <app-course-related-courses [courses]="relatedCourses()" />
+  <app-course-related-courses [courseLoading]="loading" [courses]="relatedCourses()" />
 </div>

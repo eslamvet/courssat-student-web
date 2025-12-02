@@ -10,5 +10,6 @@ import { courseDataVM } from '@models/course';
 })
 export class CourseOverview {
   description = input.required();
+  courseLoading = input.required<boolean>();
   courseDataVMS = input.required<courseDataVM[]>();
 }

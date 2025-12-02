@@ -7,7 +7,7 @@ import { ToastService } from './toast-service';
   providedIn: 'root',
 })
 export class CartService {
-  private cartSignal = signal<{ items: Course[]; coupon: Coupon | null }>({
+  private cartSignal = signal<{ items: Partial<Course>[]; coupon: Coupon | null }>({
     items: JSON.parse(localStorage.getItem('cart-items') ?? '[]'),
     coupon: null,
   });
@@ -20,7 +20,7 @@ export class CartService {
     });
   }
 
-  addToCart(data: Course) {
+  addToCart(data: Partial<Course>) {
     if (!this.cartSignal().items.find((c) => c.id == data.id)) {
       if (data.coupon && this.cartSignal().coupon) {
         this.toastService.addToast({
@@ -38,7 +38,7 @@ export class CartService {
         this.toastService.addToast({
           id: Date.now(),
           type: 'success',
-          title: 'تم اضافة الكورس بنجاح',
+          title: `تم اضافة ${data.packageId ? 'الباقه' : 'الكورس'} بنجاح`,
           iconClass: 'solar--cart-check-outline',
         });
       }
@@ -47,12 +47,12 @@ export class CartService {
         id: Date.now(),
         type: 'info',
         title: 'تنبيه',
-        message: 'الكورس موجود بالفعل فى السلة',
+        message: `${data.packageId ? 'الباقه موجوده' : 'الكورس موجود'} بالفعل فى السلة`,
       });
     }
   }
 
-  setCart(data: { items: Course[]; coupon: Coupon | null }) {
+  setCart(data: { items: Partial<Course>[]; coupon: Coupon | null }) {
     this.cartSignal.set(data);
   }
 }

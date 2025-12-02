@@ -6,14 +6,13 @@ import { CourseSidebar } from './course-sidebar/course-sidebar';
 import { CourseRelatedCourses } from './course-related-courses/course-related-courses';
 import { CourseVideo } from './course-video/course-video';
 import { CourseTabs } from './course-tabs/course-tabs';
-import { Course, CourseAttachment, CourseLesson } from '@models/course';
+import { Course, CourseAttachment, CourseLesson, CourseReview } from '@models/course';
 import { CourseService } from '@services/course-service';
 import { UserService } from '@services/user-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { delay, finalize, forkJoin, retry, switchMap } from 'rxjs';
+import { delay, finalize, forkJoin, retry, switchMap, tap } from 'rxjs';
 import { CurrencyService } from '@services/currency-service';
 import { getUserCountry } from '@utils/helpers';
-import { Title } from '@angular/platform-browser';
 import { ActiveLessonPipe } from '@pipes/active-lesson-pipe';
 import { CartService } from '@services/cart-service';
 import { Coupon } from '@models/coupon';
@@ -21,6 +20,7 @@ import { OrderService } from '@services/order-service';
 import { User } from '@models/user';
 import { LoaderService } from '@services/loader-service';
 import { ToastService } from '@services/toast-service';
+import { ListApi, MakeOptional } from '@models/Api';
 
 @Component({
   selector: 'app-course-details',
@@ -45,12 +45,19 @@ export class CourseDetails implements OnInit {
   orderService = inject(OrderService);
   loaderService = inject(LoaderService);
   toastService = inject(ToastService);
-  title = inject(Title);
   currencyService = inject(CurrencyService);
   router = inject(Router);
   route = inject(ActivatedRoute);
+  courseLoading = signal(true);
   courseSignal = signal<Course>({} as Course);
   relatedCourses = signal<Course[]>(Array(4));
+  courseReviewsRes = signal<
+    MakeOptional<ListApi<Partial<CourseReview>>, 'pagination'> & { custom?: boolean }
+  >({
+    list: Array.from({ length: 10 }, (_, index) => ({
+      id: index,
+    })),
+  });
   activeTap = signal<'overview' | 'content' | 'reviews'>('overview');
 
   constructor() {
@@ -64,10 +71,24 @@ export class CourseDetails implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title.setTitle(history.state['title']);
+    let firstRender = true;
     this.route.params
       .pipe(
-        retry(3),
+        tap({
+          next: () => {
+            if (!firstRender) {
+              this.relatedCourses.set(Array(4));
+              this.courseLoading.set(true);
+              this.activeTap.set('overview');
+              this.courseReviewsRes.set({
+                list: Array.from({ length: 10 }, (_, index) => ({
+                  id: index,
+                })),
+              });
+            }
+            firstRender = false;
+          },
+        }),
         switchMap(({ courseId }) =>
           forkJoin([
             this.courseService.getCourseDetails(courseId, this.userService.getUser()?.id),
@@ -76,7 +97,9 @@ export class CourseDetails implements OnInit {
             this.courseService.getCustomCoursePrices(),
             this.courseService.getCourseFreeLessons(),
           ])
-        )
+        ),
+        retry(3),
+        delay(10000)
       )
       .subscribe({
         next: ([course, customData, customLabels, customPrices, freeLessons]) => {
@@ -127,7 +150,8 @@ export class CourseDetails implements OnInit {
                   topicName_AR: 'الدروس المجانية',
                   lessonList: freeLessons,
                 });
-              course.reviews = customCourse.reviews;
+              customCourse.reviews &&
+                this.courseReviewsRes.set({ list: customCourse.reviews, custom: true });
             }
             course.topics.unshift({
               id: 0,
@@ -189,15 +213,30 @@ export class CourseDetails implements OnInit {
             []
           );
           this.courseSignal.set({ ...course, ...(customCourse && customCourse) });
-          this.courseService.getCoursesByDepartment('', course.departmentsId, 1, 1).subscribe({
-            next: ({ list: relatedCoursesList }) => {
-              this.relatedCourses.set(relatedCoursesList.slice(0, 4));
-            },
-            error: () => {},
-          });
+          this.courseLoading.set(false);
+          this.courseService
+            .getCoursesByDepartmentWithFilter('', course.departmentsId, 1, 1)
+            .subscribe({
+              next: ({ list: relatedCoursesList }) => {
+                this.relatedCourses.set(relatedCoursesList.slice(0, 4));
+              },
+              error: (error) => {
+                this.toastService.addToast({
+                  id: Date.now(),
+                  type: 'error',
+                  title: 'حدث خطا ما',
+                  message: error.message,
+                });
+              },
+            });
         },
         error: (error) => {
-          console.log(error);
+          this.toastService.addToast({
+            id: Date.now(),
+            type: 'error',
+            title: 'حدث خطا ما',
+            message: error.message,
+          });
         },
       });
   }
@@ -383,5 +422,37 @@ export class CourseDetails implements OnInit {
       discountPrice,
       priceBeforeCoupon: c.discountPrice,
     }));
+  }
+
+  getCourseReviews(data: CourseReview | void) {
+    if (data) {
+      this.courseReviewsRes.update((r) => ({ ...r, list: [data, ...r.list] }));
+      return;
+    }
+    this.courseReviewsRes().pagination &&
+      this.courseReviewsRes.update((r) => ({
+        ...r,
+        list: [
+          ...r.list,
+          ...Array.from({ length: 10 }, (_, index) => ({
+            id: index,
+          })),
+        ],
+      }));
+    this.courseService
+      .getCourseReviews(this.courseSignal().id, this.courseReviewsRes().list.length)
+      .subscribe({
+        next: (data) => {
+          this.courseReviewsRes.set({ ...data, custom: false });
+        },
+        error: (error) => {
+          this.toastService.addToast({
+            id: Date.now(),
+            type: 'error',
+            title: 'حدث خطا ما',
+            message: error.message,
+          });
+        },
+      });
   }
 }

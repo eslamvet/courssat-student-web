@@ -11,4 +11,5 @@ import { Course } from '@models/course';
 })
 export class CourseRelatedCourses {
   courses = input.required<Course[]>();
+  courseLoading = input.required<boolean>();
 }

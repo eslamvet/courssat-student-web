@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   DOCUMENT,
@@ -19,16 +18,15 @@ import { SafeUrlPipe } from '@pipes/safe-url-pipe';
   styleUrl: './course-video.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CourseVideo implements AfterViewInit {
+export class CourseVideo {
   title = input.required();
+  courseLoading = input.required<boolean>();
   nextVideo = output<CourseLesson>();
   renderer = inject(Renderer2);
   document = inject(DOCUMENT);
   activeLesson = input.required<CourseLesson | null>();
-  ngAfterViewInit(): void {}
 
   videoEndHandler() {
-    console.log('video ended successfully');
     this.nextVideo.emit(this.activeLesson()!);
   }
 }

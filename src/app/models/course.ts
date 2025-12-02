@@ -43,6 +43,9 @@ export type Course = {
   attachments?: { title: string; data: CourseAttachment[] }[];
   relatedCourses?: Course[];
   priceBeforeCoupon: number;
+  courseNames?: string[];
+  courseIds?: string[];
+  packageName?: string;
 };
 
 export type CourseTopic = {

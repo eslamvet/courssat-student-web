@@ -1,5 +1,5 @@
 <section>
-  @let reviews = reviewsResSignal().list;
+  @let reviews = courseReviewsRes().list;
   <div
     id="course-reviews-wrapper"
     class="flex flex-col gap-6 mb-6 overflow-y-auto overflow-x-hidden"
@@ -7,26 +7,36 @@
   >
     @for(review of reviews;track review.id){
     <div class="bg-base-200 rounded-sm px-8 py-6 flex gap-8">
-      <img src="/images/profile.png" class="w-16 h-16 rounded-full" />
+      <img
+        [src]="
+          review.imageURL?.startsWith('https')
+            ? review.imageURL
+            : (review.imageURL! | imgUrl : 'avatar')
+        "
+        class="w-16 h-16 rounded-full"
+      />
       <div class="flex-1">
         <div class="flex justify-between mb-4">
           <div>
-            <h4 class="text-xl text-body-5">مصطفى الأحمدي</h4>
+            <h4 class="text-xl text-body-5">{{ review.firstName }}</h4>
             <img class="inline-block me-3" src="/images/star.svg" />
-            <span class="align-sub text-base-content">(4.5)</span>
+            <span class="align-sub text-base-content">{{ review.isLike ? '5' : '3' }}</span>
           </div>
-          <div class="text-lg text-base-content">22/03/2024</div>
+          <div class="text-lg text-base-content">{{ review.date | date : 'shortDate' }}</div>
         </div>
         <p class="text-lg text-base-content mb-2">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non autem, corporis quo
-          corrupti, porro facilis sint modi delectus numquam ex cupiditate, sunt maiores adipisci.
-          Qui praesentium odio voluptatibus iste quidem.
+          {{ review.evaluationComment }}
         </p>
         <button class="text-lg underline text-secondary cursor-pointer">رد</button>
       </div>
     </div>
+    } @empty {
+    <div role="alert" class="alert justify-center alert-info alert-soft">
+      <span>لا توجد تقييمات حتي الان لهذا الكورس</span>
+    </div>
     }
   </div>
+  @if(user && isPaid()){
   <form
     [formGroup]="reviewForm"
     class="bg-base-200 rounded-sm px-8 py-6 flex flex-col items-center"
@@ -88,4 +98,5 @@
       }
     </button>
   </form>
+  }
 </section>

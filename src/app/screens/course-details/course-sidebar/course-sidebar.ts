@@ -32,10 +32,11 @@ export class CourseSidebar {
   cart = inject(CartService).cart;
   discountPrice = input.required<number>();
   originalPrice = input.required<number>();
-  hourCount = input.required();
-  lessonCount = input.required();
-  studentsCount = input.required();
-  instructorBrief = input.required();
+  hourCount = input.required<number>();
+  courseLoading = input.required<boolean>();
+  lessonCount = input.required<number>();
+  studentsCount = input.required<number>();
+  instructorBrief = input();
   coupon = input<Coupon>();
   courseId = input.required<number>();
   courseName = input.required<string>();

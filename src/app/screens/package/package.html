@@ -1,0 +1,109 @@
+@let package = packageSignal();
+<section class="container py-14">
+  <div class="grid grid-cols-4 rounded-sm bg-base-200 py-6 px-8 gap-6 mb-12">
+    <div class="flex flex-col gap-10">
+      @if(package.id){
+      <div class="py-12 px-8.5 flex-1 bg-package-card">
+        <img
+          class="w-full h-full object-cover object-center"
+          src="/images/package-placeholder.svg"
+        />
+      </div>
+      } @else {
+      <div class="skeleton w-full flex-1"></div>
+      }
+      <div class="flex justify-between items-center gap-4">
+        @if(package.id){
+        <div class="flex items-center gap-1">
+          <span
+            class="iconify solar--stopwatch-play-broken text-base-content text-lg lg:text-2xl"
+          ></span>
+          <span class="text-xs lg:text-sm text-base-content">{{ package.courseCount }} كورس</span>
+        </div>
+        <div class="flex items-center gap-1">
+          <span
+            class="iconify solar--user-circle-broken text-lg lg:text-xl text-base-content"
+          ></span>
+          <h5 class="text-xs lg:text-sm text-base-content">
+            {{ (package.firstName ?? package.courses?.[0]?.firstName) + ' ' + (package.familyName ?? package.courses?.[0]?.familyName) }}
+          </h5>
+        </div>
+        } @else {
+        <div class="skeleton flex-1 h-7"></div>
+        <div class="skeleton flex-1 h-7"></div>
+        }
+      </div>
+    </div>
+    <div class="col-span-3 flex flex-col justify-between gap-10">
+      <div>
+        <div class="flex justify-between items-center mb-8">
+          @if(package.id){
+          <h2 class="text-3xl font-bold text-body-5">{{ package.packageName_AR }}</h2>
+          <span
+            class="badge badge-sm lg:badge-lg min-w-16 lg:min-w-25 lg:h-9 rounded-full bg-base-300"
+            >{{ package.departmentName ?? package.courses?.[0]?.departmentName }}</span
+          >
+          } @else {
+          <div class="skeleton w-1/2 h-9"></div>
+          <div class="skeleton w-16 lg:w-25 lg:h-9 rounded-full"></div>
+          }
+        </div>
+        @if(package.id){
+        <p class="text-xl text-base-content">
+          {{ package.packageDescription_AR }}
+        </p>
+        } @else{
+        <div class="skeleton w-full h-5 mb-2"></div>
+        <div class="skeleton w-full h-5 mb-2"></div>
+        <div class="skeleton w-full h-5 mb-2"></div>
+        <div class="skeleton w-1/2 h-5"></div>
+        }
+      </div>
+      <div class="flex justify-end gap-4">
+        @if(package.id){
+        <button
+          class="btn btn-lg text-base bg-base-500 text-primary rounded-xs border-primary border-dashed px-12"
+        >
+          شاهد الفيديو
+        </button>
+        <button
+          class="btn btn-lg text-base rounded-xs btn-primary px-12"
+          (click)="addToCartHandler()"
+        >
+          <span>إشترك الآن</span
+          ><span class="text-secondary">{{
+            (package.discountPrice! || package.originalPrice!) * currency.value | number : '1.0-0'
+          }}</span>
+          <span
+            class="text-secondary"
+            [class]="{ 'font-saudi-riyal': isSaudi, 'text-2xl': isSaudi }"
+            >{{ currency.code }}</span
+          >
+          @if(package.discountPrice! < package.originalPrice!){
+          <span class="text-base-content line-through"
+            >{{ package.originalPrice! * currency.value | number : '1.0-0'
+            }}<span
+              class="text-base-content line-through"
+              [class]="{ 'font-saudi-riyal': isSaudi, 'text-2xl': isSaudi }"
+              >{{ currency.code }}</span
+            ></span
+          >
+          }
+        </button>
+        } @else {
+        <div class="skeleton w-40 h-12.5"></div>
+        <div class="skeleton w-50 h-12.5"></div>
+        }
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 lg:gap-5">
+    @for(course of package.courses;track $index){
+    <app-course-card [course]="course" />
+    } @empty {
+    <div role="alert" class="col-span-4 alert alert-info justify-center alert-soft">
+      <span>لا توجد كورسات حالياً.</span>
+    </div>
+    }
+  </div>
+</section>

@@ -19,5 +19,5 @@ export class CourseCard {
     alias: 'course',
   });
   isSaudi = getUserCountry() == 'SA';
-  isMobile = matchMedia('(width <= 640px)');
+  isMobile = matchMedia('(width <= 640px)').matches;
 }

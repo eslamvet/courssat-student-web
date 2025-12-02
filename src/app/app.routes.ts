@@ -9,6 +9,7 @@ export const routes: Routes = [
   {
     path: 'about-us',
     loadComponent: () => import('./screens/about-us/about-us').then((c) => c.AboutUs),
+    title: 'من نحن',
   },
   {
     path: 'course/:courseId',
@@ -16,11 +17,21 @@ export const routes: Routes = [
       import('./screens/course-details/course-details').then((c) => c.CourseDetails),
   },
   {
+    path: 'category/:categoryId',
+    loadComponent: () => import('./screens/category/category').then((c) => c.Category),
+  },
+  {
+    path: 'package/:packageId',
+    loadComponent: () => import('./screens/package/package').then((c) => c.PackageScreen),
+  },
+  {
     path: 'cart',
     loadComponent: () => import('./screens/cart/cart').then((c) => c.Cart),
+    title: 'سله المشتريات',
   },
   {
     path: 'checkout',
     loadComponent: () => import('./screens/checkout/checkout').then((c) => c.Checkout),
+    title: 'اتمام الدفع',
   },
 ];

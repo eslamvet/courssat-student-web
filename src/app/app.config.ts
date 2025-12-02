@@ -4,12 +4,13 @@ import {
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, TitleStrategy, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { customHttpInterceptorInterceptor } from './interceptors/custom-http-interceptor-interceptor';
 import { appInitializerFn } from '@utils/helpers';
+import { CourssatTitleStrategy } from '@services/courssat-title-strategy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,6 +18,13 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(appInitializerFn),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(withInterceptors([customHttpInterceptorInterceptor])),
-    provideRouter(routes),
+    provideRouter(
+      routes,
+      withInMemoryScrolling({
+        scrollPositionRestoration: 'top',
+        anchorScrolling: 'enabled',
+      })
+    ),
+    { provide: TitleStrategy, useClass: CourssatTitleStrategy },
   ],
 };
