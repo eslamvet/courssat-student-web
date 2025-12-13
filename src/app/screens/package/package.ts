@@ -1,9 +1,10 @@
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, NgOptimizedImage } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CourseCard } from '@components/course-card/course-card';
 import { Course } from '@models/course';
 import { Package } from '@models/package';
+import { ImgUrlPipe } from '@pipes/img-url-pipe';
 import { CartService } from '@services/cart-service';
 import { CurrencyService } from '@services/currency-service';
 import { PackageService } from '@services/package-service';
@@ -14,7 +15,7 @@ import { forkJoin, retry } from 'rxjs';
 
 @Component({
   selector: 'app-package',
-  imports: [CourseCard, DecimalPipe],
+  imports: [CourseCard, DecimalPipe, ImgUrlPipe, NgOptimizedImage],
   templateUrl: './package.html',
   styleUrl: './package.css',
   providers: [PackageService],
@@ -50,8 +51,6 @@ export class PackageScreen implements OnInit {
             (acc: number, c) => acc + (c.originalPrice || c.discountPrice),
             0
           );
-          console.log('package data', packageData.pacakge);
-
           this.packageSignal.set({ ...packageData.pacakge, courses: packageData.courses });
         },
         error: (error) => {
@@ -68,6 +67,8 @@ export class PackageScreen implements OnInit {
   addToCartHandler() {
     this.cartService.addToCart({
       id: this.packageSignal().id!,
+      firstName: this.packageSignal().firstName!,
+      familyName: this.packageSignal().familyName!,
       courseName_AR: this.packageSignal().packageName_AR!,
       coverImageURL: this.packageSignal().imageUrl!,
       originalPrice: this.packageSignal().originalPrice,

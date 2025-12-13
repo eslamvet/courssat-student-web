@@ -128,6 +128,9 @@
   --color-base-400: #94949433;
   --color-base-500: #e2e2e2;
   --color-secondary-5: #f8b1000d;
+  --color-danger: #ff4623;
+  --color-base-600: #9494941a;
+  --color-base-700: #bfbfbf;
 }
 
 @layer utilities {
@@ -146,4 +149,10 @@ html,
 body {
   height: 100%;
   margin: 0;
+  background-color: var(--color-base-100) !important;
+  font-family: 'STC', sans-serif !important;
+  p {
+    color: unset;
+    font-size: unset;
+  }
 }

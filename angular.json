@@ -43,7 +43,14 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.css"],
+            "styles": [
+              {
+                "input": "public/css/fawaterk.css",
+                "bundleName": "fawaterk",
+                "inject": false
+              },
+              "src/styles.css"
+            ],
             "scripts": [
               {
                 "input": "node_modules/@vimeo/player/dist/player.min.js",

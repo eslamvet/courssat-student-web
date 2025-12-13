@@ -98,8 +98,7 @@ export class CourseDetails implements OnInit {
             this.courseService.getCourseFreeLessons(),
           ])
         ),
-        retry(3),
-        delay(10000)
+        retry(3)
       )
       .subscribe({
         next: ([course, customData, customLabels, customPrices, freeLessons]) => {
@@ -377,11 +376,13 @@ export class CourseDetails implements OnInit {
           if (cIndex != -1) {
             cartItems[cIndex].priceBeforeCoupon = cartItems[cIndex].discountPrice;
             cartItems[cIndex].discountPrice = discountPrice;
+            cartItems[cIndex].coupon = coupon;
             this.cartService.setCart({ coupon, items: cartItems });
           }
         }
         this.courseSignal.update((c) => ({
           ...c,
+          coupon,
           priceBeforeCoupon: c.discountPrice,
           discountPrice,
         }));
@@ -399,6 +400,7 @@ export class CourseDetails implements OnInit {
         if (cIndex != -1) {
           cartItems[cIndex].discountPrice = cartItems[cIndex].priceBeforeCoupon;
           cartItems[cIndex].priceBeforeCoupon = 0;
+          cartItems[cIndex].coupon = undefined;
           this.cartService.setCart({ coupon: null, items: cartItems });
         }
       }

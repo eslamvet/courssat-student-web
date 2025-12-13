@@ -1,1 +1,135 @@
-<div class="h-screen bg-red-500"></div>
+@let cart = cartSignal(); @let totalPriceBeforeDiscount = cart.items|sum:'originalPrice'; @let
+totalPriceAfterDiscount = cart.items|sum:'discountPrice';
+<section class="container py-14">
+  @if(cart.items.length){
+
+  <div class="grid grid-cols-3 gap-8">
+    <div class="col-span-2 bg-base-200 rounded-sm p-8">
+      <div class="flex items-center justify-between gap-6 mb-8">
+        <h3 class="text-3xl font-bold text-body-5">الكورسات ({{ cart.items.length }} عناصر)</h3>
+        <button
+          class="btn btn-ghost border-0 hover:bg-transparent shadow-none"
+          (click)="resetCartHandler()"
+        >
+          <span class="iconify ic--outline-delete text-2xl text-danger"></span>
+          حذف كل العناصر
+        </button>
+      </div>
+      @for(cartItem of cart.items;track cartItem.id){
+      <div
+        class="flex bg-white gap-4 border border-dashed border-base-content rounded-sm p-4"
+        [class.mb-4]="!$last"
+      >
+        <img
+          class="rounded-tr-sm rounded-br-sm"
+          [ngSrc]="cartItem.coverImageURL | imgUrl : (cartItem.packageName ? 'package' : 'course')"
+          width="195"
+          height="116"
+          priority
+        />
+        <div class="flex-1 flex flex-col gap-4 justify-between">
+          <h4 class="text-2xl font-bold text-body-5">
+            {{ cartItem.courseName_AR ?? cartItem.packageName }}
+          </h4>
+          <div class="flex gap-8">
+            <div class="flex-1 flex items-center gap-2">
+              <span
+                class="iconify solar--user-circle-broken text-lg lg:text-2xl text-base-700"
+              ></span>
+              <span class="text-xs lg:text-sm text-base-700">{{
+                cartItem.firstName + ' ' + (cartItem.familyName ?? '')
+              }}</span>
+            </div>
+            <div class="flex-1 flex items-center gap-2">
+              <span
+                class="iconify solar--tag-price-broken text-lg lg:text-2xl text-base-content"
+              ></span>
+              <span class="text-xs lg:text-sm text-base-700"
+                >{{
+                  (cartItem.discountPrice || cartItem.originalPrice || 0) * currency.value
+                    | number : '1.0-0'
+                }}<span [class]="{ 'font-saudi-riyal': isSaudi, 'text-lg': isSaudi }">{{
+                  currency.code
+                }}</span></span
+              >
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-circle bg-base-600" (click)="removeCartItemHandler($index)">
+          <span class="iconify ic--outline-delete text-2xl text-danger"></span>
+        </button>
+      </div>
+      }
+    </div>
+    <div class="bg-base-200 rounded-sm p-8">
+      <app-payment-methods
+        [courses]="cart.items"
+        [totalValue]="totalPriceAfterDiscount"
+        [totalOriginalValue]="totalPriceBeforeDiscount"
+      />
+    </div>
+    <div class="col-span-2 bg-base-200 rounded-sm p-8">
+      <h3 class="text-3xl font-bold text-body-5 mb-8">المجموع</h3>
+      <ul class="list-none">
+        <li class="flex items-center gap-4 mb-4">
+          <h5 class="text-xl text-base-content font-normal">المجموع</h5>
+          <div class="border-t border-dashed border-base-content flex-1"></div>
+          <h5 class="text-xl text-base-content font-normal">
+            {{ totalPriceBeforeDiscount * currency.value | number : '1.0-0' }}
+            <span [class]="{ 'font-saudi-riyal': isSaudi, 'text-lg': isSaudi }"
+              >{{ currency.code }}
+            </span>
+          </h5>
+        </li>
+        <li class="flex items-center gap-4 mb-4">
+          <h5 class="text-xl text-base-content font-normal">الخصم</h5>
+          <div class="border-t border-dashed border-base-content flex-1"></div>
+          <h5 class="text-xl text-base-content font-normal">
+            {{
+              (totalPriceBeforeDiscount - totalPriceAfterDiscount) * currency.value
+                | number : '1.0-0'
+            }}
+            <span [class]="{ 'font-saudi-riyal': isSaudi, 'text-lg': isSaudi }"
+              >{{ currency.code }}
+            </span>
+          </h5>
+        </li>
+        <li class="flex items-center gap-4">
+          <h5 class="text-xl text-base-content font-normal">المجموع الكلي</h5>
+          <div class="border-t border-dashed border-base-content flex-1"></div>
+          <h5 class="text-xl text-base-content font-normal">
+            {{ totalPriceAfterDiscount * currency.value | number : '1.0-0' }}
+            <span [class]="{ 'font-saudi-riyal': isSaudi, 'text-lg': isSaudi }"
+              >{{ currency.code }}
+            </span>
+          </h5>
+        </li>
+      </ul>
+    </div>
+  </div>
+  } @else {
+  <div class="card w-full max-w-md bg-base-100 mx-auto">
+    <div class="card-body items-center text-center gap-4">
+      <div class="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-12 w-12 text-primary"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 6m12-6l2 6M9 21h6"
+          />
+        </svg>
+      </div>
+      <h2 class="card-title text-xl font-semibold">عربة التسوق فارغة</h2>
+      <p class="text-base-content/70">يبدو أنك لم تُضف أي شيء إلى سلة التسوق الخاصة بك حتى الآن.</p>
+      <button class="btn mt-4 btn-primary w-full" routerLink="/">ابدأ التسوق</button>
+    </div>
+  </div>
+  }
+</section>

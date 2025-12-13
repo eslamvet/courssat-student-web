@@ -2,4 +2,11 @@ export const environment = {
   baseUrl: 'https://api.courssat.com',
   invalid_course_ids: [29, 51, 48, 47, 155],
   secondServerUrl: 'https://courssatserver-production-1c00.up.railway.app/api',
+  stripeKey:
+    'pk_live_51I9SM8C9d90vVvJ8rvzBrGRq6WQ0owumvMgN1QXY6vWlGhhFDLB0sBsRHEtG4M59Cl45a6sXVZZqpdqmRukIukZC00Sletsgt6',
+  fawateerk_hash_key: '54d52a70ea32657caae2daab899229a9116d5c03b40c17532fd94770630ee2bf',
+  tap_merchant_id: '43092984',
+  tap_public_key: 'pk_live_zRiWHhNgLBKQlqTfv49rpJEk',
+  paypalClientId:
+    'AS05P2hXRIDuRXWGGQ1PYEu-dEf9pDb1BOP9OiPf5S4e9yPMSfY1fwxp7hsjoKIn13f3IZkCroNQr9NX',
 };

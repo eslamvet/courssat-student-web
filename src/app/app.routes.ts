@@ -34,4 +34,9 @@ export const routes: Routes = [
     loadComponent: () => import('./screens/checkout/checkout').then((c) => c.Checkout),
     title: 'اتمام الدفع',
   },
+  {
+    path: 'confirm-order',
+    loadComponent: () =>
+      import('./screens/confirm-order/confirm-order').then((c) => c.ConfirmOrder),
+  },
 ];

@@ -5,9 +5,11 @@ import { environment } from 'src/environments/environment';
   name: 'imgUrl',
 })
 export class ImgUrlPipe implements PipeTransform {
-  transform(src: string, type: 'course' | 'avatar' | 'package' = 'course'): string {
-    return `${environment.baseUrl}/api/FileManage/Image/${
-      type === 'course' ? '1' : type === 'package' ? '2' : '3'
-    }/true/${src}`;
+  transform(src?: string, type: 'course' | 'avatar' | 'package' = 'course'): string {
+    return src
+      ? `${environment.baseUrl}/api/FileManage/Image/${
+          type === 'course' ? '1' : type === 'package' ? '2' : '3'
+        }/true/${src}`
+      : '/images/package-placeholder.svg';
   }
 }

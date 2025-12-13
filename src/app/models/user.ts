@@ -6,8 +6,8 @@ export type User = {
   roleType: number;
   familyName: string;
   firstName: string;
-  country: string;
-  socialProvider: SOCIALPROVIDER;
+  country?: string;
+  socialProvider?: SOCIALPROVIDER;
 };
 
 export type SocialUser = {

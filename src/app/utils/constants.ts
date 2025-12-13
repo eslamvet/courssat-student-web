@@ -1,3 +1,5 @@
+import { environment } from 'src/environments/environment';
+
 export const categories = [
   { id: 20, name: 'التصميم', imageUrl: '/images/design.svg', path: '/category/design' },
   {
@@ -16,3 +18,6 @@ export const categories = [
     path: '/category/translator-language',
   },
 ];
+
+export const FAWATEERK_SCRIPT_URL = 'https://app.fawaterk.com/fawaterkPlugin/fawaterkPlugin.min.js';
+export const TABBY_SCRIPT_URL = 'https://tap-sdks.b-cdn.net/card/1.0.2/index.js';

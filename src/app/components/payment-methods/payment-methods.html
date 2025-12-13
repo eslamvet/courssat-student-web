@@ -1,0 +1,109 @@
+<h3 class="text-3xl font-bold text-body-5 mb-10">طرق الدفع</h3>
+@if(!selectedPaymentMethod()){
+<div class="flex flex-col gap-4">
+  @switch (userCountry) { @case('EG'){
+  <button
+    class="btn btn-dash btn-xl text-body-5 font-normal gap-4 justify-start h-20"
+    [disabled]="isPaying()"
+    (click)="loadTappyPaymentMethodHandler()"
+  >
+    <img class="w-17 h-17" src="/images/Master-card.svg" />
+    <span class="">/</span>
+    <img class="w-17 h-17" src="/images/Mada.svg" />
+  </button>
+  } @case('SA'){
+  <button
+    [disabled]="isPaying()"
+    class="btn btn-dash btn-xl text-body-5 font-normal gap-4 justify-start h-20"
+  >
+    <img class="w-24 h-10" src="/images/Tabby.svg" />
+  </button>
+  } @default {
+  <button
+    [disabled]="isPaying()"
+    class="btn btn-dash btn-xl text-body-5 font-normal gap-4 justify-start h-20"
+  >
+    <img class="w-17 h-17" src="/images/Master-card.svg" />
+    <span class="">/</span>
+    <img class="w-17 h-17" src="/images/Mada.svg" />
+  </button>
+  } }
+  <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+  <!-- <button
+      class="btn btn-dash btn-xl text-body-5 font-normal gap-4 justify-start h-20"
+      (click)="initiateApplePayHandler()"
+    >
+      <img class="w-17 h-17" src="/images/Applepay.svg" />
+      <span class="">/</span>
+      <img class="w-17 h-17" src="/images/Googlepay.svg" />
+    </button> -->
+</div>
+} @else {
+<button
+  class="btn btn-link h-auto mb-4 px-0!"
+  [disabled]="isPaying()"
+  (click)="selectedPaymentMethod.set(null)"
+>
+  <span class="iconify gg--arrow-right text-xl"></span><span>اختر وسيله دفع اخري</span>
+</button>
+@if(loadingPaymentMethod()){ @switch (selectedPaymentMethod()){ @case(PAYMENTMETHOD.STRIPE){
+<div class="flex gap-3 flex-col mb-10">
+  <div class="skeleton h-11"></div>
+  <div class="skeleton h-11"></div>
+  <div class="flex gap-3">
+    <div class="skeleton h-11 flex-1"></div>
+    <div class="skeleton h-11 flex-1"></div>
+  </div>
+  <div class="skeleton h-11"></div>
+</div>
+<div class="skeleton w-full h-12"></div>
+} @case(PAYMENTMETHOD.FAWATEERK){
+<div class="flex flex-wrap gap-2">
+  <div class="skeleton h-11 w-1/3"></div>
+  <div class="skeleton h-11 w-1/3"></div>
+  <div class="skeleton h-11 w-1/3"></div>
+  <div class="skeleton h-11 w-1/3"></div>
+  <div class="skeleton h-11 w-1/3"></div>
+</div>
+} @case (PAYMENTMETHOD.TAP) {
+<div class="skeleton w-full h-12 mb-2"></div>
+<div class="skeleton w-1/2 h-6 mb-10"></div>
+<div class="skeleton w-full h-12 mb-4"></div>
+<div class="skeleton w-full h-12"></div>
+} } }@else { @switch (selectedPaymentMethod()) { @case(PAYMENTMETHOD.STRIPE){
+<ngx-stripe-elements [stripe]="stripe" [elementsOptions]="elementsOptions()">
+  <ngx-stripe-payment [options]="paymentElementOptions" />
+</ngx-stripe-elements>
+<button
+  class="btn btn-primary h-12 mt-10"
+  [disabled]="isPaying()"
+  (click)="confirmStripePaymentHandler()"
+>
+  <span>ادفع الآن</span>
+  @if(isPaying()){
+  <span class="loading loading-spinner"></span>
+  }
+</button>
+} @case(PAYMENTMETHOD.FAWATEERK){
+<div id="fawaterkDivId" appFawaterk></div>
+}@case (PAYMENTMETHOD.TAP) {
+<div #tapContainer id="tap-container"></div>
+<div class="flex flex-col mt-10 gap-4">
+  <button class="btn btn-primary h-12" [disabled]="isPaying()" (click)="confirmTapPaymentHandler()">
+    <span>ادفع الآن</span>
+    @if(isPaying() && !isTappyInstallmentPayment()){
+    <span class="loading loading-spinner"></span>
+    }
+  </button>
+  <button
+    class="btn btn-primary h-12"
+    [disabled]="isPaying()"
+    (click)="confirmTappyPaymentHandler()"
+  >
+    <span>التقسيط بواسطه تابي علي اربع دفعات</span>
+    @if(isPaying() && isTappyInstallmentPayment()){
+    <span class="loading loading-spinner"></span>
+    }
+  </button>
+</div>
+} } } }

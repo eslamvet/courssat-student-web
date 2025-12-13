@@ -10,8 +10,14 @@ import { iif, of, tap } from 'rxjs';
 export class UserService {
   router = inject(Router);
   http = inject(HttpClient);
-  private userSignal = signal<Partial<User> | null>({
+  private userSignal = signal<User | null>({
     id: '18f17fac-5a3f-473b-b00a-a9aacef27426',
+    firstName: 'demo1',
+    familyName: '',
+    email: 'eslamnet@gmail.com',
+    imageURL: 'ebeefc0e-ecff-440a-8fec-255617ce7610_graduated.png',
+    isActive: true,
+    roleType: 0,
   });
   readonly user = this.userSignal.asReadonly();
 

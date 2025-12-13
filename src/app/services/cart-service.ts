@@ -12,7 +12,7 @@ export class CartService {
     coupon: null,
   });
   readonly cart = this.cartSignal.asReadonly();
-  toastService = inject(ToastService);
+  private toastService = inject(ToastService);
 
   constructor() {
     effect(() => {
@@ -54,5 +54,14 @@ export class CartService {
 
   setCart(data: { items: Partial<Course>[]; coupon: Coupon | null }) {
     this.cartSignal.set(data);
+  }
+
+  updateCart(
+    cb: (value: { items: Partial<Course>[]; coupon: Coupon | null }) => {
+      items: Partial<Course>[];
+      coupon: Coupon | null;
+    }
+  ) {
+    this.cartSignal.update(cb);
   }
 }

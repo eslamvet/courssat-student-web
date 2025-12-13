@@ -1,4 +1,4 @@
-import { inject } from '@angular/core';
+import { inject, Renderer2 } from '@angular/core';
 import { Course } from '@models/course';
 import { CoursePurchase } from '@models/CoursePurchase';
 import { User } from '@models/user';
@@ -36,22 +36,21 @@ export const generateOrderBody = (
   user: User,
   totalValue: number,
   totalOriginalValue: number,
-  courses: Course[],
-  cobonId?: number,
-  stringify = false
+  courses: Partial<Course>[],
+  cobonId?: number
 ): CoursePurchase => {
   const paymentDetailVMs = courses.map((c) => ({
     id: 0,
-    courseImg: c.coverImageURL,
+    courseImg: c.coverImageURL!,
     paymentId: 0,
-    courseName: c.courseName_AR,
-    courseId: c.packageId ? null : c.id,
+    courseName: c.courseName_AR!,
+    courseId: c.packageId ? null : c.id!,
     packagesId: c.packageId ?? null,
-    originalValue: c.originalPrice,
+    originalValue: c.originalPrice!,
     totalValue: c.discountPrice!,
-    cobonId,
+    cobonId: c.coupon?.id,
     coupon: c.coupon,
-    instructorId: c.userId,
+    instructorId: c.userId!,
     ...(c?.packageId && {
       courseNames: c.relatedCourses?.map((c) => c.courseName_AR),
       courseIds: c.relatedCourses?.map((c) => c.id),
@@ -66,6 +65,42 @@ export const generateOrderBody = (
     totalOriginalValue,
     totalValue,
     cobonId,
-    paymentDetailVMs: stringify ? JSON.stringify(paymentDetailVMs) : paymentDetailVMs,
+    paymentDetailVMs,
   };
+};
+
+export const loadScriptWithRetries = (
+  src: string,
+  renderer: Renderer2,
+  callback: (arg: Error | null) => void,
+  parentElement = document.body,
+  maxRetries = 2
+) => {
+  let attempts = 0;
+  let timeOut: any;
+  const tryLoadScript = () => {
+    attempts++;
+    const existingScript = document.querySelector(`script[src="${src}"]`);
+    if (existingScript) {
+      renderer.removeChild(parentElement, existingScript);
+    }
+    const script = renderer.createElement('script');
+    renderer.setAttribute(script, 'src', src);
+    renderer.listen(script, 'load', () => {
+      console.log(`Script loaded successfully: ${src}`);
+      timeOut && clearTimeout(timeOut);
+      if (callback) callback(null);
+    });
+    renderer.listen(script, 'error', () => {
+      console.error(`Failed to load script: ${src} (Attempt ${attempts}/${maxRetries})`);
+      timeOut && clearTimeout(timeOut);
+      if (attempts < maxRetries) {
+        timeOut = setTimeout(tryLoadScript, 3000);
+      } else {
+        if (callback) callback(new Error(`Failed to load script after ${maxRetries} attempts`));
+      }
+    });
+    renderer.appendChild(parentElement, script);
+  };
+  tryLoadScript.call(this);
 };
