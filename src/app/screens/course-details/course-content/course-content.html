@@ -28,7 +28,10 @@
       <ul class="list">
         @for(lesson of topic.lessonList; track lesson.id) {
         <li class="ps-4">
-          <a class="list-row after:hidden px-0 cursor-pointer group">
+          <a
+            class="list-row after:hidden px-0 group"
+            [class]="{ 'cursor-pointer': lesson.public || hasAccess }"
+          >
             <div
               class="w-6 h-6 rounded-full flex items-center justify-center"
               [class]="{
@@ -41,8 +44,11 @@
               }
             </div>
             <div
-              class="text-xl group-hover:text-secondary text-base-content"
-              [class]="{ 'text-secondary': lesson.isActive }"
+              class="text-xl text-base-content"
+              [class]="{
+                'text-secondary': lesson.isActive,
+                'group-hover:text-secondary': hasAccess
+              }"
               (click)="(lesson.public || hasAccess) && setActiveLesson.emit(lesson.id)"
             >
               {{ lesson.name_AR }}

@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { authGuard } from '@guards/auth-guard';
+import { unAuthGuard } from '@guards/un-auth-guard';
 
 export const routes: Routes = [
   {
@@ -28,6 +30,7 @@ export const routes: Routes = [
     path: 'cart',
     loadComponent: () => import('./screens/cart/cart').then((c) => c.Cart),
     title: 'سله المشتريات',
+    canMatch: [authGuard],
   },
   {
     path: 'checkout',
@@ -38,5 +41,15 @@ export const routes: Routes = [
     path: 'confirm-order',
     loadComponent: () =>
       import('./screens/confirm-order/confirm-order').then((c) => c.ConfirmOrder),
+  },
+  {
+    path: 'auth',
+    loadChildren: () => import('./screens/auth/routes'),
+    canMatch: [unAuthGuard],
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./screens/profile/routes'),
+    canMatch: [authGuard],
   },
 ];

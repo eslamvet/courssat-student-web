@@ -11,7 +11,7 @@ export const appInitializerFn = () => {
   const currencyService = inject(CurrencyService);
   const userCountry = getUserCountry();
   return forkJoin([
-    userService.getUserProfile(JSON.parse(localStorage.getItem('courssat-user') ?? 'null')?.id),
+    userService.getUserProfile(localStorage.getItem('courssat-user-id')),
     currencyService.getCurrencyApi(userCountry),
   ]).pipe(
     map(([user, currency]) => {
@@ -73,6 +73,7 @@ export const loadScriptWithRetries = (
   src: string,
   renderer: Renderer2,
   callback: (arg: Error | null) => void,
+  isDefered = false,
   parentElement = document.body,
   maxRetries = 2
 ) => {
@@ -86,6 +87,7 @@ export const loadScriptWithRetries = (
     }
     const script = renderer.createElement('script');
     renderer.setAttribute(script, 'src', src);
+    isDefered && renderer.setAttribute(script, 'defer', 'true');
     renderer.listen(script, 'load', () => {
       console.log(`Script loaded successfully: ${src}`);
       timeOut && clearTimeout(timeOut);

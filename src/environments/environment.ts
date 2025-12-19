@@ -9,4 +9,5 @@ export const environment = {
   tap_public_key: 'pk_live_zRiWHhNgLBKQlqTfv49rpJEk',
   paypalClientId:
     'AS05P2hXRIDuRXWGGQ1PYEu-dEf9pDb1BOP9OiPf5S4e9yPMSfY1fwxp7hsjoKIn13f3IZkCroNQr9NX',
+  googleClientId: '41968460466-s0d46kr82hp9m7kglfhdvhaol1jc8knn.apps.googleusercontent.com',
 };

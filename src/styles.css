@@ -2,7 +2,7 @@
 @import 'tailwindcss';
 @plugin "daisyui";
 @plugin "@iconify/tailwind4" {
-  prefixes: solar, ic, gg, fluent, hugeicons, si, lets-icons;
+  prefixes: solar, ic, gg, fluent, hugeicons, si, lets-icons, devicon;
 }
 
 @plugin "daisyui/theme" {
@@ -56,7 +56,7 @@
   --color-accent: oklch(77% 0.152 181.912);
   --color-accent-content: oklch(38% 0.063 188.416);
   --color-neutral: #393936;
-  --color-neutral-content: #fff;
+  --color-neutral-content: #949494;
 }
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
@@ -104,11 +104,15 @@
 :root {
   --body-1: #696969;
   --body-5: #000;
+  --custom-background-1: #f2f6f9;
+  --color-base-600: #9494941a;
 }
 
 [data-theme='dark'] {
   --body-1: #d3d3d3;
   --body-5: #fff;
+  --custom-background-1: #333;
+  --color-base-600: #454545;
 }
 
 @theme inline {
@@ -129,8 +133,10 @@
   --color-base-500: #e2e2e2;
   --color-secondary-5: #f8b1000d;
   --color-danger: #ff4623;
-  --color-base-600: #9494941a;
+  --color-base-600: var(--color-base-600);
   --color-base-700: #bfbfbf;
+  --color-custom-background-1: var(--custom-background-1);
+  --color-background-google: #e33629;
 }
 
 @layer utilities {
@@ -149,10 +155,5 @@ html,
 body {
   height: 100%;
   margin: 0;
-  background-color: var(--color-base-100) !important;
-  font-family: 'STC', sans-serif !important;
-  p {
-    color: unset;
-    font-size: unset;
-  }
+  font-family: 'STC', sans-serif;
 }

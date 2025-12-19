@@ -1,0 +1,64 @@
+<section class="basis-1/2 flex flex-col gap-6 bg-custom-background-1 py-16 px-23">
+  <img
+    class="self-center w-29 h-3.5 lg:w-auto lg:h-auto"
+    src="/images/logo-{{ currentTheme() }}.svg"
+  />
+  <div id="googleBtn"></div>
+  <div class="border-t border-dashed border-t-base-content"></div>
+  <form class="flex flex-col gap-6" [formGroup]="loginForm" (ngSubmit)="loginUserHandler()">
+    <div>
+      <label class="text-body-5 block mb-2" for="user-email">البريد الالكتروني</label>
+      <div class="w-full input input-lg validator bg-base-600">
+        <input formControlName="email" class="text-right" id="user-email" type="email" required />
+        <span class="iconify ic--outline-email text-2xl text-base-content"></span>
+      </div>
+      <div class="validator-hint hidden">
+        {{ emailControl?.errors?.['required'] ? 'الايميل مطلوب' : 'الايميل غير صحيح' }}
+      </div>
+    </div>
+    <div>
+      <label class="text-body-5 block mb-2" for="user-password">كلمة المرور</label>
+      <div class="w-full input input-lg validator bg-base-600">
+        <input
+          formControlName="password"
+          class="text-right"
+          id="user-password"
+          type="password"
+          required
+        />
+        <span class="iconify ic--lock-outline text-2xl text-base-content"></span>
+      </div>
+      <div class="validator-hint hidden">كلمه المرور مطلوبه</div>
+    </div>
+    <div class="flex justify-between mb-4">
+      <label class="label gap-2 text-sm">
+        <input
+          type="checkbox"
+          checked="checked"
+          class="checkbox rounded-sm bg-base-600 checked:bg-base-600 checked:shadow-none"
+        />
+        تذكرني
+      </label>
+      <a routerLink="/auth/forget-password" class="btn btn-link text-neutral-content no-underline"
+        >هل نسيت كلمة المرور؟</a
+      >
+    </div>
+    <div class="flex gap-6">
+      <button type="submit" class="w-1/2 btn btn-primary" [disabled]="loginMethod()">
+        <span>تسجيل الدخول</span>@if(loginMethod() === 'normal'){<span
+          class="loading loading-spinner"
+        ></span
+        >}
+      </button>
+      <p class="text-sm text-neutral-content">
+        ليس لديك حساب؟
+        <a
+          routerLink="/auth/signup"
+          [queryParams]="routeQueryParams"
+          class="btn btn-link px-0 text-primary dark:text-base-content"
+          >تسجيل جديد</a
+        >
+      </p>
+    </div>
+  </form>
+</section>

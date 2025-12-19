@@ -15,7 +15,7 @@
     }
   </div>
   <div
-    class="absolute overflow-hidden top-0 left-0 h-full w-full flex flex-col gap-8 lg:gap-14 items-center pt-10 lg:pt-20 z-1"
+    class="absolute top-0 left-0 h-full w-full"
     style="
       background: linear-gradient(
         255.26deg,
@@ -30,6 +30,10 @@
         class="bg-[url(/images/dots-overlay.svg)] absolute w-full h-full bg-no-repeat bg-cover"
       ></div>
     </div>
+  </div>
+  <div
+    class="container absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center justify-between gap-8 pt-10 lg:pt-20 w-full h-full z-1"
+  >
     <div class="w-76 lg:w-[558px] text-center">
       <h1
         class="text-2xl lg:text-[40px]/14 font-bold mb-3 lg:mb-8 text-body-5 bg-[url(/images/hero-section-content-bg-light.svg)] dark:bg-[url(/images/hero-section-content-bg-dark.svg)] bg-no-repeat bg-bottom"
@@ -58,26 +62,101 @@
       </div>
     </div>
     <div
-      class="z-2 w-[calc(100%-54px)] lg:w-1/2 flex rounded-sm py-1 pl-1 lg:p-4 bg-neutral"
-      style="box-shadow: 0px 4px 59px 0px #00000040"
+      class="dropdown w-[calc(100%-54px)] lg:w-1/2 flex flex-wrap rounded-sm py-1 pl-1 lg:p-4 bg-neutral shadow-[0px_4px_59px_0px_#00000040]"
     >
       <input
         class="input text-body-3 bg-transparent flex-1 rounded-none border-0 outline-0 shadow-none focus:outline-0 focus:shadow-none"
+        [formControl]="searchInput"
         placeholder="بحث عن الكورسات ..."
+        (focus)="isInputFocused.set(true)"
+        (blur)="isInputFocused.set(false)"
       />
-      <button class="btn btn-primary lg:basis-1/5 rounded-sm lg:rounded-none shadow-none">
+      <div
+        tabindex="0"
+        role="button"
+        class="btn btn-primary lg:basis-1/5 rounded-sm lg:rounded-none shadow-none"
+        (click)="filterCoursesHandler()"
+      >
         ابحث هنا
-      </button>
+      </div>
+      @if(filteredCourses().length && !isInputFocused()){
+      <ul
+        tabindex="-1"
+        class="dropdown-content top-12 lg:top-17 w-full menu bg-base-100 shadow rounded-sm overflow-x-hidden flex-nowrap overflow-y-auto h-100 right-0"
+        (scroll)="loadMoreCourses($event)"
+      >
+        @for(course of filteredCourses();track $index){
+        <li [class]="{ 'mb-2': !$last, 'lg:mb-4': !$last }">
+          @if(course){
+          <a class="p-0 flex gap-2 lg:gap-4" [routerLink]="['/course', course.id]">
+            <div class="relative w-20 h-15 lg:w-30 lg:h-20">
+              <img
+                class="rounded-tr-sm rounded-br-sm"
+                [ngSrc]="course.coverImageURL | imgUrl"
+                priority
+                fill
+              />
+            </div>
+            <div class="flex-1">
+              <h4 class="text-sm lg:text-lg font-semibold">{{ course.courseName_AR }}</h4>
+              <div class="flex gap-4 lg:gap-6">
+                <div class="flex-1 flex items-center gap-2">
+                  <span
+                    class="iconify solar--user-circle-broken text-lg lg:text-2xl text-base-700"
+                  ></span>
+                  <span class="text-xs lg:text-sm">{{
+                    course.firstName + ' ' + course.familyName
+                  }}</span>
+                </div>
+                <div class="flex-1 flex items-center gap-2">
+                  <span
+                    class="iconify solar--tag-price-broken text-lg lg:text-2xl text-base-content"
+                  ></span>
+                  <span class="text-xs lg:text-sm"
+                    >{{
+                      (course.discountPrice || course.originalPrice || 0) * currency.value
+                        | number : '1.0-0'
+                    }}<span [class]="{ 'font-saudi-riyal': isSaudi, 'text-lg': isSaudi }">{{
+                      currency.code
+                    }}</span></span
+                  >
+                </div>
+              </div>
+            </div>
+          </a>
+          } @else {
+          <div class="flex gap-4">
+            <div class="skeleton w-30 h-25"></div>
+            <div class="flex-1">
+              <div class="skeleton w-full h-8 mb-4"></div>
+              <div class="flex gap-8">
+                <div class="skeleton h-6 flex-1"></div>
+                <div class="skeleton h-6 flex-1"></div>
+              </div>
+            </div>
+          </div>
+          }
+        </li>
+        }
+      </ul>
+      } @if(!isInputFocused() && !filteredCourses().length) {
+      <div
+        tabindex="-1"
+        class="dropdown-content top-17 w-full menu bg-base-100 shadow rounded-sm right-0"
+      >
+        <div class="alert alert-info alert-soft">لا توجد كورسات</div>
+      </div>
+      }
     </div>
-  </div>
-  <div
-    class="container z-2 absolute left-1/2 -translate-x-1/2 -bottom-22.5 lg:-bottom-8 bg-neutral border border-dashed border-base-content shadow pb-5 pt-2 lg:py-2 px-5.5 flex justify-center flex-wrap gap-x-6.5 lg:gap-x-10 xl:gap-x-12 2xl:lg:gap-x-16"
-  >
-    <img class="w-14 lg:w-auto" src="/images/Master-card.svg" />
-    <img class="w-14 lg:w-auto" src="/images/Mada.svg" />
-    <img class="w-14 lg:w-auto" src="/images/Paypal.svg" />
-    <img class="w-14 lg:w-auto" src="/images/Applepay.svg" />
-    <img class="w-14 lg:w-auto" src="/images/Googlepay.svg" />
-    <img class="w-14 lg:w-auto" src="/images/Tabby.svg" />
+    <div
+      class="mt-5 lg:mt-0 lg:-mb-11 w-full bg-neutral border border-dashed border-base-content shadow pb-5 pt-2 lg:py-2 px-5.5 flex justify-center flex-wrap gap-x-6.5 lg:gap-x-10 xl:gap-x-12 2xl:lg:gap-x-16"
+    >
+      <img class="w-14 lg:w-auto" src="/images/Master-card.svg" />
+      <img class="w-14 lg:w-auto" src="/images/Mada.svg" />
+      <img class="w-14 lg:w-auto" src="/images/Paypal.svg" />
+      <img class="w-14 lg:w-auto" src="/images/Applepay.svg" />
+      <img class="w-14 lg:w-auto" src="/images/Googlepay.svg" />
+      <img class="w-14 lg:w-auto" src="/images/Tabby.svg" />
+    </div>
   </div>
 </section>

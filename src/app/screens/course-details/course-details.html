@@ -8,34 +8,18 @@
         [activeLesson]="course.topics | activeLesson"
         (nextVideo)="loadNextVideoHandler($event)"
       />
-      @if(!loading){
-      <app-course-tabs [(activeTap)]="activeTap" />
-      } @else {
-      <div class="skeleton w-full h-17.5 mb-8"></div>
-      }
-      <ng-container>
-        @switch (activeTap()) { @case ('overview'){
-        <app-course-overview
-          [courseLoading]="loading"
-          [description]="course.courseDescription_AR"
-          [courseDataVMS]="course.courseDataVMs!"
-        />
-        } @case ('content'){
-        <app-course-content
-          [topics]="course.topics"
-          [isPaid]="!!course.isPaied"
-          [instructorId]="course.userId!"
-          (setActiveLesson)="setActiveLessonHandle($event)"
-        />
-        } @case ('reviews'){
-        <app-course-reviews
-          [courseReviewsRes]="courseReviewsRes()"
-          [isPaid]="course.isPaied"
-          [courseId]="course.id"
-          (loadReviews)="getCourseReviews($event)"
-        />
-        } @default { }}
-      </ng-container>
+      <app-course-tabs
+        [(activeTap)]="activeTap"
+        (setActiveLesson)="setActiveLessonHandle($event)"
+        [courseInstructorId]="course.userId"
+        [courseLoading]="loading"
+        [courseCustomReviews]="course.reviews"
+        [courseTopics]="course.topics"
+        [courseDescription]="course.courseDescription_AR"
+        [courseDataVMs]="course.courseDataVMs"
+        [isPaid]="course.isPaied"
+        [courseId]="course.id"
+      />
     </div>
     <div>
       <app-course-sidebar
@@ -64,3 +48,20 @@
   </div>
   <app-course-related-courses [courseLoading]="loading" [courses]="relatedCourses()" />
 </div>
+@if(!course.isPaied){
+<dialog id="courssat_checkout_modal" class="modal">
+  <div class="modal-box max-w-3xl max-h-9/10">
+    <app-payment-methods
+      [courses]="courseArr()"
+      [totalValue]="course.discountPrice"
+      [totalOriginalValue]="course.originalPrice || course.discountPrice"
+      customPaymentBtnClass="w-full"
+    />
+    <div class="modal-action justify-stretch sticky bottom-0">
+      <form method="dialog" class="flex-1">
+        <button class="btn btn-lg btn-ghost w-full">الغاء</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+}

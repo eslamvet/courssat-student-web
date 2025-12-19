@@ -8,9 +8,14 @@ import { environment } from 'src/environments/environment';
 export const customHttpInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
   const toastService = inject(ToastService);
   const router = inject(Router);
+  const url = req.url.startsWith('/api') ? environment.baseUrl + req.url : req.url;
   const modifiedReq = req.clone({
-    url: req.url.startsWith('/api') ? environment.baseUrl + req.url : req.url,
-    setHeaders: {},
+    url,
+    setHeaders: {
+      ...(url.includes(environment.baseUrl) && {
+        Authorization: `bearer ${localStorage.getItem('courssat-user-token') || ''}`,
+      }),
+    },
   });
   return next(modifiedReq).pipe(
     catchError((error: HttpErrorResponse) => {

@@ -2,21 +2,10 @@
   -ms-touch-action: manipulation;
   touch-action: manipulation;
 }
-ul {
-  list-style: none;
-}
 button,
 input[type='submit'] {
   cursor: pointer;
   text-align: start;
-}
-a,
-button {
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
-}
-button {
-  background-color: transparent;
 }
 .owl-carousel .owl-stage,
 .owl-carousel.owl-drag .owl-item {

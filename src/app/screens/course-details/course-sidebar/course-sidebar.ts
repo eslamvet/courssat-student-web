@@ -127,20 +127,8 @@ export class CourseSidebar {
       return;
     }
     if (this.user())
-      this.router.navigate(['Checkout'], {
-        state: {
-          purchasedCourse: {
-            discountPrice: this.discountPrice(),
-            courseName_AR: this.courseName(),
-            coverImageURL: this.courseImg(),
-            coupon: this.coupon(),
-            originalPrice: this.originalPrice(),
-            id: this.courseId(),
-            packageId: null,
-          },
-        },
-      });
-    else this.router.navigate(['auth', 'login'], { queryParams: { courseId: this.courseId } });
+      (document.getElementById('courssat_checkout_modal') as HTMLDialogElement)?.showModal();
+    else this.router.navigate(['auth', 'login'], { queryParams: { redirectURL: this.router.url } });
   }
 
   payAsYouWantHandler() {

@@ -46,6 +46,7 @@
     "@angular/build": "^20.3.5",
     "@angular/cli": "^20.3.5",
     "@angular/compiler-cli": "^20.3.0",
+    "@iconify-json/devicon": "^1.2.52",
     "@iconify-json/fluent": "^1.2.34",
     "@iconify-json/gg": "^1.2.2",
     "@iconify-json/hugeicons": "^1.2.17",

@@ -1,16 +1,13 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
-import { CourseOverview } from './course-overview/course-overview';
-import { CourseReviews } from './course-reviews/course-reviews';
-import { CourseContent } from './course-content/course-content';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { CourseSidebar } from './course-sidebar/course-sidebar';
 import { CourseRelatedCourses } from './course-related-courses/course-related-courses';
 import { CourseVideo } from './course-video/course-video';
 import { CourseTabs } from './course-tabs/course-tabs';
-import { Course, CourseAttachment, CourseLesson, CourseReview } from '@models/course';
+import { Course, CourseAttachment, CourseLesson } from '@models/course';
 import { CourseService } from '@services/course-service';
 import { UserService } from '@services/user-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { delay, finalize, forkJoin, retry, switchMap, tap } from 'rxjs';
+import { finalize, forkJoin, pairwise, retry, switchMap, tap } from 'rxjs';
 import { CurrencyService } from '@services/currency-service';
 import { getUserCountry } from '@utils/helpers';
 import { ActiveLessonPipe } from '@pipes/active-lesson-pipe';
@@ -20,19 +17,18 @@ import { OrderService } from '@services/order-service';
 import { User } from '@models/user';
 import { LoaderService } from '@services/loader-service';
 import { ToastService } from '@services/toast-service';
-import { ListApi, MakeOptional } from '@models/Api';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { PaymentMethods } from '@components/payment-methods/payment-methods';
 
 @Component({
   selector: 'app-course-details',
   imports: [
-    CourseOverview,
-    CourseReviews,
-    CourseContent,
     CourseSidebar,
     CourseRelatedCourses,
     CourseVideo,
     CourseTabs,
     ActiveLessonPipe,
+    PaymentMethods,
   ],
   templateUrl: './course-details.html',
   styleUrl: './course-details.css',
@@ -50,14 +46,8 @@ export class CourseDetails implements OnInit {
   route = inject(ActivatedRoute);
   courseLoading = signal(true);
   courseSignal = signal<Course>({} as Course);
+  courseArr = computed(() => [this.courseSignal()]);
   relatedCourses = signal<Course[]>(Array(4));
-  courseReviewsRes = signal<
-    MakeOptional<ListApi<Partial<CourseReview>>, 'pagination'> & { custom?: boolean }
-  >({
-    list: Array.from({ length: 10 }, (_, index) => ({
-      id: index,
-    })),
-  });
   activeTap = signal<'overview' | 'content' | 'reviews'>('overview');
 
   constructor() {
@@ -68,6 +58,11 @@ export class CourseDetails implements OnInit {
         localStorage.setItem('watched-courses', JSON.stringify(watchedCourses));
       }
     });
+    toObservable(this.userService.user)
+      .pipe(pairwise(), takeUntilDestroyed())
+      .subscribe(([prevState, nextState]) => {
+        if (!nextState) this.courseSignal.update((c) => ({ ...c, isPaied: false }));
+      });
   }
 
   ngOnInit(): void {
@@ -80,18 +75,13 @@ export class CourseDetails implements OnInit {
               this.relatedCourses.set(Array(4));
               this.courseLoading.set(true);
               this.activeTap.set('overview');
-              this.courseReviewsRes.set({
-                list: Array.from({ length: 10 }, (_, index) => ({
-                  id: index,
-                })),
-              });
             }
             firstRender = false;
           },
         }),
         switchMap(({ courseId }) =>
           forkJoin([
-            this.courseService.getCourseDetails(courseId, this.userService.getUser()?.id),
+            this.courseService.getCourseDetails(courseId, this.userService.user()?.id),
             this.courseService.getCustomCourseData(),
             this.courseService.getCustomCourseLabels(),
             this.courseService.getCustomCoursePrices(),
@@ -133,8 +123,8 @@ export class CourseDetails implements OnInit {
               let freeLessons: CourseLesson[] = [];
               let isRegularStudent = !(
                 course.isPaied ||
-                this.userService.getUser()?.roleType == 1 ||
-                course.userId == this.userService.getUser()?.id
+                this.userService.user()?.roleType == 1 ||
+                course.userId == this.userService.user()?.id
               );
               customCourse.sections_with_free_lessons.forEach((section) => {
                 section.free_lessons_indexes.forEach((lessonIndex) => {
@@ -149,8 +139,6 @@ export class CourseDetails implements OnInit {
                   topicName_AR: 'الدروس المجانية',
                   lessonList: freeLessons,
                 });
-              customCourse.reviews &&
-                this.courseReviewsRes.set({ list: customCourse.reviews, custom: true });
             }
             course.topics.unshift({
               id: 0,
@@ -330,7 +318,7 @@ export class CourseDetails implements OnInit {
         this.loaderService.toggleLoader(true);
         this.orderService
           .createOrder(
-            this.userService.getUser() as User,
+            this.userService.user() as User,
             0,
             this.courseSignal().originalPrice,
             [{ ...this.courseSignal(), coupon, discountPrice: 0 }],
@@ -424,37 +412,5 @@ export class CourseDetails implements OnInit {
       discountPrice,
       priceBeforeCoupon: c.discountPrice,
     }));
-  }
-
-  getCourseReviews(data: CourseReview | void) {
-    if (data) {
-      this.courseReviewsRes.update((r) => ({ ...r, list: [data, ...r.list] }));
-      return;
-    }
-    this.courseReviewsRes().pagination &&
-      this.courseReviewsRes.update((r) => ({
-        ...r,
-        list: [
-          ...r.list,
-          ...Array.from({ length: 10 }, (_, index) => ({
-            id: index,
-          })),
-        ],
-      }));
-    this.courseService
-      .getCourseReviews(this.courseSignal().id, this.courseReviewsRes().list.length)
-      .subscribe({
-        next: (data) => {
-          this.courseReviewsRes.set({ ...data, custom: false });
-        },
-        error: (error) => {
-          this.toastService.addToast({
-            id: Date.now(),
-            type: 'error',
-            title: 'حدث خطا ما',
-            message: error.message,
-          });
-        },
-      });
   }
 }

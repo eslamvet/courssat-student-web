@@ -27,7 +27,7 @@
         @if(user()){
         <li>
           <a
-            routerLink="/profile/my-courses"
+            routerLink="/profile/courses"
             routerLinkActive="active"
             class="[&.active]:text-secondary [&.active]:font-bold hover:text-secondary hover:bg-transparent"
             >كورساتي</a
@@ -62,7 +62,7 @@
           <li>
             <a routerLink="/profile">الملف الشخصي</a>
           </li>
-          <li><a routerLink="/profile/course-favourites">المفضلة</a></li>
+          <li><a routerLink="/profile/fav-courses">المفضلة</a></li>
           <li><a (click)="logoutHandler()">تسجيل الخروج</a></li>
         </ul>
       </div>

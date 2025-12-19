@@ -4,8 +4,8 @@ export type ListApi<T> = {
     total_pages: number;
     current_page: number;
     total_items: number;
-    total_count: number;
-    pages: number[];
+    total_count?: number;
+    pages?: number[];
   };
 };
 

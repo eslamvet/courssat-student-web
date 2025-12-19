@@ -21,3 +21,4 @@ export const categories = [
 
 export const FAWATEERK_SCRIPT_URL = 'https://app.fawaterk.com/fawaterkPlugin/fawaterkPlugin.min.js';
 export const TABBY_SCRIPT_URL = 'https://tap-sdks.b-cdn.net/card/1.0.2/index.js';
+export const GOOGLE_SIGNIN_SCRIPT_URL = 'https://accounts.google.com/gsi/client';

@@ -44,6 +44,7 @@ export class PaymentMethods implements OnChanges {
   totalOriginalValue = input.required<number>();
   courses = input.required<Partial<Course>[]>();
   couponId = input<number>();
+  customPaymentBtnClass = input<string>();
   fromCart = input<boolean>();
   stripe = injectStripe(environment.stripeKey);
   orderService = inject(OrderService);
@@ -173,6 +174,28 @@ export class PaymentMethods implements OnChanges {
       this.tapContainerElement() && this.initiateTapPaymentHandler();
     });
     window.addEventListener('message', this.onMessageHandler.bind(this));
+
+    // setTimeout(() => {
+    //   const paymentRequest = this.stripe.paymentRequest({
+    //     country: 'GB',
+    //     currency: 'usd',
+    //     total: {
+    //       label: 'Demo Product',
+    //       amount: 1000, // $50
+    //     },
+    //     requestPayerName: true,
+    //     requestPayerEmail: true,
+    //   });
+
+    //   // Check Apple Pay / Google Pay availability
+    //   paymentRequest.canMakePayment().then((result) => {
+    //     if (result) {
+    //       console.log('Apple Pay or Google Pay is available:', result);
+    //     } else {
+    //       console.warn('Apple Pay or Google Pay not available');
+    //     }
+    //   });
+    // }, 5000);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -385,7 +408,7 @@ export class PaymentMethods implements OnChanges {
                 paymentDetailVMs: JSON.stringify(orderData.paymentDetailVMs),
                 fromCart: this.fromCart(),
                 type: PRODUCTTYPE.COURSE,
-                user_token: localStorage.getItem('coursat-user-token'),
+                user_token: localStorage.getItem('courssat-user-token'),
               },
               post: {
                 url: `${environment.secondServerUrl}/courssat-event/tap/charge-webhook`,
@@ -443,7 +466,7 @@ export class PaymentMethods implements OnChanges {
           fromCart: this.fromCart(),
           type: PRODUCTTYPE.COURSE,
           paymentDetailVMs: JSON.stringify(orderData.paymentDetailVMs),
-          user_token: localStorage.getItem('coursat-user-token'),
+          user_token: localStorage.getItem('courssat-user-token'),
         },
         post: {
           url: `${environment.secondServerUrl}/courssat-event/tap/charge-webhook`,
@@ -518,6 +541,31 @@ export class PaymentMethods implements OnChanges {
             title: 'تم الشراء بنجاح',
           });
           this.router.navigate(['profile', 'my-courses']);
+        },
+        error: (error) => {
+          this.toastService.addToast({
+            id: Date.now(),
+            type: 'error',
+            title: 'حدث خطا ما',
+            message: error.message,
+          });
+        },
+      });
+  }
+
+  initiateStripeApplePayHandler() {
+    if (this.isPaying()) return;
+    this.selectedPaymentMethod.set(PAYMENTMETHOD.STRIPE);
+    this.loadingPaymentMethod.set(true);
+    this.orderService
+      .createStripePaymentIntent({
+        amount: this.totalValue() * 100,
+        currency: 'usd',
+      })
+      .subscribe({
+        next: ({ clientSecret }) => {
+          this.elementsOptions.update((options) => ({ ...options, clientSecret, mode: undefined }));
+          this.loadingPaymentMethod.set(false);
         },
         error: (error) => {
           this.toastService.addToast({

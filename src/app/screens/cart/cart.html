@@ -69,6 +69,29 @@ totalPriceAfterDiscount = cart.items|sum:'discountPrice';
       />
     </div>
     <div class="col-span-2 bg-base-200 rounded-sm p-8">
+      <div class="py-1 px-4 flex gap-7 bg-neutral mb-6">
+        <label class="input bg-transparent border-none shadow-none outline-none flex-1">
+          <span class="iconify hugeicons--coupon-01 text-2xl text-base-content"></span>
+          <input
+            type="text"
+            [formControl]="couponCode"
+            placeholder="أدخل رمز الكوبون"
+            [readOnly]="!!cart.coupon"
+            class="text-base-content placeholder:text-base-content placeholder:opacity-50"
+          />
+        </label>
+        <div class="border-r border-dashed border-base-content"></div>
+        <button
+          class="btn btn-link text-secondary px-0 no-underline"
+          (click)="applyCouponHandler()"
+          [disabled]="!couponCode.value || couponLoading()"
+        >
+          <span>{{ cart.coupon ? 'الغاء' : 'تفعيل' }}</span>
+          @if(couponLoading()){
+          <span class="loading loading-ring text-secondary"></span>
+          }
+        </button>
+      </div>
       <h3 class="text-3xl font-bold text-body-5 mb-8">المجموع</h3>
       <ul class="list-none">
         <li class="flex items-center gap-4 mb-4">
