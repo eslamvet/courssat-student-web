@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { Auth } from './auth';
+import { resetPasswordGuard } from '@guards/reset-password-guard';
 
 const routes: Routes = [
   {
@@ -23,6 +24,11 @@ const routes: Routes = [
         path: 'forget-password',
         loadComponent: () =>
           import('./forget-password/forget-password').then((c) => c.ForgetPassword),
+      },
+      {
+        path: 'reset-password',
+        loadComponent: () => import('./reset-password/reset-password').then((c) => c.ResetPassword),
+        canMatch: [resetPasswordGuard],
       },
     ],
   },

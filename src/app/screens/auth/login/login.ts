@@ -4,7 +4,6 @@ import { RouterLink } from '@angular/router';
 import { AuthenticationService } from '@services/authentication-service';
 import { SocialAuth } from '../social-auth/social-auth';
 import { finalize } from 'rxjs';
-declare const google: any;
 
 type LoginForm = {
   email: FormControl<string>;
@@ -17,7 +16,7 @@ type LoginForm = {
   templateUrl: './login.html',
   styleUrl: './login.css',
   host: {
-    class: 'basis-1/2',
+    class: 'basis-full lg:basis-1/2',
   },
   providers: [AuthenticationService],
 })

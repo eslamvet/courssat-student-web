@@ -1,42 +1,42 @@
-<h3 class="text-3xl font-bold text-body-5 mb-10">طرق الدفع</h3>
+<h3 class="text-lg lg:text-3xl font-bold text-body-5 mb-5 lg:mb-10">طرق الدفع</h3>
 @if(!selectedPaymentMethod()){
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-3 lg:gap-4">
   @switch (userCountry) { @case('EG'){
   <button
-    class="btn btn-dash btn-xl text-body-5 font-normal gap-4 justify-start h-20"
+    class="btn btn-dash btn-xl text-body-5 font-normal gap-4 justify-start h-15 lg:h-20"
     [disabled]="isPaying()"
     (click)="loadFawaterkPaymentMethodHandler()"
   >
-    <img class="w-17 h-17" src="/images/Master-card.svg" />
+    <img class="w-11 h-11 lg:w-17 lg:h-17" src="/images/Master-card.svg" />
     <span class="">/</span>
-    <img class="w-17 h-17" src="/images/Mada.svg" />
+    <img class="w-11 h-11 lg:w-17 lg:h-17" src="/images/Mada.svg" />
   </button>
   } @case('SA'){
   <button
     [disabled]="isPaying()"
     (click)="loadTappyPaymentMethodHandler()"
-    class="btn btn-dash btn-xl text-body-5 font-normal gap-4 justify-start h-20"
+    class="btn btn-dash btn-xl text-body-5 font-normal gap-4 justify-start h-15 lg:h-20"
   >
-    <img class="w-24 h-10" src="/images/Tabby.svg" />
+    <img class="w-18 h-7 lg:w-24 lg:h-10" src="/images/Tabby.svg" />
   </button>
   } @default {
   <button
     [disabled]="isPaying()"
     (click)="getStripePaymentIntentHandler()"
-    class="btn btn-dash btn-xl text-body-5 font-normal gap-4 justify-start h-20"
+    class="btn btn-dash btn-xl text-body-5 font-normal gap-4 justify-start h-15 lg:h-20"
   >
-    <img class="w-17 h-17" src="/images/Master-card.svg" />
+    <img class="w-11 h-11 lg:w-17 lg:h-17" src="/images/Master-card.svg" />
     <span class="">/</span>
-    <img class="w-17 h-17" src="/images/Mada.svg" />
+    <img class="w-11 h-11 lg:w-17 lg:h-17" src="/images/Mada.svg" />
   </button>
   } }
   <button
-    class="btn btn-dash btn-xl text-body-5 font-normal gap-4 justify-start h-20"
+    class="btn btn-dash btn-xl text-body-5 font-normal gap-4 justify-start h-15 lg:h-20"
     (click)="initiateStripeApplePayHandler()"
   >
-    <img class="w-17 h-17" src="/images/Applepay.svg" />
+    <img class="w-11 h-11 lg:w-17 lg:h-17" src="/images/Applepay.svg" />
     <span class="">/</span>
-    <img class="w-17 h-17" src="/images/Googlepay.svg" />
+    <img class="w-11 h-11 lg:w-17 lg:h-17" src="/images/Googlepay.svg" />
   </button>
   <ngx-paypal [config]="payPalConfig"></ngx-paypal>
 </div>
@@ -77,7 +77,7 @@
   <ngx-stripe-payment [options]="paymentElementOptions" />
 </ngx-stripe-elements>
 <button
-  class="btn btn-primary h-12 mt-10"
+  class="btn btn-primary w-2/3 lg:w-auto h-12 mt-8 lg:mt-10"
   [class]="customPaymentBtnClass()"
   [disabled]="isPaying()"
   (click)="confirmStripePaymentHandler()"
@@ -91,7 +91,7 @@
 <div id="fawaterkDivId" appFawaterk></div>
 }@case (PAYMENTMETHOD.TAP) {
 <div #tapContainer id="tap-container"></div>
-<div class="flex flex-col mt-10 gap-4">
+<div class="flex flex-col mt-8 lg:mt-10 gap-4">
   <button
     [class]="customPaymentBtnClass()"
     class="btn btn-primary h-12"

@@ -1,20 +1,58 @@
 @let package = packageSignal();
-<section class="container py-14">
-  <div class="grid grid-cols-4 rounded-sm bg-base-200 py-6 px-8 gap-6 mb-12">
-    <div class="flex flex-col gap-10">
-      @if(package.id){
-      <div class="flex-1 bg-package-card">
-        <img
-          class="p-8.5 w-full h-full"
-          [ngSrc]="package.imageUrl | imgUrl : 'package'"
-          width="750"
-          height="422"
-        />
+<section class="container pt-7 pb-10 lg:pt-10 lg:pb-16">
+  <div class="bg-base-200 rounded-sm py-6 px-4 lg:px-8 mb-8 lg:mb-12">
+    <div class="flex flex-wrap gap-4 lg:gap-6">
+      <div class="flex-1 lg:basis-1/4 lg:flex-none bg-package-card p-5 lg:p-8.5">
+        @if(package.id){
+        <div class="relative w-full h-full">
+          <img [ngSrc]="package.imageUrl | imgUrl : 'package'" [fill]="true" />
+        </div>
+        } @else {
+        <div class="skeleton w-full h-full"></div>
+        }
       </div>
-      } @else {
-      <div class="skeleton w-full flex-1"></div>
+      <div class="flex-1">
+        <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+          @if(package.id){
+          <h2 class="lg:text-3xl order-2 lg:order-1 font-bold text-body-5">
+            {{ package.packageName_AR }}
+          </h2>
+          <span
+            class="badge order-1 lg:order-2 badge-sm lg:badge-lg min-w-16 lg:min-w-25 lg:h-9 rounded-full bg-base-300"
+            >{{ package.departmentName ?? package.courses?.[0]?.departmentName }}</span
+          >
+          } @else {
+          <div class="skeleton w-full lg:w-1/2 order-2 lg:order-1 h-7 lg:h-9"></div>
+          <div class="skeleton order-1 lg:order-2 h-7 w-16 lg:w-25 lg:h-9 rounded-full"></div>
+          }
+        </div>
+        @if(package.id){
+        <p class="text-xl hidden lg:block text-base-content">
+          {{ package.packageDescription_AR }}
+        </p>
+        } @else{
+        <div class="skeleton hidden lg:block w-full h-6 mb-3"></div>
+        <div class="skeleton hidden lg:block w-full h-6 mb-3"></div>
+        <div class="skeleton hidden lg:block w-full h-6 mb-3"></div>
+        <div class="skeleton hidden lg:block w-1/2 h-6"></div>
+        }
+      </div>
+      @if(package.id){
+      <p class="text-xs basis-full block lg:hidden text-base-content mb-3">
+        {{ package.packageDescription_AR }}
+      </p>
+      }@else{
+      <div class="w-full">
+        <div class="skeleton block lg:hidden w-full h-5 mb-2"></div>
+        <div class="skeleton block lg:hidden w-full h-5 mb-2"></div>
+        <div class="skeleton block lg:hidden w-full h-5 mb-2"></div>
+        <div class="skeleton block lg:hidden w-1/2 h-5 mb-3"></div>
+      </div>
       }
-      <div class="flex justify-between items-center gap-4">
+    </div>
+    <div class="my-4 hidden lg:block border-b border-dashed border-custom-1"></div>
+    <div class="flex flex-wrap gap-4">
+      <div class="flex basis-full lg:basis-1/4 items-center gap-4">
         @if(package.id){
         <div class="flex items-center gap-1">
           <span
@@ -31,45 +69,20 @@
           </h5>
         </div>
         } @else {
-        <div class="skeleton flex-1 h-7"></div>
-        <div class="skeleton flex-1 h-7"></div>
+        <div class="skeleton flex-1 h-5 lg:h-7"></div>
+        <div class="skeleton flex-1 h-5 lg:h-7"></div>
         }
       </div>
-    </div>
-    <div class="col-span-3 flex flex-col justify-between gap-10">
-      <div>
-        <div class="flex justify-between items-center mb-8">
-          @if(package.id){
-          <h2 class="text-3xl font-bold text-body-5">{{ package.packageName_AR }}</h2>
-          <span
-            class="badge badge-sm lg:badge-lg min-w-16 lg:min-w-25 lg:h-9 rounded-full bg-base-300"
-            >{{ package.departmentName ?? package.courses?.[0]?.departmentName }}</span
-          >
-          } @else {
-          <div class="skeleton w-1/2 h-9"></div>
-          <div class="skeleton w-16 lg:w-25 lg:h-9 rounded-full"></div>
-          }
-        </div>
-        @if(package.id){
-        <p class="text-xl text-base-content">
-          {{ package.packageDescription_AR }}
-        </p>
-        } @else{
-        <div class="skeleton w-full h-5 mb-2"></div>
-        <div class="skeleton w-full h-5 mb-2"></div>
-        <div class="skeleton w-full h-5 mb-2"></div>
-        <div class="skeleton w-1/2 h-5"></div>
-        }
-      </div>
-      <div class="flex justify-end gap-4">
+      <div class="flex-1 flex lg:justify-end gap-2 lg:gap-4">
         @if(package.id){
         <button
-          class="btn btn-lg text-base bg-base-500 text-primary rounded-xs border-primary border-dashed px-12"
+          class="flex-1 lg:flex-none btn btn-base lg:btn-lg lg:text-base bg-base-500 text-primary rounded-xs border-primary border-dashed px-1 lg:px-12"
+          (click)="addToCartHandler()"
         >
-          شاهد الفيديو
+          إضافة لسلة المشتريات
         </button>
         <button
-          class="btn btn-lg text-base rounded-xs btn-primary px-12"
+          class="flex-1 lg:flex-none btn btn-base lg:btn-lg lg:text-base rounded-xs btn-primary px-1 lg:px-12"
           (click)="addToCartHandler()"
         >
           <span>إشترك الآن</span
@@ -93,8 +106,8 @@
           }
         </button>
         } @else {
-        <div class="skeleton w-40 h-12.5"></div>
-        <div class="skeleton w-50 h-12.5"></div>
+        <div class="skeleton flex-1 h-10 lg:flex-none lg:w-40 lg:h-12.5"></div>
+        <div class="skeleton flex-1 h-10 lg:flex-none lg:w-50 lg:h-12.5"></div>
         }
       </div>
     </div>

@@ -49,4 +49,12 @@ export class AuthenticationService {
       data
     );
   }
+
+  forgetPassword(email: string) {
+    return this.http.post(`/api/User/ForgetPassword/${email}`, {});
+  }
+
+  resetPassword(data: { email: string; password: string; token: string; confirmPassowrd: string }) {
+    return this.http.put(`/api/User/ResetPassword`, data);
+  }
 }

@@ -1,45 +1,24 @@
 <section>
   @if(courseLoading()){
-  <div class="skeleton w-full h-17.5 mb-8"></div>
+  <div class="skeleton w-full h-12.5 lg:h-17.5 mb-6 lg:mb-8"></div>
   } @else {
   <div
     role="tablist"
-    class="tabs mb-8 rounded-sm border border-dashed items-center border-base-content h-17.5 px-3 gap-27"
+    class="tabs tabs-sm lg:tabs-md mb-6 lg:mb-8 rounded-sm border border-dashed items-center border-base-content h-12.5 lg:h-17.5 px-3 lg:gap-27"
   >
-    @let activeTapSignal = activeTap();
+    @for(tab of courseTabs;track $index){
     <a
       role="tab"
-      class="tab text-xl/7.5 text-base-content"
+      class="tab lg:text-xl/7.5 text-base-content"
       [class]="{
-        'text-body-5': activeTapSignal === 'overview',
-        'text-2xl': activeTapSignal === 'overview',
-        'font-bold': activeTapSignal === 'overview'
+        'text-body-5': activeTap() === tab.value,
+        'lg:text-2xl': activeTap() === tab.value,
+        'font-bold': activeTap() === tab.value
       }"
-      (click)="activeTap.set('overview')"
-      >تفاصيل الكورس</a
+      (click)="activeTap.set(tab.value)"
+      >{{ tab.label }}</a
     >
-    <a
-      role="tab"
-      class="tab text-xl/7.5 text-base-content"
-      [class]="{
-        'text-body-5': activeTapSignal === 'content',
-        'text-2xl': activeTapSignal === 'content',
-        'font-bold': activeTapSignal === 'content'
-      }"
-      (click)="activeTap.set('content')"
-      >محتوى الكورس</a
-    >
-    <a
-      role="tab"
-      class="tab text-xl/7.5 text-base-content"
-      [class]="{
-        'text-body-5': activeTapSignal === 'reviews',
-        'text-2xl': activeTapSignal === 'reviews',
-        'font-bold': activeTapSignal === 'reviews'
-      }"
-      (click)="activeTap.set('reviews')"
-      >التقييمات</a
-    >
+    }
   </div>
   }
   <ng-container>

@@ -52,4 +52,12 @@ export const routes: Routes = [
     loadChildren: () => import('./screens/profile/routes'),
     canMatch: [authGuard],
   },
+  {
+    path: 'resetpassword',
+    redirectTo: (route) => {
+      const params = new URLSearchParams(route.queryParams);
+      return `/auth/reset-password?${params.toString()}`;
+    },
+    pathMatch: 'full',
+  },
 ];

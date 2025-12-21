@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 import { AuthenticationService } from '@services/authentication-service';
 import { SocialAuth } from '../social-auth/social-auth';
 import { finalize } from 'rxjs';
+import { passwordsMatchValidator } from '@utils/helpers';
 
 type SignupForm = {
   firstName: FormControl<string>;
@@ -37,19 +38,13 @@ type SignupForm = {
   roles: FormControl;
 };
 
-function passwordsMatchValidator(formGroup: AbstractControl<SignupForm>): ValidationErrors | null {
-  const password = formGroup.get('password')?.value;
-  const confirmPassword = formGroup.get('confirmPassword')?.value;
-  return password === confirmPassword ? null : { passwordsMismatch: true };
-}
-
 @Component({
   selector: 'app-signup',
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './signup.html',
   styleUrl: './signup.css',
   host: {
-    class: 'basis-1/2',
+    class: 'basis-full lg:basis-1/2',
   },
   providers: [AuthenticationService],
 })
@@ -89,7 +84,7 @@ export class Signup extends SocialAuth {
       roles: new FormControl([]),
     },
     {
-      validators: passwordsMatchValidator,
+      validators: passwordsMatchValidator<SignupForm>,
     }
   );
 

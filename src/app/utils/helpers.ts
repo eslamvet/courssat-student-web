@@ -1,9 +1,11 @@
 import { inject, Renderer2 } from '@angular/core';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { Course } from '@models/course';
 import { CoursePurchase } from '@models/CoursePurchase';
 import { User } from '@models/user';
 import { CurrencyService } from '@services/currency-service';
 import { UserService } from '@services/user-service';
+import { T } from 'node_modules/tailwindcss/dist/types-WlZgYgM8.mjs';
 import { catchError, EMPTY, forkJoin, map } from 'rxjs';
 
 export const appInitializerFn = () => {
@@ -106,3 +108,9 @@ export const loadScriptWithRetries = (
   };
   tryLoadScript.call(this);
 };
+
+export function passwordsMatchValidator<T>(formGroup: AbstractControl<T>): ValidationErrors | null {
+  const password = formGroup.get('password')?.value;
+  const confirmPassword = formGroup.get('confirmPassword')?.value;
+  return password === confirmPassword ? null : { passwordsMismatch: true };
+}

@@ -5,6 +5,6 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-auth',
   imports: [RouterOutlet],
   template:
-    '<div class="container flex justify-center items-center py-16"><router-outlet></router-outlet></div>',
+    '<div class="container flex justify-center items-center pt-6 pb-10 lg:py-16"><router-outlet></router-outlet></div>',
 })
 export class Auth {}

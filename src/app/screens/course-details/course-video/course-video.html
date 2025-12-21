@@ -21,13 +21,13 @@
   </div>
   <div class="flex items-center justify-between gap-4 mb-8">
     @if(!loading){
-    <h2 class="text-4xl text-body-5 font-bold flex-1">{{ title() }}</h2>
-    <button class="btn btn-circle btn-xl bg-base-200">
+    <h2 class="text-xl lg:text-3xl xl:text-4xl text-body-5 font-bold flex-1">{{ title() }}</h2>
+    <button class="btn btn-circle btn-lg lg:btn-xl bg-base-200">
       <span class="iconify solar--bookmark-broken text-xl text-base-content"></span>
     </button>
     } @else {
-    <div class="skeleton w-2/3 h-10"></div>
-    <div class="skeleton rounded-full w-14 h-14"></div>
+    <div class="skeleton w-2/3 h-8 lg:h-10"></div>
+    <div class="skeleton rounded-full w-12 h-12 lg:w-14 lg:h-14"></div>
     }
   </div>
 </section>

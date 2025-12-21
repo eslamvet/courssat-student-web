@@ -12,6 +12,11 @@ import { courseDataVM, CourseReview, CourseTopic } from '@models/course';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CourseTabs {
+  courseTabs = [
+    { label: 'تفاصيل الكورس', value: 'overview' },
+    { label: 'محتوى الكورس', value: 'content' },
+    { label: 'التقييمات', value: 'reviews' },
+  ];
   activeTap = model.required();
   courseLoading = input.required<boolean>();
   courseDescription = input.required<string>();

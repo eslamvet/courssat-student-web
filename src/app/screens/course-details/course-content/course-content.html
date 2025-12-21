@@ -1,5 +1,5 @@
 @let hasAccess = isPaid() || user()?.roleType == 1 || instructorId() == user()?.id;
-<ul class="list-none bg-base-200 p-6 rounded-sm">
+<ul class="list-none bg-base-200 p-0 lg:p-6 rounded-sm">
   @for(topic of topics(); track topic.id) {
   <li
     class="collapse collapse-arrow border-dashed border-b-base-content rounded-none after:border-dashed"
@@ -10,7 +10,7 @@
     <input type="checkbox" />
     <div class="collapse-title flex gap-4">
       <div
-        class="w-6 h-6 rounded-full flex items-center justify-center"
+        class="w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center"
         [class]="{
           'bg-secondary': topic.isWatched || topic.isActive,
           'bg-base-400': !topic.isWatched
@@ -20,7 +20,10 @@
         <span class="iconify ic--check text-neutral text-xl"></span>
         }
       </div>
-      <div class="text-xl flex-1 text-base-content" [class]="{ 'text-secondary': topic.isActive }">
+      <div
+        class="lg:text-xl flex-1 text-base-content"
+        [class]="{ 'text-secondary': topic.isActive }"
+      >
         {{ topic.topicName_AR }}
       </div>
     </div>
@@ -33,7 +36,7 @@
             [class]="{ 'cursor-pointer': lesson.public || hasAccess }"
           >
             <div
-              class="w-6 h-6 rounded-full flex items-center justify-center"
+              class="w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center"
               [class]="{
                 'bg-secondary': lesson.isWatched || lesson.isActive,
                 'bg-base-400': !lesson.isWatched
@@ -44,7 +47,7 @@
               }
             </div>
             <div
-              class="text-xl text-base-content"
+              class="text-sm lg:text-xl text-base-content"
               [class]="{
                 'text-secondary': lesson.isActive,
                 'group-hover:text-secondary': hasAccess

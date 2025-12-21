@@ -30,6 +30,7 @@ export class CourseSidebar {
   courseService = inject(CourseService);
   toastService = inject(ToastService);
   cart = inject(CartService).cart;
+  isMobile = matchMedia('(width <= 640px)').matches;
   discountPrice = input.required<number>();
   originalPrice = input.required<number>();
   hourCount = input.required<number>();

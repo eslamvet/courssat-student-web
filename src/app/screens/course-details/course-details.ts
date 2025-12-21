@@ -7,7 +7,7 @@ import { Course, CourseAttachment, CourseLesson } from '@models/course';
 import { CourseService } from '@services/course-service';
 import { UserService } from '@services/user-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { finalize, forkJoin, pairwise, retry, switchMap, tap } from 'rxjs';
+import { delay, finalize, forkJoin, pairwise, retry, switchMap, tap } from 'rxjs';
 import { CurrencyService } from '@services/currency-service';
 import { getUserCountry } from '@utils/helpers';
 import { ActiveLessonPipe } from '@pipes/active-lesson-pipe';
@@ -49,7 +49,7 @@ export class CourseDetails implements OnInit {
   courseArr = computed(() => [this.courseSignal()]);
   relatedCourses = signal<Course[]>(Array(4));
   activeTap = signal<'overview' | 'content' | 'reviews'>('overview');
-
+  isMobile = matchMedia('(width <= 640px)').matches;
   constructor() {
     effect(() => {
       if (this.courseSignal().isPaied) {
@@ -88,7 +88,8 @@ export class CourseDetails implements OnInit {
             this.courseService.getCourseFreeLessons(),
           ])
         ),
-        retry(3)
+        retry(3),
+        delay(10000)
       )
       .subscribe({
         next: ([course, customData, customLabels, customPrices, freeLessons]) => {
