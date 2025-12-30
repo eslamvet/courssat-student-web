@@ -28,6 +28,10 @@ const routes: Routes = [
         path: 'fav-courses',
         loadComponent: () => import('./fav-courses/fav-courses').then((c) => c.FavCourses),
       },
+      {
+        path: 'support',
+        loadComponent: () => import('./support/support').then((c) => c.Support),
+      },
     ],
   },
 ];

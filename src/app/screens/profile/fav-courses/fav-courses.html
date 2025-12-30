@@ -1,1 +1,44 @@
-<p>fav-courses works!</p>
+@let currentPage = page(); @let pages = paginationPages();
+<section class="flex flex-col gap-10">
+  <h2
+    class="text-3xl font-bold text-body-5 pb-4 border-b border-dashed border-base-content dark:border-custom-1"
+  >
+    كورساتي المفضله
+  </h2>
+  <div class="grid grid-cols-2 gap-4">
+    @for(course of favCourses()|slice:currentPage*size():currentPage*size()+size();track $index){
+    <app-course-card [course]="course" [isPurchased]="course.isPaied" />
+    } @empty {
+    <div role="alert" class="col-span-4 alert alert-info justify-center alert-soft">
+      <span>لا توجد كورسات حاليا.</span>
+    </div>
+    }
+  </div>
+  @if(pages.length){
+  <div class="join self-center">
+    <button
+      class="join-item btn btn-square"
+      [disabled]="currentPage == 0"
+      (click)="currentPage > 0 && paginateHandler(currentPage - 1)"
+    >
+      «
+    </button>
+    @for(page of pages;track $index){
+    <input
+      class="join-item btn btn-square"
+      type="radio"
+      [attr.aria-label]="page"
+      [checked]="currentPage === $index"
+      (change)="paginateHandler($index)"
+    />
+    }
+    <button
+      class="join-item btn btn-square"
+      [disabled]="currentPage == pages.length - 1"
+      (click)="currentPage < pages.length && paginateHandler(currentPage + 1)"
+    >
+      »
+    </button>
+  </div>
+  }
+</section>

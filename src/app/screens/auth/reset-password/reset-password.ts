@@ -54,7 +54,7 @@ export class ResetPassword {
       }),
     },
     {
-      validators: passwordsMatchValidator<ResetPasswordForm>,
+      validators: passwordsMatchValidator<ResetPasswordForm>(),
     }
   );
 

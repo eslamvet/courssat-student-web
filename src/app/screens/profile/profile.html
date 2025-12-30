@@ -1,1 +1,59 @@
-<router-outlet></router-outlet>
+<div class="container pt-10 pb-14 grid grid-cols-3 gap-8">
+  <div class="bg-base-200 relative">
+    <div class="sticky top-0">
+      <div class="flex items-center justify-center pt-10 pb-8">
+        <img class="w-38 h-38 rounded-full" src="/images/profile.png" />
+      </div>
+      <div class="list [&>.list-row]:after:hidden">
+        <a
+          class="list-row bg-base-600 cursor-pointer group text-base-content [&.active]:text-white [&.active]:bg-primary font-normal [&.active]:font-bold rounded-none"
+          routerLink="./personal-info"
+          routerLinkActive="active"
+        >
+          <span class="iconify mingcute--user-edit-line text-2xl"></span>
+          <span class="flex-1 text-xl">البيانات الشخصية</span>
+          <span class="iconify ic--outline-arrow-back text-2xl"></span>
+        </a>
+        <a
+          class="list-row bg-base-600 cursor-pointer group text-base-content [&.active]:text-white [&.active]:bg-primary rounded-none"
+          routerLink="./courses"
+          routerLinkActive="active"
+        >
+          <span class="iconify mingcute--mortarboard-line text-2xl"></span>
+          <span class="flex-1 text-xl">كورساتي</span>
+          <span class="iconify ic--outline-arrow-back text-2xl"></span>
+        </a>
+        <a
+          class="list-row bg-base-600 cursor-pointer group text-base-content [&.active]:text-white [&.active]:bg-primary rounded-none"
+          routerLink="./certificates"
+          routerLinkActive="active"
+        >
+          <span class="iconify mingcute--certificate-2-line text-2xl"></span>
+          <span class="flex-1 text-xl">شهاداتي</span>
+          <span class="iconify ic--outline-arrow-back text-2xl"></span>
+        </a>
+        <a
+          class="list-row bg-base-600 cursor-pointer group text-base-content [&.active]:text-white [&.active]:bg-primary rounded-none"
+          routerLink="./fav-courses"
+          routerLinkActive="active"
+        >
+          <span class="iconify mingcute--user-edit-line text-2xl"></span>
+          <span class="flex-1 text-xl">المفضله</span>
+          <span class="iconify ic--outline-arrow-back text-2xl"></span>
+        </a>
+        <a
+          class="list-row bg-base-600 cursor-pointer group text-base-content [&.active]:text-white [&.active]:bg-primary rounded-none"
+          routerLink="./support"
+          routerLinkActive="active"
+        >
+          <span class="iconify material-symbols--help-outline text-2xl"></span>
+          <span class="flex-1 text-xl">مركز المساعدة</span>
+          <span class="iconify ic--outline-arrow-back text-2xl"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="col-span-2 bg-base-200 p-8">
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -89,6 +89,10 @@ export class CourseService {
     return this.http.post('/api/CourseEvaluation', review);
   }
 
+  getUserCourses(userId: string, pageNo: number) {
+    return this.http.get<ListApi<Course>>(`/api/Course/UserCourses/Users/${userId}/${pageNo}`);
+  }
+
   getAllCoursesByDepartmentId(departmentId: number) {
     return this.http.get<Course[]>(`/api/Course/Department/${departmentId}`);
   }

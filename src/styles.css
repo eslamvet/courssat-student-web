@@ -2,7 +2,8 @@
 @import 'tailwindcss';
 @plugin "daisyui";
 @plugin "@iconify/tailwind4" {
-  prefixes: solar, ic, gg, fluent, hugeicons, si, lets-icons, devicon;
+  prefixes: solar, ic, gg, fluent, hugeicons, si, lets-icons, devicon, mingcute, material-symbols,
+    uil, mdi;
 }
 
 @plugin "daisyui/theme" {

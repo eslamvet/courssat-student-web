@@ -3,10 +3,13 @@ export type User = {
   email: string;
   imageURL: string;
   isActive: boolean;
-  roleType: number;
+  roleType?: number;
   familyName: string;
   firstName: string;
   country?: string;
+  address?: string;
+  city?: string;
+  phoneNumber?: string;
   socialProvider?: SOCIALPROVIDER;
 };
 

@@ -20,8 +20,10 @@ import { SafeUrlPipe } from '@pipes/safe-url-pipe';
 })
 export class CourseVideo {
   title = input.required();
+  isFavourite = input.required<boolean>();
   courseLoading = input.required<boolean>();
   nextVideo = output<CourseLesson>();
+  toggleFavCourse = output();
   renderer = inject(Renderer2);
   document = inject(DOCUMENT);
   activeLesson = input.required<CourseLesson | null>();

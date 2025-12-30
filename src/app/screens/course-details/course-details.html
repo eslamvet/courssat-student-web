@@ -8,8 +8,10 @@
       <app-course-video
         [courseLoading]="loading"
         [title]="course.courseName_AR"
+        [isFavourite]="favCourseService.isFavCourse(course.id)"
         [activeLesson]="course.topics | activeLesson"
         (nextVideo)="loadNextVideoHandler($event)"
+        (toggleFavCourse)="addToFavCoursesHandler()"
       />
       <app-course-tabs
         [(activeTap)]="activeTap"

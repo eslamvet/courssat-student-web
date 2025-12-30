@@ -1,4 +1,4 @@
-@let course = courseInput(); @if(course){
+@let course = courseInput(); @let isPaid = isPurchased(); @if(course){
 <div class="card bg-neutral h-full">
   <figure>
     <img [ngSrc]="course.coverImageURL | imgUrl" width="750" height="422" />
@@ -19,7 +19,8 @@
         [state]="{ title: course.courseName_AR }"
         class="btn btn-sm lg:btn-md btn-primary w-full px-1 lg:px-4"
       >
-        <span>إشترك الآن</span>
+        <span>{{ isPaid ? ' ابدأ الكورس' : 'إشترك الآن' }}</span>
+        @if(!isPaid){
         <span class="text-secondary ms-0.5"
           >{{ (course.discountPrice || course.originalPrice) * currency.value | number : '1.0-0'
           }}<span [class]="{ 'font-saudi-riyal': isSaudi, 'text-lg': isSaudi }">{{
@@ -33,7 +34,7 @@
             currency.code
           }}</span></span
         >
-        }
+        } }
       </a>
     </div>
   </div>

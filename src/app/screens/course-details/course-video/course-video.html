@@ -22,7 +22,11 @@
   <div class="flex items-center justify-between gap-4 mb-8">
     @if(!loading){
     <h2 class="text-xl lg:text-3xl xl:text-4xl text-body-5 font-bold flex-1">{{ title() }}</h2>
-    <button class="btn btn-circle btn-lg lg:btn-xl bg-base-200">
+    <button
+      class="btn btn-circle btn-lg lg:btn-xl bg-base-200 [&.bg-secondary>span]:text-white"
+      [class.bg-secondary]="isFavourite()"
+      (click)="toggleFavCourse.emit()"
+    >
       <span class="iconify solar--bookmark-broken text-xl text-base-content"></span>
     </button>
     } @else {

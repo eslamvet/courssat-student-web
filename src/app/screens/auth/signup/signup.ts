@@ -84,7 +84,7 @@ export class Signup extends SocialAuth {
       roles: new FormControl([]),
     },
     {
-      validators: passwordsMatchValidator<SignupForm>,
+      validators: passwordsMatchValidator<SignupForm>(),
     }
   );
 

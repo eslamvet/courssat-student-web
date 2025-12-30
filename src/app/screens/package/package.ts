@@ -11,7 +11,7 @@ import { PackageService } from '@services/package-service';
 import { ToastService } from '@services/toast-service';
 import { UserService } from '@services/user-service';
 import { getUserCountry } from '@utils/helpers';
-import { delay, forkJoin, retry } from 'rxjs';
+import { forkJoin, retry } from 'rxjs';
 
 @Component({
   selector: 'app-package',
@@ -34,7 +34,7 @@ export class PackageScreen implements OnInit {
       this.packageService.getPackageDetails(this.routeParams['packageId'], this.user()?.id),
       this.packageService.getCoursePackageJson(),
     ])
-      .pipe(retry(3), delay(10000))
+      .pipe(retry(3))
       .subscribe({
         next: ([packageData, { eg_packages, sa_packages, default_packages }]) => {
           const selectedPackage = (

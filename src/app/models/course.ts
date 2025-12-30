@@ -140,13 +140,3 @@ export type CustomCourseLabel = {
   allCourses: boolean;
   course_ids: number[];
 };
-
-export type CourseCertificate = {
-  id: string;
-  certificateName_EN: string;
-  certificateName_AR: string;
-  certificateURL: string;
-  courseId: number;
-  courseName: string;
-  userId: string;
-};

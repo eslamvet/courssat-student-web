@@ -109,8 +109,10 @@ export const loadScriptWithRetries = (
   tryLoadScript.call(this);
 };
 
-export function passwordsMatchValidator<T>(formGroup: AbstractControl<T>): ValidationErrors | null {
-  const password = formGroup.get('password')?.value;
-  const confirmPassword = formGroup.get('confirmPassword')?.value;
-  return password === confirmPassword ? null : { passwordsMismatch: true };
+export function passwordsMatchValidator<T>(passwordField = 'password') {
+  return (formGroup: AbstractControl<T>): ValidationErrors | null => {
+    const password = formGroup.get(passwordField)?.value;
+    const confirmPassword = formGroup.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { passwordsMismatch: true };
+  };
 }

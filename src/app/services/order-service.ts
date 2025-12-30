@@ -1,16 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { COUPONTYPE } from '@models/coupon';
-import { Course, CourseCertificate } from '@models/course';
+import { Course } from '@models/course';
 import { ConfirmCourseOrder } from '@models/CoursePurchase';
 import { User } from '@models/user';
 import { generateOrderBody } from '@utils/helpers';
 import { catchError, EMPTY, forkJoin, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { CertificateService } from './certificate-service';
 
 @Injectable()
 export class OrderService {
   http = inject(HttpClient);
+  certificateService = inject(CertificateService);
 
   createOrder(
     user: User,
@@ -75,7 +77,7 @@ export class OrderService {
               this.http.post(`${environment.secondServerUrl}/course-order`, payload)
             ),
           ...orderData.paymentDetailVMs.map((d) =>
-            this.createCourseCertificate({
+            this.certificateService.createCourseCertificate({
               id: d.courseName,
               certificateName_EN: d.courseName,
               certificateName_AR: d.courseName,
@@ -115,9 +117,5 @@ export class OrderService {
       `${environment.secondServerUrl}/meeting-order/create-tap-charge`,
       data
     );
-  }
-
-  createCourseCertificate(data: CourseCertificate) {
-    return this.http.post('/api/Certificate', data);
   }
 }

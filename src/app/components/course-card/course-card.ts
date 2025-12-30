@@ -18,6 +18,7 @@ export class CourseCard {
   courseInput = input.required<Course | null>({
     alias: 'course',
   });
+  isPurchased = input(false);
   isSaudi = getUserCountry() == 'SA';
   isMobile = matchMedia('(width <= 640px)').matches;
 }

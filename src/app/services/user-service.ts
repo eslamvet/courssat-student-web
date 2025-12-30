@@ -21,8 +21,25 @@ export class UserService {
     this.userSignal.set(user);
   }
 
+  updateUser(data: Partial<User>) {
+    this.userSignal.update((prev) => ({ ...prev!, ...data }));
+  }
+
   getUserProfile(userId?: string | null) {
     return iif(() => !!userId, this.http.get<User>(`/api/User/Profile/${userId}`), of(null));
+  }
+
+  editUserProfile(data: User) {
+    return this.http.put('/api/User/Client', data);
+  }
+
+  changePassword(data: {
+    id: string;
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+  }) {
+    return this.http.post('/api/User/ChangePassword', data);
   }
 
   logout() {

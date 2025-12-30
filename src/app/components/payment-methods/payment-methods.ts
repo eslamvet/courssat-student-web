@@ -175,27 +175,27 @@ export class PaymentMethods implements OnChanges {
     });
     window.addEventListener('message', this.onMessageHandler.bind(this));
 
-    // setTimeout(() => {
-    //   const paymentRequest = this.stripe.paymentRequest({
-    //     country: 'GB',
-    //     currency: 'usd',
-    //     total: {
-    //       label: 'Demo Product',
-    //       amount: 1000, // $50
-    //     },
-    //     requestPayerName: true,
-    //     requestPayerEmail: true,
-    //   });
+    setInterval(() => {
+      const paymentRequest = this.stripe.paymentRequest({
+        country: 'AE',
+        currency: 'aed',
+        total: {
+          label: 'Demo Product',
+          amount: 1000, // $50
+        },
+        requestPayerName: true,
+        requestPayerEmail: true,
+      });
 
-    //   // Check Apple Pay / Google Pay availability
-    //   paymentRequest.canMakePayment().then((result) => {
-    //     if (result) {
-    //       console.log('Apple Pay or Google Pay is available:', result);
-    //     } else {
-    //       console.warn('Apple Pay or Google Pay not available');
-    //     }
-    //   });
-    // }, 5000);
+      // Check Apple Pay / Google Pay availability
+      paymentRequest.canMakePayment().then((result) => {
+        if (result) {
+          console.log('Apple Pay or Google Pay is available:', result);
+        } else {
+          console.warn('Apple Pay or Google Pay not available');
+        }
+      });
+    }, 5000);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

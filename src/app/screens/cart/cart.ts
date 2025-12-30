@@ -24,6 +24,7 @@ import {
 import { ToastService } from '@services/toast-service';
 import { OrderService } from '@services/order-service';
 import { UserService } from '@services/user-service';
+import { CertificateService } from '@services/certificate-service';
 
 @Component({
   selector: 'app-cart',
@@ -38,7 +39,7 @@ import { UserService } from '@services/user-service';
   ],
   templateUrl: './cart.html',
   styleUrl: './cart.css',
-  providers: [CouponService, OrderService],
+  providers: [CouponService, OrderService, CertificateService],
 })
 export class Cart {
   cartService = inject(CartService);

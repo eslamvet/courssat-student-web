@@ -7,7 +7,7 @@ import { Course, CourseAttachment, CourseLesson } from '@models/course';
 import { CourseService } from '@services/course-service';
 import { UserService } from '@services/user-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { delay, finalize, forkJoin, pairwise, retry, switchMap, tap } from 'rxjs';
+import { finalize, forkJoin, pairwise, retry, switchMap, tap } from 'rxjs';
 import { CurrencyService } from '@services/currency-service';
 import { getUserCountry } from '@utils/helpers';
 import { ActiveLessonPipe } from '@pipes/active-lesson-pipe';
@@ -19,6 +19,8 @@ import { LoaderService } from '@services/loader-service';
 import { ToastService } from '@services/toast-service';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { PaymentMethods } from '@components/payment-methods/payment-methods';
+import { CertificateService } from '@services/certificate-service';
+import { FavouriteCourseService } from '@services/favourite-course-service';
 
 @Component({
   selector: 'app-course-details',
@@ -32,7 +34,7 @@ import { PaymentMethods } from '@components/payment-methods/payment-methods';
   ],
   templateUrl: './course-details.html',
   styleUrl: './course-details.css',
-  providers: [CourseService, OrderService],
+  providers: [CourseService, OrderService, CertificateService],
 })
 export class CourseDetails implements OnInit {
   courseService = inject(CourseService);
@@ -41,6 +43,7 @@ export class CourseDetails implements OnInit {
   orderService = inject(OrderService);
   loaderService = inject(LoaderService);
   toastService = inject(ToastService);
+  favCourseService = inject(FavouriteCourseService);
   currencyService = inject(CurrencyService);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -50,6 +53,7 @@ export class CourseDetails implements OnInit {
   relatedCourses = signal<Course[]>(Array(4));
   activeTap = signal<'overview' | 'content' | 'reviews'>('overview');
   isMobile = matchMedia('(width <= 640px)').matches;
+
   constructor() {
     effect(() => {
       if (this.courseSignal().isPaied) {
@@ -88,8 +92,7 @@ export class CourseDetails implements OnInit {
             this.courseService.getCourseFreeLessons(),
           ])
         ),
-        retry(3),
-        delay(10000)
+        retry(3)
       )
       .subscribe({
         next: ([course, customData, customLabels, customPrices, freeLessons]) => {
@@ -413,5 +416,9 @@ export class CourseDetails implements OnInit {
       discountPrice,
       priceBeforeCoupon: c.discountPrice,
     }));
+  }
+
+  addToFavCoursesHandler() {
+    this.favCourseService.addToFavCourses(this.courseSignal());
   }
 }
