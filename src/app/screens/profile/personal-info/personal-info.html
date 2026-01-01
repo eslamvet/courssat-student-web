@@ -1,10 +1,14 @@
 <section>
   <h2
-    class="text-3xl font-bold text-body-5 pb-4 border-b border-dashed border-base-content dark:border-custom-1 mb-6"
+    class="text-lg lg:text-3xl font-bold text-body-5 pb-4 border-b border-dashed border-base-content dark:border-custom-1 mb-6"
   >
     البيانات الشخصية
   </h2>
-  <form class="w-1/2 mb-10" [formGroup]="profileForm" (ngSubmit)="editUserProfileHandler()">
+  <form
+    class="lg:w-1/2 mb-8 lg:mb-10"
+    [formGroup]="profileForm"
+    (ngSubmit)="editUserProfileHandler()"
+  >
     <div class="mb-5">
       <label class="text-sm lg:text-base text-body-5 block mb-2" for="user-name">الاسم كامل</label>
       <div class="w-full input input-lg validator bg-base-600">
@@ -13,7 +17,7 @@
       </div>
       <div class="validator-hint hidden">الاسم مطلوب</div>
     </div>
-    <div class="mb-10">
+    <div class="mb-8 lg:mb-10">
       <label class="text-sm lg:text-base text-body-5 block mb-2" for="user-email"
         >البريد الالكتروني</label
       >
@@ -25,17 +29,17 @@
         {{ emailControl?.errors?.['required'] ? 'الايميل مطلوب' : 'الايميل غير صحيح' }}
       </div>
     </div>
-    <button type="submit" class="btn btn-primary w-1/2 h-12" [disabled]="loadingState()">
+    <button type="submit" class="btn btn-primary w-2/3 lg:w-1/2 h-12" [disabled]="loadingState()">
       <span>حفظ</span>@if(loadingState() === 'profile'){<span class="loading loading-spinner"></span
       >}
     </button>
   </form>
   <h2
-    class="text-2xl font-bold text-body-5 py-4 border-b border-t border-dashed border-base-content dark:border-custom-1 mb-6"
+    class="text-lg lg:text-2xl font-bold text-body-5 py-3 lg:py-4 border-b border-t border-dashed border-base-content dark:border-custom-1 mb-6"
   >
     تعديل كلمة المرور
   </h2>
-  <form class="w-1/2" [formGroup]="passwordForm" (ngSubmit)="changeUserPasswordHandler()">
+  <form class="lg:w-1/2" [formGroup]="passwordForm" (ngSubmit)="changeUserPasswordHandler()">
     <div class="mb-5">
       <label class="text-sm lg:text-base text-body-5 block mb-2" for="user-old-password"
         >كلمه المررو القديمه</label
@@ -52,7 +56,7 @@
       </div>
       <div class="validator-hint hidden">كلمه المررو القديمه مطلوبه</div>
     </div>
-    <div class="flex gap-3 mb-10">
+    <div class="flex gap-3 mb-8 lg:mb-10">
       <div>
         <label class="text-sm lg:text-base text-body-5 block mb-2" for="user-password"
           >كلمة المرور الجديده</label
@@ -73,7 +77,9 @@
         </div>
       </div>
       <div>
-        <label class="text-sm lg:text-base text-body-5 block mb-2" for="user-confirm-password"
+        <label
+          class="text-sm lg:text-base text-body-5 block mb-2 whitespace-nowrap"
+          for="user-confirm-password"
           >تأكيد كلمة المرور الجديده</label
         >
         <div
@@ -94,7 +100,7 @@
         </div>
       </div>
     </div>
-    <button type="submit" class="btn btn-primary w-1/2 h-12" [disabled]="loadingState()">
+    <button type="submit" class="btn btn-primary w-2/3 lg:w-1/2 h-12" [disabled]="loadingState()">
       <span>حفظ</span>@if(loadingState() === 'password'){<span
         class="loading loading-spinner"
       ></span

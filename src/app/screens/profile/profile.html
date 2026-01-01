@@ -1,8 +1,32 @@
-<div class="container pt-10 pb-14 grid grid-cols-3 gap-8">
+<div class="container pt-8 pb-10 lg:pt-10 lg:pb-14 grid grid-cols-1 lg:grid-cols-3 gap-8">
   <div class="bg-base-200 relative">
     <div class="sticky top-0">
-      <div class="flex items-center justify-center pt-10 pb-8">
-        <img class="w-38 h-38 rounded-full" src="/images/profile.png" />
+      <div class="flex items-center relative justify-center pt-8 pb-6 lg:pt-10 lg:pb-8">
+        <div class="relative w-27 h-27 lg:w-38 lg:h-38">
+          @if(loading()){
+          <div class="skeleton w-full h-full absolute z-1 rounded-full"></div>
+          } @else {
+          <img
+            class="h-full w-full rounded-full"
+            [ngSrc]="user()?.imageURL | imgUrl : 'avatar'"
+            fill
+            priority
+          />
+          <label
+            for="user-img-input"
+            class="w-6 h-6 lg:w-8 lg:h-8 rounded-full text-white cursor-pointer flex items-center justify-center bg-primary left-0 bottom-2.5 lg:left-1 absolute"
+          >
+            <span class="iconify mingcute--edit-line text-base lg:text-xl"></span>
+            <input
+              id="user-img-input"
+              accept="image/*"
+              type="file"
+              class="hidden"
+              (change)="changeUserImgHandler($event.target.files)"
+            />
+          </label>
+          }
+        </div>
       </div>
       <div class="list [&>.list-row]:after:hidden">
         <a
@@ -11,7 +35,7 @@
           routerLinkActive="active"
         >
           <span class="iconify mingcute--user-edit-line text-2xl"></span>
-          <span class="flex-1 text-xl">البيانات الشخصية</span>
+          <span class="flex-1 text-base lg:text-xl">البيانات الشخصية</span>
           <span class="iconify ic--outline-arrow-back text-2xl"></span>
         </a>
         <a
@@ -20,7 +44,7 @@
           routerLinkActive="active"
         >
           <span class="iconify mingcute--mortarboard-line text-2xl"></span>
-          <span class="flex-1 text-xl">كورساتي</span>
+          <span class="flex-1 text-base lg:text-xl">كورساتي</span>
           <span class="iconify ic--outline-arrow-back text-2xl"></span>
         </a>
         <a
@@ -29,7 +53,7 @@
           routerLinkActive="active"
         >
           <span class="iconify mingcute--certificate-2-line text-2xl"></span>
-          <span class="flex-1 text-xl">شهاداتي</span>
+          <span class="flex-1 text-base lg:text-xl">شهاداتي</span>
           <span class="iconify ic--outline-arrow-back text-2xl"></span>
         </a>
         <a
@@ -38,7 +62,7 @@
           routerLinkActive="active"
         >
           <span class="iconify mingcute--user-edit-line text-2xl"></span>
-          <span class="flex-1 text-xl">المفضله</span>
+          <span class="flex-1 text-base lg:text-xl">المفضله</span>
           <span class="iconify ic--outline-arrow-back text-2xl"></span>
         </a>
         <a
@@ -47,13 +71,13 @@
           routerLinkActive="active"
         >
           <span class="iconify material-symbols--help-outline text-2xl"></span>
-          <span class="flex-1 text-xl">مركز المساعدة</span>
+          <span class="flex-1 text-base lg:text-xl">مركز المساعدة</span>
           <span class="iconify ic--outline-arrow-back text-2xl"></span>
         </a>
       </div>
     </div>
   </div>
-  <div class="col-span-2 bg-base-200 p-8">
+  <div class="lg:col-span-2 bg-base-200 p-4 lg:p-8">
     <router-outlet></router-outlet>
   </div>
 </div>

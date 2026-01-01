@@ -42,6 +42,13 @@ export class UserService {
     return this.http.post('/api/User/ChangePassword', data);
   }
 
+  uploadAttachment(data: FormData, fileType: 1 | 2 | 3 = 3, isImage = true) {
+    return this.http.post<{ fileName: string }>(
+      `/api/FileManage/Upload?FileType=${fileType}&Isimage=${isImage}`,
+      data
+    );
+  }
+
   logout() {
     this.userSignal.set(null);
     localStorage.removeItem('courssat-user-token');

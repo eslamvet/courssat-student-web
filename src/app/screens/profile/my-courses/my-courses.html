@@ -1,11 +1,11 @@
 @let pages = paginationPages(); @let currentPage = page();
 <section class="flex flex-col gap-10">
   <h2
-    class="text-3xl font-bold text-body-5 pb-4 border-b border-dashed border-base-content dark:border-custom-1"
+    class="text-lg lg:text-3xl font-bold text-body-5 pb-4 border-b border-dashed border-base-content dark:border-custom-1"
   >
     كورساتي
   </h2>
-  <div class="grid grid-cols-2 gap-4">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
     @for(course of userCourses()|slice:currentPage*size():currentPage*size()+size();track $index){
     <app-course-card [course]="course" [isPurchased]="true" />
     } @empty {

@@ -1,7 +1,7 @@
 @let course = courseInput(); @let isPaid = isPurchased(); @if(course){
 <div class="card bg-neutral h-full">
   <figure>
-    <img [ngSrc]="course.coverImageURL | imgUrl" width="750" height="422" />
+    <img [ngSrc]="course.coverImageURL | imgUrl" width="750" height="422" priority />
   </figure>
   <div class="card-body p-2.5 lg:p-4">
     <h2 class="card-title text-sm lg:text-xl line-clamp-2 text-body-5 font-bold flex-1">

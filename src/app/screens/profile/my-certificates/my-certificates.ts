@@ -4,7 +4,8 @@ import { CourseCertificate } from '@models/certificate';
 import { CertificateService } from '@services/certificate-service';
 import { ToastService } from '@services/toast-service';
 import { UserService } from '@services/user-service';
-import { switchMap, forkJoin, map, retry } from 'rxjs';
+import { switchMap, forkJoin, map, retry, delay } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-my-certificates',
@@ -21,7 +22,7 @@ export class MyCertificates {
   size = signal(10);
   userCertificates = signal<CourseCertificate[]>(Array(this.size()));
   paginationPages = signal<number[] | null>(null);
-
+  certificatebaseUrl = environment.baseUrl + '/api/FileManage/Image/5/false/';
   ngOnInit(): void {
     this.certificateService
       .getUserCertificates(this.userID, 1)
@@ -43,7 +44,8 @@ export class MyCertificates {
             })
           )
         ),
-        retry(3)
+        retry(3),
+        delay(5000)
       )
       .subscribe({
         next: (data) => {
