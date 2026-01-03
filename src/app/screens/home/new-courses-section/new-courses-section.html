@@ -2,7 +2,7 @@
   <div class="flex justify-center mb-6 lg:mb-8">
     <ng-content></ng-content>
   </div>
-  <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 lg:gap-5">
+  <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5 lg:gap-5">
     @for(course of courses();track $index){
     <app-course-card [course]="course" />
     } @empty {

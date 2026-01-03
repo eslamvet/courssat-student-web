@@ -39,8 +39,23 @@ export const routes: Routes = [
   },
   {
     path: 'confirm-order',
+    title: 'تاكيد عمليه الدفع',
     loadComponent: () =>
       import('./screens/confirm-order/confirm-order').then((c) => c.ConfirmOrder),
+  },
+  {
+    path: 'terms',
+    title: 'الشروط و الاحكام',
+    loadComponent: () =>
+      import('./screens/terms-and-conditions/terms-and-conditions').then(
+        (c) => c.TermsAndConditions
+      ),
+  },
+  {
+    path: 'privacy-policy',
+    title: 'سياسه الخصوصيه',
+    loadComponent: () =>
+      import('./screens/privacy-policy/privacy-policy').then((c) => c.PrivacyPolicy),
   },
   {
     path: 'auth',
@@ -59,5 +74,9 @@ export const routes: Routes = [
       return `/auth/reset-password?${params.toString()}`;
     },
     pathMatch: 'full',
+  },
+  {
+    path: '**',
+    loadComponent: () => import('./screens/not-found/not-found').then((c) => c.NotFound),
   },
 ];

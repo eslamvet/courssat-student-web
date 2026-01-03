@@ -112,7 +112,7 @@
       </div>
     </div>
   </div>
-  <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 lg:gap-5">
+  <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5 lg:gap-5">
     @for(course of package.courses;track $index){
     <app-course-card [course]="course" />
     } @empty {

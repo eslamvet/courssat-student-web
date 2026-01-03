@@ -1,0 +1,58 @@
+@let data = termsData();
+<section class="bg-base-100 container min-h-screen text-start py-10 lg:py-14">
+  <h1
+    class="text-lg lg:text-3xl font-bold text-body-5 pb-4 border-b border-dashed border-base-content dark:border-custom-1 mb-6"
+  >
+    الشروط والأحكام
+  </h1>
+  @if(loading()){ @for(item of [1,2,3];track $index){
+  <div class="skeleton h-7 lg;h-9 w-1/2 lg:w-1/5 mb-3"></div>
+  <div class="skeleton h-5 lg:h-6 w-3/4 lg:w-1/2 mb-3"></div>
+  <ul class="ps-8">
+    @for(item of [1,2,3,4,5]; track $index){
+    <div class="skeleton h-5 lg:h-6 w-full" [class]="{ 'mb-3': !$last, 'mb-6': $last }"></div>
+    }
+  </ul>
+
+  }
+  <div class="skeleton h-10 lg:h-12 w-full lg:w-2/3 mx-auto mt-10"></div>
+  } @else { @for(term of data|slice:0:data.length-1; track $index){
+  <div [class.mb-3]="!$last">
+    <h2
+      class="text-base lg:text-xl font-semibold text-body-5 mb-1"
+      [class.mb-2]="!term.description"
+    >
+      {{ term.title }}
+    </h2>
+    @if(term.description){
+    <p
+      class="text-base-content text-sm lg:text-base leading-relaxed"
+      [class.mb-2]="term.details?.length"
+    >
+      {{ term.description }}
+    </p>
+    } @if(term.details?.length){
+    <ul
+      class="mb-0 ps-8"
+      [class]="{
+        'list-disc': term.type === 'list',
+        'list-decimal': term.type === 'numeric_list'
+      }"
+    >
+      @for(detail of term.details;track $index){
+      <li class="text-base-content text-sm lg:text-base leading-relaxed">
+        {{ detail }}
+      </li>
+      }
+    </ul>
+    }
+  </div>
+  }
+  <div class="divider my-6 lg:my-12 after:h-px before:h-px"></div>
+  <div class="card bg-base-200 text-center p-3 lg:p-6">
+    <p class="text-base-content text-sm lg:text-base">
+      {{ data[data.length - 1]?.description }}
+    </p>
+  </div>
+  }
+</section>

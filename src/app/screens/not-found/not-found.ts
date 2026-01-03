@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-about-us',
+  selector: 'app-not-found',
   imports: [RouterLink],
-  templateUrl: './about-us.html',
-  styleUrl: './about-us.css',
+  templateUrl: './not-found.html',
+  styleUrl: './not-found.css',
 })
-export class AboutUs {}
+export class NotFound {}
