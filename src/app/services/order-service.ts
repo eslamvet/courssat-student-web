@@ -99,6 +99,13 @@ export class OrderService {
     );
   }
 
+  verifyStripePaymentIntent(data: { paymentIntentId: string }) {
+    return this.http.post(
+      `${environment.secondServerUrl}/meeting-order/verify-stripe-payment`,
+      data
+    );
+  }
+
   createTapCharge(data: {
     amount: string;
     currency: string;

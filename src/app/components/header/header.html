@@ -44,11 +44,11 @@
           ></span>
         </label>
       </div>
-      <button class="cursor-pointer">
+      <!-- <button class="cursor-pointer">
         <span class="iconify align-middle ic--round-search text-body-5 text-2xl"></span>
-      </button>
+      </button> -->
       @if(user()){
-      <a class="indicator cursor-pointer hidden lg:inline-block" routerLink="/cart">
+      <a class="indicator cursor-pointer" routerLink="/cart">
         <span class="iconify solar--cart-5-linear align-middle text-body-5 text-2xl"></span>
         <span class="badge badge-sm indicator-item text-secondary">{{ cart().items.length }}</span>
       </a>

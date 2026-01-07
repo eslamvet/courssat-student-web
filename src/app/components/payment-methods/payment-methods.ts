@@ -16,15 +16,27 @@ import { PAYMENTMETHOD, PRODUCTTYPE } from '@models/CoursePurchase';
 import { OrderService } from '@services/order-service';
 import { ToastService } from '@services/toast-service';
 import { UserService } from '@services/user-service';
-import { StripeElementsOptions, StripePaymentElementOptions } from '@stripe/stripe-js';
+import {
+  PaymentIntent,
+  StripeElementsOptions,
+  StripeError,
+  StripeExpressCheckoutElementConfirmEvent,
+  StripeExpressCheckoutElementOptions,
+  StripePaymentElementOptions,
+} from '@stripe/stripe-js';
 import { FAWATEERK_SCRIPT_URL, TABBY_SCRIPT_URL } from '@utils/constants';
 import { generateOrderBody, getUserCountry, loadScriptWithRetries } from '@utils/helpers';
-import { injectStripe, StripeElementsDirective, StripePaymentElementComponent } from 'ngx-stripe';
+import {
+  injectStripe,
+  StripeElementsDirective,
+  StripePaymentElementComponent,
+  StripeExpressCheckoutComponent,
+} from 'ngx-stripe';
 import { environment } from 'src/environments/environment';
 import { Fawaterk } from '@directives/fawaterk';
 import { Course } from '@models/course';
 import { CurrencyService } from '@services/currency-service';
-import { finalize, iif, switchMap, throwError } from 'rxjs';
+import { finalize, iif, switchMap, tap, throwError } from 'rxjs';
 import { CartService } from '@services/cart-service';
 import { Router } from '@angular/router';
 import { IPayPalConfig, NgxPayPalModule } from 'ngx-paypal';
@@ -33,7 +45,13 @@ declare var CardSDK: any;
 
 @Component({
   selector: 'app-payment-methods',
-  imports: [StripeElementsDirective, StripePaymentElementComponent, Fawaterk, NgxPayPalModule],
+  imports: [
+    StripeElementsDirective,
+    StripePaymentElementComponent,
+    Fawaterk,
+    NgxPayPalModule,
+    StripeExpressCheckoutComponent,
+  ],
   templateUrl: './payment-methods.html',
   styleUrl: './payment-methods.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -55,9 +73,10 @@ export class PaymentMethods implements OnChanges {
   renderer = inject(Renderer2);
   ngZone = inject(NgZone);
   router = inject(Router);
-  paymentElement = viewChild(StripePaymentElementComponent);
+  cardElements = viewChild(StripePaymentElementComponent);
+  walletElements = viewChild(StripeExpressCheckoutComponent);
   tapContainerElement = viewChild<ElementRef<HTMLDivElement>>('tapContainer');
-  elementsOptions = signal<StripeElementsOptions>({
+  cardElementsOptions = signal<StripeElementsOptions>({
     locale: 'ar',
     appearance: {
       theme: 'stripe',
@@ -67,6 +86,23 @@ export class PaymentMethods implements OnChanges {
         fontFamily: 'STC, sans-serif',
       },
     },
+  });
+  walletOptions: StripeExpressCheckoutElementOptions = {
+    buttonType: {
+      applePay: 'buy',
+      googlePay: 'buy',
+    },
+    buttonHeight: 55,
+    layout: {
+      maxColumns: 1,
+      maxRows: 2,
+    },
+  };
+  walletElementsOptions = signal<StripeElementsOptions>({
+    mode: 'payment',
+    amount: 0,
+    currency: 'usd',
+    locale: 'ar',
   });
   paymentElementOptions: StripePaymentElementOptions = {
     layout: {
@@ -133,7 +169,12 @@ export class PaymentMethods implements OnChanges {
         )
         .subscribe({
           next: () => {
-            this.fromCart() && this.cartService.setCart({ items: [], coupon: null });
+            this.fromCart()
+              ? this.cartService.setCart({ items: [], coupon: null })
+              : this.cartService.updateCart((prev) => ({
+                  ...prev,
+                  items: prev.items.filter((i) => !this.courses().find((c) => c.id === i.id)),
+                }));
             this.toastService.addToast({
               id: Date.now(),
               type: 'success',
@@ -166,7 +207,7 @@ export class PaymentMethods implements OnChanges {
         message: error.message,
       });
     },
-    onClick: (data, actions: any) => {},
+    onClick: (data, actions) => {},
   };
 
   constructor() {
@@ -174,35 +215,10 @@ export class PaymentMethods implements OnChanges {
       this.tapContainerElement() && this.initiateTapPaymentHandler();
     });
     window.addEventListener('message', this.onMessageHandler.bind(this));
-
-    setInterval(() => {
-      const paymentRequest = this.stripe.paymentRequest({
-        country: 'AE',
-        currency: 'aed',
-        total: {
-          label: 'Demo Product',
-          amount: 1000, // $50
-        },
-        requestPayerName: true,
-        requestPayerEmail: true,
-      });
-
-      // Check Apple Pay / Google Pay availability
-      paymentRequest.canMakePayment().then((result) => {
-        if (result) {
-          console.log('Apple Pay or Google Pay is available:', result);
-        } else {
-          console.warn('Apple Pay or Google Pay not available');
-        }
-      });
-    }, 5000);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (
-      !changes['totalValue'].firstChange &&
-      changes['totalValue'].currentValue !== changes['totalValue'].previousValue
-    ) {
+    if (changes['totalValue'].currentValue !== changes['totalValue'].previousValue) {
       this.selectedPaymentMethod.set(null);
       this.payPalConfig = {
         ...this.payPalConfig,
@@ -212,11 +228,11 @@ export class PaymentMethods implements OnChanges {
             {
               amount: {
                 currency_code: 'USD',
-                value: changes['totalValue'].currentValue.toString(),
+                value: changes['totalValue'].currentValue?.toString(),
                 breakdown: {
                   item_total: {
                     currency_code: 'USD',
-                    value: changes['totalValue'].currentValue.toString(),
+                    value: changes['totalValue'].currentValue?.toString(),
                   },
                 },
               },
@@ -232,22 +248,31 @@ export class PaymentMethods implements OnChanges {
           ],
         }),
       };
+      this.walletElementsOptions.update((options) => ({
+        ...options,
+        amount: changes['totalValue'].currentValue * 100,
+      }));
     }
   }
 
-  getStripePaymentIntentHandler() {
+  getStripePaymentIntentHandler(cardsOnly = false) {
     if (this.isPaying()) return;
-    this.selectedPaymentMethod.set(PAYMENTMETHOD.STRIPE);
+    cardsOnly && this.selectedPaymentMethod.set(PAYMENTMETHOD.STRIPE);
     this.loadingPaymentMethod.set(true);
     this.orderService
       .createStripePaymentIntent({
         amount: this.totalValue() * 100,
         currency: 'usd',
-        cardsOnly: true,
+        cardsOnly,
       })
       .subscribe({
         next: ({ clientSecret }) => {
-          this.elementsOptions.update((options) => ({ ...options, clientSecret, mode: undefined }));
+          cardsOnly &&
+            this.cardElementsOptions.update((options) => ({
+              ...options,
+              clientSecret,
+              mode: undefined,
+            }));
           this.loadingPaymentMethod.set(false);
         },
         error: (error) => {
@@ -259,6 +284,15 @@ export class PaymentMethods implements OnChanges {
           });
         },
       });
+  }
+
+  loadStripeErrorHandler({ error }: { error: StripeError }) {
+    this.toastService.addToast({
+      id: Date.now(),
+      type: 'error',
+      title: 'حدث خطا ما',
+      message: error.message,
+    });
   }
 
   loadFawaterkPaymentMethodHandler() {
@@ -299,6 +333,7 @@ export class PaymentMethods implements OnChanges {
             this.couponId()
           ),
           fromCart: this.fromCart(),
+          skipOnlineCheck: true,
           type: PRODUCTTYPE.COURSE,
         },
       },
@@ -407,6 +442,7 @@ export class PaymentMethods implements OnChanges {
                 ...orderData,
                 paymentDetailVMs: JSON.stringify(orderData.paymentDetailVMs),
                 fromCart: this.fromCart(),
+                skipOnlineCheck: true,
                 type: PRODUCTTYPE.COURSE,
                 user_token: localStorage.getItem('courssat-user-token'),
               },
@@ -464,6 +500,7 @@ export class PaymentMethods implements OnChanges {
         metadata: {
           ...orderData,
           fromCart: this.fromCart(),
+          skipOnlineCheck: true,
           type: PRODUCTTYPE.COURSE,
           paymentDetailVMs: JSON.stringify(orderData.paymentDetailVMs),
           user_token: localStorage.getItem('courssat-user-token'),
@@ -493,13 +530,13 @@ export class PaymentMethods implements OnChanges {
       });
   }
 
-  confirmStripePaymentHandler() {
+  confirmStripePaymentHandler(cardsOnly = false) {
     if (this.isPaying()) return;
     this.isPaying.set(true);
-    this.paymentElement()?.elements.submit();
+    cardsOnly && this.cardElements()?.elements.submit();
     this.stripe
       .confirmPayment({
-        elements: this.paymentElement()?.elements,
+        elements: cardsOnly ? this.cardElements()?.elements : undefined,
         confirmParams: {
           payment_method_data: {
             billing_details: {
@@ -514,7 +551,7 @@ export class PaymentMethods implements OnChanges {
           },
         },
         redirect: 'if_required',
-        clientSecret: this.elementsOptions().clientSecret!,
+        clientSecret: cardsOnly ? this.cardElementsOptions().clientSecret! : '',
       })
       .pipe(
         switchMap((result) =>
@@ -534,38 +571,18 @@ export class PaymentMethods implements OnChanges {
       )
       .subscribe({
         next: () => {
-          this.fromCart() && this.cartService.setCart({ items: [], coupon: null });
+          this.fromCart()
+            ? this.cartService.setCart({ items: [], coupon: null })
+            : this.cartService.updateCart((prev) => ({
+                ...prev,
+                items: prev.items.filter((i) => !this.courses().find((c) => c.id === i.id)),
+              }));
           this.toastService.addToast({
             id: Date.now(),
             type: 'success',
             title: 'تم الشراء بنجاح',
           });
           this.router.navigate(['profile', 'my-courses']);
-        },
-        error: (error) => {
-          this.toastService.addToast({
-            id: Date.now(),
-            type: 'error',
-            title: 'حدث خطا ما',
-            message: error.message,
-          });
-        },
-      });
-  }
-
-  initiateStripeApplePayHandler() {
-    if (this.isPaying()) return;
-    this.selectedPaymentMethod.set(PAYMENTMETHOD.STRIPE);
-    this.loadingPaymentMethod.set(true);
-    this.orderService
-      .createStripePaymentIntent({
-        amount: this.totalValue() * 100,
-        currency: 'usd',
-      })
-      .subscribe({
-        next: ({ clientSecret }) => {
-          this.elementsOptions.update((options) => ({ ...options, clientSecret, mode: undefined }));
-          this.loadingPaymentMethod.set(false);
         },
         error: (error) => {
           this.toastService.addToast({
@@ -594,7 +611,12 @@ export class PaymentMethods implements OnChanges {
           .pipe(finalize(() => this.isPaying.set(false)))
           .subscribe({
             next: () => {
-              this.fromCart() && this.cartService.setCart({ items: [], coupon: null });
+              this.fromCart()
+                ? this.cartService.setCart({ items: [], coupon: null })
+                : this.cartService.updateCart((prev) => ({
+                    ...prev,
+                    items: prev.items.filter((i) => !this.courses().find((c) => c.id === i.id)),
+                  }));
               this.toastService.addToast({
                 id: Date.now(),
                 type: 'success',
@@ -613,6 +635,90 @@ export class PaymentMethods implements OnChanges {
           });
       }
     }
+  }
+
+  onWalletPaymentConfirm(
+    event: StripeExpressCheckoutElementConfirmEvent & {
+      paymentIntent?: PaymentIntent;
+    }
+  ) {
+    const pi = event.paymentIntent;
+    if (!pi) return;
+    switch (pi.status) {
+      case 'succeeded':
+        this.orderService
+          .verifyStripePaymentIntent({
+            paymentIntentId: pi.id,
+          })
+          .pipe(
+            tap({
+              subscribe: () => {
+                this.isPaying.set(true);
+              },
+            }),
+            switchMap(() =>
+              this.orderService.createOrder(
+                this.user!,
+                this.totalValue(),
+                this.totalOriginalValue(),
+                this.courses(),
+                this.couponId()
+              )
+            ),
+            finalize(() => this.isPaying.set(false))
+          )
+          .subscribe({
+            next: () => {
+              this.fromCart()
+                ? this.cartService.setCart({ items: [], coupon: null })
+                : this.cartService.updateCart((prev) => ({
+                    ...prev,
+                    items: prev.items.filter((i) => !this.courses().find((c) => c.id === i.id)),
+                  }));
+              this.toastService.addToast({
+                id: Date.now(),
+                type: 'success',
+                title: 'تم الشراء بنجاح',
+              });
+              this.router.navigate(['profile', 'my-courses']);
+            },
+            error: (error) => {
+              this.toastService.addToast({
+                id: Date.now(),
+                type: 'error',
+                title: 'حدث خطا ما',
+                message: error.message,
+              });
+            },
+          });
+        break;
+
+      case 'processing':
+        this.toastService.addToast({
+          id: Date.now(),
+          type: 'info',
+          title: 'تنبيه',
+          message: 'عمليه الدفع قيد المراجعه',
+        });
+        break;
+
+      default:
+        this.toastService.addToast({
+          id: Date.now(),
+          type: 'error',
+          title: 'حدث خطا ما',
+          message: 'تم الغاء عمليه الدفع',
+        });
+    }
+  }
+
+  onWalletPaymentCancel() {
+    this.toastService.addToast({
+      id: Date.now(),
+      type: 'info',
+      title: 'تنبيه',
+      message: 'تم الغاء عمليه الدفع',
+    });
   }
 
   ngOnDestroy(): void {

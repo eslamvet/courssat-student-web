@@ -16,7 +16,8 @@ import { filter, fromEvent } from 'rxjs';
   selector: 'app-sidenav-menu',
   imports: [RouterLink],
   host: {
-    class: 'w-full',
+    class:
+      'w-full h-full bg-[linear-gradient(255.26deg,rgba(248,177,0,0.07)_-99.48%,rgba(10,62,110,0.07)_105.75%)]',
   },
   templateUrl: './sidenav-menu.html',
   styleUrl: './sidenav-menu.css',

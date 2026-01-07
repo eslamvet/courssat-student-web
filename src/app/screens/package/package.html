@@ -2,10 +2,12 @@
 <section class="container pt-7 pb-10 lg:pt-10 lg:pb-16">
   <div class="bg-base-200 rounded-sm py-6 px-4 lg:px-8 mb-8 lg:mb-12">
     <div class="flex flex-wrap gap-4 lg:gap-6">
-      <div class="flex-1 lg:basis-1/4 lg:flex-none bg-package-card p-5 lg:p-8.5">
+      <div
+        class="flex-1 lg:basis-1/4 lg:flex-none min-h-27 lg:min-h-54 bg-package-card p-5 lg:p-8.5"
+      >
         @if(package.id){
         <div class="relative w-full h-full">
-          <img [ngSrc]="package.imageUrl | imgUrl : 'package'" [fill]="true" />
+          <img [ngSrc]="package.imageUrl | imgUrl : 'package'" fill priority />
         </div>
         } @else {
         <div class="skeleton w-full h-full"></div>
@@ -26,33 +28,33 @@
           <div class="skeleton order-1 lg:order-2 h-7 w-16 lg:w-25 lg:h-9 rounded-full"></div>
           }
         </div>
-        @if(package.id){
-        <p class="text-xl hidden lg:block text-base-content">
+        @if(!isMobile){ @if(package.id){
+        <p class="text-xl text-base-content">
           {{ package.packageDescription_AR }}
         </p>
         } @else{
-        <div class="skeleton hidden lg:block w-full h-6 mb-3"></div>
-        <div class="skeleton hidden lg:block w-full h-6 mb-3"></div>
-        <div class="skeleton hidden lg:block w-full h-6 mb-3"></div>
-        <div class="skeleton hidden lg:block w-1/2 h-6"></div>
-        }
+        <div class="skeleton w-full h-6 mb-3"></div>
+        <div class="skeleton w-full h-6 mb-3"></div>
+        <div class="skeleton w-full h-6 mb-3"></div>
+        <div class="skeleton w-1/2 h-6"></div>
+        } }
       </div>
-      @if(package.id){
-      <p class="text-xs basis-full block lg:hidden text-base-content mb-3">
+      @if(isMobile){ @if(package.id){
+      <p class="text-xs basis-full text-base-content mb-3">
         {{ package.packageDescription_AR }}
       </p>
       }@else{
       <div class="w-full">
-        <div class="skeleton block lg:hidden w-full h-5 mb-2"></div>
-        <div class="skeleton block lg:hidden w-full h-5 mb-2"></div>
-        <div class="skeleton block lg:hidden w-full h-5 mb-2"></div>
-        <div class="skeleton block lg:hidden w-1/2 h-5 mb-3"></div>
+        <div class="skeleton w-full h-5 mb-2"></div>
+        <div class="skeleton w-full h-5 mb-2"></div>
+        <div class="skeleton w-full h-5 mb-2"></div>
+        <div class="skeleton w-1/2 h-5 mb-3"></div>
       </div>
-      }
+      } }
     </div>
     <div class="my-4 hidden lg:block border-b border-dashed border-custom-1"></div>
     <div class="flex flex-wrap gap-4">
-      <div class="flex basis-full lg:basis-1/4 items-center gap-4">
+      <div class="flex basis-full lg:basis-auto items-center gap-4">
         @if(package.id){
         <div class="flex items-center gap-1">
           <span
@@ -83,7 +85,7 @@
         </button>
         <button
           class="flex-1 lg:flex-none btn btn-base lg:btn-lg lg:text-base rounded-xs btn-primary px-1 lg:px-12"
-          (click)="addToCartHandler()"
+          (click)="purchasePackageHandler()"
         >
           <span>إشترك الآن</span
           ><span class="text-secondary">{{
@@ -94,7 +96,7 @@
             [class]="{ 'font-saudi-riyal': isSaudi, 'text-2xl': isSaudi }"
             >{{ currency.code }}</span
           >
-          @if(package.discountPrice! < package.originalPrice!){
+          @if(!isMobile && package.discountPrice! < package.originalPrice!){
           <span class="text-base-content line-through"
             >{{ package.originalPrice! * currency.value | number : '1.0-0'
             }}<span
@@ -122,3 +124,20 @@
     }
   </div>
 </section>
+@if(package.id){
+<dialog id="courssat_checkout_modal" class="modal">
+  <div class="modal-box max-w-3xl max-h-9/10">
+    <app-payment-methods
+      [courses]="courseArr()"
+      [totalValue]="package.discountPrice!"
+      [totalOriginalValue]="(package.originalPrice || package.discountPrice)!"
+      customPaymentBtnClass="w-full"
+    />
+    <div class="modal-action justify-stretch sticky bottom-0">
+      <form method="dialog" class="flex-1">
+        <button class="btn btn-lg btn-ghost w-full">الغاء</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+}

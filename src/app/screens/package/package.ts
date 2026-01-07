@@ -1,5 +1,5 @@
 import { DecimalPipe, NgOptimizedImage } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CourseCard } from '@components/course-card/course-card';
 import { Course } from '@models/course';
@@ -12,16 +12,35 @@ import { ToastService } from '@services/toast-service';
 import { UserService } from '@services/user-service';
 import { getUserCountry } from '@utils/helpers';
 import { forkJoin, retry } from 'rxjs';
+import { PaymentMethods } from '@components/payment-methods/payment-methods';
+import { CertificateService } from '@services/certificate-service';
 
 @Component({
   selector: 'app-package',
-  imports: [CourseCard, DecimalPipe, ImgUrlPipe, NgOptimizedImage],
+  imports: [CourseCard, DecimalPipe, ImgUrlPipe, NgOptimizedImage, PaymentMethods],
   templateUrl: './package.html',
   styleUrl: './package.css',
-  providers: [PackageService],
+  providers: [PackageService, CertificateService],
 })
 export class PackageScreen implements OnInit {
   packageSignal = signal<Partial<Package & { courses: Course[] }>>({ courses: Array(4) });
+  courseArr = computed(() => [
+    {
+      id: this.packageSignal().id!,
+      firstName: this.packageSignal().firstName!,
+      familyName: this.packageSignal().familyName!,
+      courseName_AR: this.packageSignal().packageName_AR!,
+      coverImageURL: this.packageSignal().imageUrl!,
+      originalPrice: this.packageSignal().originalPrice,
+      discountPrice: this.packageSignal().discountPrice!,
+      packageId: this.packageSignal().id,
+      userId: this.packageSignal().userId,
+      relatedCourses: this.packageSignal().courses,
+      courseNames: this.packageSignal()?.courses?.map((c: any) => c.courseName_AR),
+      courseIds: this.packageSignal()?.courses?.map((c: any) => c.id),
+      packageName: this.packageSignal()?.packageName_AR,
+    },
+  ]);
   packageService = inject(PackageService);
   cartService = inject(CartService);
   toastService = inject(ToastService);
@@ -29,6 +48,8 @@ export class PackageScreen implements OnInit {
   routeParams = inject(ActivatedRoute).snapshot.params;
   user = inject(UserService).user;
   isSaudi = getUserCountry() == 'SA';
+  isMobile = matchMedia('(width <= 640px)').matches;
+
   ngOnInit(): void {
     forkJoin([
       this.packageService.getPackageDetails(this.routeParams['packageId'], this.user()?.id),
@@ -65,20 +86,10 @@ export class PackageScreen implements OnInit {
   }
 
   addToCartHandler() {
-    this.cartService.addToCart({
-      id: this.packageSignal().id!,
-      firstName: this.packageSignal().firstName!,
-      familyName: this.packageSignal().familyName!,
-      courseName_AR: this.packageSignal().packageName_AR!,
-      coverImageURL: this.packageSignal().imageUrl!,
-      originalPrice: this.packageSignal().originalPrice,
-      discountPrice: this.packageSignal().discountPrice!,
-      packageId: this.packageSignal().id,
-      userId: this.packageSignal().userId,
-      relatedCourses: this.packageSignal().courses,
-      courseNames: this.packageSignal()?.courses?.map((c: any) => c.courseName_AR),
-      courseIds: this.packageSignal()?.courses?.map((c: any) => c.id),
-      packageName: this.packageSignal()?.packageName_AR,
-    });
+    this.cartService.addToCart(this.courseArr()[0]);
+  }
+
+  purchasePackageHandler() {
+    (document.getElementById('courssat_checkout_modal') as HTMLDialogElement)?.showModal();
   }
 }
