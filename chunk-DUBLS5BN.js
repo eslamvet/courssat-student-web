@@ -1,0 +1,1 @@
+import{r as a}from"./chunk-Q23L6LWU.js";import{X as r,aa as o}from"./chunk-ZPGQN5EY.js";var c=class e{http=o(a);getUserCertificates(t,i){return this.http.get(`/api/Certificate/${i}/${t}`)}createCourseCertificate(t){return this.http.post("/api/Certificate",t)}static \u0275fac=function(i){return new(i||e)};static \u0275prov=r({token:e,factory:e.\u0275fac})};export{c as a};
