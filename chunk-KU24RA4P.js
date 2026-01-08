@@ -1,1 +1,0 @@
-import{a as t}from"./chunk-MKHHFYBJ.js";import{ib as i}from"./chunk-2ZBRTNB4.js";var n=class a{transform(r,e="course"){return r?`${t.baseUrl}/api/FileManage/Image/${e==="course"?"1":e==="package"?"2":"3"}/true/${r}`:"/images/package-placeholder.svg"}static \u0275fac=function(e){return new(e||a)};static \u0275pipe=i({name:"imgUrl",type:a,pure:!0})};export{n as a};
