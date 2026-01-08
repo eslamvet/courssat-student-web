@@ -1,0 +1,55 @@
+[
+  {
+    "id": 194,
+    "sections_with_free_lessons": [
+      {
+        "index": 1,
+        "free_lessons_indexes": [1, 2, 3]
+      }
+    ]
+  },
+  {
+    "id": 171,
+    "sections_with_free_lessons": [
+      {
+        "index": 1,
+        "free_lessons_indexes": [1]
+      },
+      {
+        "index": 2,
+        "free_lessons_indexes": [1]
+      }
+    ]
+  },
+  {
+    "id": 198,
+    "sections_with_free_lessons": [
+      {
+        "index": 6,
+        "free_lessons_indexes": [1]
+      },
+      {
+        "index": 8,
+        "free_lessons_indexes": [1]
+      }
+    ]
+  },
+  {
+    "id": 222,
+    "sections_with_free_lessons": [
+      {
+        "index": 3,
+        "free_lessons_indexes": [1, 2]
+      }
+    ]
+  },
+  {
+    "id": 221,
+    "sections_with_free_lessons": [
+      {
+        "index": 4,
+        "free_lessons_indexes": [1, 4]
+      }
+    ]
+  }
+]

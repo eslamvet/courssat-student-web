@@ -1,0 +1,28 @@
+[
+  {
+    "id": 201,
+    "hourCount": 60,
+    "lessonCount": 15,
+    "studentsCount": 3037,
+    "likeCount": 50,
+    "disLikeCount": 0,
+    "sections_with_free_lessons": [
+      {
+        "index": 1,
+        "free_lessons_indexes": [1]
+      }
+    ],
+    "reviews": [
+      {
+        "id": 1,
+        "isLike": true,
+        "evaluationComment": "💚💚💚💚💚💚💚",
+        "firstName": "إلهام ",
+        "familyName": "صبحي ",
+        "imageURL": "ebeefc0e-ecff-440a-8fec-255617ce7610_graduated.png",
+        "date": "2023-12-23"
+      }
+    ],
+    "redirect_url": "https://www.codezilla.courses/introduction-to-programming/euahb?coupon=courssat"
+  }
+]
