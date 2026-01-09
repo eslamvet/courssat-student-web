@@ -1,1 +1,0 @@
-import{r as i}from"./chunk-Q23L6LWU.js";import{X as r,aa as e}from"./chunk-ZPGQN5EY.js";var a=class t{http=e(i);getTerms(){return this.http.get("json/terms.json",{params:{d:Date.now()}})}getPrivacyPolicy(){return this.http.get("json/privacy.json",{params:{d:Date.now()}})}static \u0275fac=function(n){return new(n||t)};static \u0275prov=r({token:t,factory:t.\u0275fac})};export{a};
