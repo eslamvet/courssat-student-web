@@ -4,7 +4,7 @@ import { CourseCertificate } from '@models/certificate';
 import { CertificateService } from '@services/certificate-service';
 import { ToastService } from '@services/toast-service';
 import { UserService } from '@services/user-service';
-import { switchMap, forkJoin, map, retry, delay } from 'rxjs';
+import { switchMap, forkJoin, map, retry, iif, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -28,24 +28,27 @@ export class MyCertificates {
       .getUserCertificates(this.userID, 1)
       .pipe(
         switchMap(({ list, pagination: { total_pages } }) =>
-          forkJoin(
-            Array.from({ length: total_pages - 1 }, (_, index) =>
-              this.certificateService.getUserCertificates(this.userID, index + 2)
-            )
-          ).pipe(
-            map((data) => {
-              const userCertificates = Array.from(
-                new Map<string, CourseCertificate>(
-                  list.concat(data.map((d) => d.list).flat()).map((c) => [c.id, c])
-                ).values()
-              );
-              userCertificates.reverse();
-              return userCertificates;
-            })
+          iif(
+            () => total_pages > 1,
+            forkJoin(
+              Array.from({ length: total_pages - 1 }, (_, index) =>
+                this.certificateService.getUserCertificates(this.userID, index + 2)
+              )
+            ).pipe(
+              map((data) => {
+                const userCertificates = Array.from(
+                  new Map<string, CourseCertificate>(
+                    list.concat(data.map((d) => d.list).flat()).map((c) => [c.id, c])
+                  ).values()
+                );
+                userCertificates.reverse();
+                return userCertificates;
+              })
+            ),
+            of(list)
           )
         ),
-        retry(3),
-        delay(5000)
+        retry(3)
       )
       .subscribe({
         next: (data) => {

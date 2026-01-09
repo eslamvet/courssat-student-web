@@ -3,7 +3,7 @@ import { Course } from '@models/course';
 import { CourseService } from '@services/course-service';
 import { ToastService } from '@services/toast-service';
 import { UserService } from '@services/user-service';
-import { forkJoin, map, retry, switchMap } from 'rxjs';
+import { forkJoin, iif, map, of, retry, switchMap } from 'rxjs';
 import { CourseCard } from '@components/course-card/course-card';
 import { SlicePipe } from '@angular/common';
 
@@ -28,20 +28,24 @@ export class MyCourses implements OnInit {
       .getUserCourses(this.userID, 1)
       .pipe(
         switchMap(({ list, pagination: { total_pages } }) =>
-          forkJoin(
-            Array.from({ length: total_pages - 1 }, (_, index) =>
-              this.courseService.getUserCourses(this.userID, index + 2)
-            )
-          ).pipe(
-            map((data) => {
-              const userCourses = Array.from(
-                new Map<number, Course>(
-                  list.concat(data.map((d) => d.list).flat()).map((c) => [c.id, c])
-                ).values()
-              );
-              userCourses.reverse();
-              return userCourses;
-            })
+          iif(
+            () => total_pages > 1,
+            forkJoin(
+              Array.from({ length: total_pages - 1 }, (_, index) =>
+                this.courseService.getUserCourses(this.userID, index + 2)
+              )
+            ).pipe(
+              map((data) => {
+                const userCourses = Array.from(
+                  new Map<number, Course>(
+                    list.concat(data.map((d) => d.list).flat()).map((c) => [c.id, c])
+                  ).values()
+                );
+                userCourses.reverse();
+                return userCourses;
+              })
+            ),
+            of(list)
           )
         ),
         retry(3)
