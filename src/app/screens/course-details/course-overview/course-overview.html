@@ -6,9 +6,11 @@
   <h3 class="lg:text-[22px] font-bold text-body-5">{{ courseDataVM.question }}</h3>
   <ul class="list-none">
     @for(courseDataVMAnswer of courseDataVM.answers; track courseDataVMAnswer.id){
-    <li class="flex items-center gap-4">
+    <li class="flex gap-4" [class]="{ 'mb-1': !$last, 'md:mb-2': !$last }">
       <span class="iconify hugeicons--cursor-pointer-02 text-2xl text-base-content"></span
-      ><span class="text-sm lg:text-lg text-base-content">{{ courseDataVMAnswer.answer }}</span>
+      ><span class="text-sm flex-1 lg:text-lg text-base-content">{{
+        courseDataVMAnswer.answer
+      }}</span>
     </li>
     }
   </ul>
