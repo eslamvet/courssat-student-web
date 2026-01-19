@@ -6,9 +6,9 @@ export const categories = [
     imageUrl: '/images/science.svg',
     path: '/category/coding-programming',
   },
-  { id: 19, name: 'التسويق', imageUrl: 'images/marketing.svg', path: '/category/marketing' },
-  { id: 24, name: 'إدارة أعمال', imageUrl: 'images/business.svg', path: '/category/business' },
-  { id: 22, name: 'صناعه المحتوي', imageUrl: 'images/cinema.svg', path: '/category/cinema' },
+  { id: 19, name: 'التسويق', imageUrl: '/images/marketing.svg', path: '/category/marketing' },
+  { id: 24, name: 'إدارة أعمال', imageUrl: '/images/business.svg', path: '/category/business' },
+  { id: 22, name: 'صناعه المحتوي', imageUrl: '/images/cinema.svg', path: '/category/cinema' },
   {
     id: 23,
     name: 'اللغات',
