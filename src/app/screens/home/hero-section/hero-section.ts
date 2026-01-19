@@ -15,6 +15,7 @@ import { ImgUrlPipe } from '@pipes/img-url-pipe';
 import { CourseService } from '@services/course-service';
 import { CurrencyService } from '@services/currency-service';
 import { ToastService } from '@services/toast-service';
+import { UserCountry } from '@utils/constants';
 import { getUserCountry } from '@utils/helpers';
 
 @Component({
@@ -29,7 +30,8 @@ export class HeroSection implements AfterViewInit {
   courseService = inject(CourseService);
   toastService = inject(ToastService);
   currency = inject(CurrencyService).currency();
-  isSaudi = getUserCountry() === 'SA';
+  userCountry = getUserCountry();
+  UserCountry = UserCountry;
   isMobile = matchMedia('(width <= 640px)').matches;
   gridCols;
   items = ['JavaScript', 'TypeScript', 'Angular', 'React', 'Vue', 'Svelte', 'Node.js', 'NestJS'];

@@ -6,12 +6,12 @@ import { CourseService } from '@services/course-service';
 import { ToastService } from '@services/toast-service';
 import { categories } from '@utils/constants';
 import { CourseCard } from '@components/course-card/course-card';
-import { delay } from 'rxjs';
 import { SlicePipe } from '@angular/common';
+import { PaginatorPipe } from '@pipes/paginator-pipe';
 
 @Component({
   selector: 'app-category',
-  imports: [CourseCard, SlicePipe],
+  imports: [CourseCard, SlicePipe, PaginatorPipe],
   templateUrl: './category.html',
   styleUrl: './category.css',
   providers: [CourseService],
@@ -36,35 +36,28 @@ export class Category implements OnInit {
     const department =
       categories.find((c) => c.path.includes(this.route.snapshot.params['categoryId'])) ??
       categories[0];
-    this.courseService
-      .getAllCoursesByDepartmentId(department.id)
-      .pipe(delay(5000))
-      .subscribe({
-        next: (data) => {
-          this.courseDepartmentSignal.set({
-            ...department,
-            list: data,
-            pagination: {
-              current_page: 0,
-              total_count: data.length,
-              pages: Array.from(
-                { length: Math.ceil(data.length / this.size()) },
-                (_, index) => ++index
-              ),
-              total_pages: Math.ceil(data.length / this.size()),
-              total_items: data.length,
-            },
-          });
-        },
-        error: (error) => {
-          this.toastService.addToast({
-            id: Date.now(),
-            type: 'error',
-            title: 'حدث خطا ما',
-            message: error.message,
-          });
-        },
-      });
+    this.courseService.getAllCoursesByDepartmentId(department.id).subscribe({
+      next: (data) => {
+        this.courseDepartmentSignal.set({
+          ...department,
+          list: data,
+          pagination: {
+            current_page: 0,
+            total_count: data.length,
+            total_pages: Math.ceil(data.length / this.size()),
+            total_items: data.length,
+          },
+        });
+      },
+      error: (error) => {
+        this.toastService.addToast({
+          id: Date.now(),
+          type: 'error',
+          title: 'حدث خطا ما',
+          message: error.message,
+        });
+      },
+    });
   }
 
   paginateHandler(page: number) {

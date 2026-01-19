@@ -1,4 +1,6 @@
-@let pages = paginationPages(); @let currentPage = page();
+@let courses = userCourses(); @let currentPage = page(); @let pages =
+courses.length|paginator:size():currentPage;
+
 <section class="flex flex-col gap-10">
   <h2
     class="text-lg lg:text-3xl font-bold text-body-5 pb-4 border-b border-dashed border-base-content dark:border-custom-1"
@@ -6,7 +8,7 @@
     كورساتي
   </h2>
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-    @for(course of userCourses()|slice:currentPage*size():currentPage*size()+size();track $index){
+    @for(course of courses|slice:currentPage*size():currentPage*size()+size();track $index){
     <app-course-card [course]="course" [isPurchased]="true" />
     } @empty {
     <div role="alert" class="col-span-4 alert alert-info justify-center alert-soft">
@@ -28,8 +30,9 @@
       class="join-item btn btn-square"
       type="radio"
       [attr.aria-label]="page"
-      [checked]="currentPage === $index"
-      (change)="paginateHandler($index)"
+      [checked]="currentPage === +page - 1"
+      (change)="page !== '...' && paginateHandler(+page - 1)"
+      [class.btn-disabled]="page === '...'"
     />
     }
     <button

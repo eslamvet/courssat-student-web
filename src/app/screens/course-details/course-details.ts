@@ -21,6 +21,7 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { PaymentMethods } from '@components/payment-methods/payment-methods';
 import { CertificateService } from '@services/certificate-service';
 import { FavouriteCourseService } from '@services/favourite-course-service';
+import { UserCountry } from '@utils/constants';
 
 @Component({
   selector: 'app-course-details',
@@ -107,7 +108,12 @@ export class CourseDetails implements OnInit {
           let customCourse;
           if (!course.isPaied) {
             const customPrice = customPrices.find((p) => p['course-id'] == course.id);
-            if (customPrice && ['EG', 'SA'].includes(getUserCountry())) {
+            if (
+              customPrice &&
+              [UserCountry.EG, UserCountry.SA].includes(
+                getUserCountry() as typeof UserCountry.EG | typeof UserCountry.SA
+              )
+            ) {
               course.discountPrice = Math.ceil(
                 (getUserCountry() === 'EG' ? customPrice['egp-price'] : customPrice['sar-price']) /
                   this.currencyService.currency().value

@@ -5,6 +5,7 @@ import {
   ElementRef,
   inject,
   input,
+  isDevMode,
   NgZone,
   OnChanges,
   Renderer2,
@@ -24,7 +25,7 @@ import {
   StripeExpressCheckoutElementOptions,
   StripePaymentElementOptions,
 } from '@stripe/stripe-js';
-import { FAWATEERK_SCRIPT_URL, TABBY_SCRIPT_URL } from '@utils/constants';
+import { FAWATEERK_SCRIPT_URL, TABBY_SCRIPT_URL, UserCountry } from '@utils/constants';
 import { generateOrderBody, getUserCountry, loadScriptWithRetries } from '@utils/helpers';
 import {
   injectStripe,
@@ -113,6 +114,7 @@ export class PaymentMethods implements OnChanges {
     },
   };
   userCountry = getUserCountry();
+  UserCountry = UserCountry;
   PAYMENTMETHOD = PAYMENTMETHOD;
   loadingPaymentMethod = signal<boolean>(false);
   isPaying = signal<boolean>(false);
@@ -300,7 +302,7 @@ export class PaymentMethods implements OnChanges {
     this.selectedPaymentMethod.set(PAYMENTMETHOD.FAWATEERK);
     window.pluginConfig = {
       hashKey: environment.fawateerk_hash_key,
-      envType: 'test',
+      envType: isDevMode() ? 'test' : 'live',
       style: {
         listing: 'horizontal',
       },

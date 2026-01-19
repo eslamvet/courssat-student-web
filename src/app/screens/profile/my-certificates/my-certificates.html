@@ -1,4 +1,5 @@
-@let pages = paginationPages(); @let currentPage = page();
+@let certificates = userCertificates(); @let currentPage = page(); @let pages =
+certificates.length|paginator:size():currentPage;
 <section class="flex flex-col gap-10">
   <h2
     class="text-lg lg:text-3xl font-bold text-body-5 pb-4 border-b border-dashed border-base-content dark:border-custom-1"
@@ -6,14 +7,14 @@
     شهاداتي
   </h2>
   <div class="lg:pe-25 flex flex-col gap-4">
-    @for(certificate of userCertificates()|slice:currentPage*size():currentPage*size()+size(); track
+    @for(certificate of certificates|slice:currentPage*size():currentPage*size()+size(); track
     $index){ @if(certificate){
     <a
       class="py-2 px-3 lg:px-6 border border-dashed border-base-content rounded-sm flex gap-3 lg:gap-6 cursor-pointer"
       [href]="certificatebaseUrl + certificate.id"
       target="_blank"
     >
-      <img class="w-8 h-8 lg:w-14 lg:h-14" src="/images/certificate.svg" alt="certificate-img" />
+      <img class="w-8 h-8 lg:w-14 lg:h-14" src="images/certificate.svg" alt="certificate-img" />
       <div class="flex-1 flex flex-col gap-3 lg:gap-4">
         <h3 class="text-sm lg:text-xl text-body-5">{{ certificate.courseName }}</h3>
         <div class="flex gap-7">
@@ -61,8 +62,9 @@
       class="join-item btn btn-square"
       type="radio"
       [attr.aria-label]="page"
-      [checked]="currentPage === $index"
-      (change)="paginateHandler($index)"
+      [checked]="currentPage === +page - 1"
+      (change)="page !== '...' && paginateHandler(+page - 1)"
+      [class.btn-disabled]="page === '...'"
     />
     }
     <button

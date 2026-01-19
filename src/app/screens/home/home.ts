@@ -11,6 +11,7 @@ import { forkJoin, noop, retry } from 'rxjs';
 import { PackageService } from '@services/package-service';
 import { PackageData } from '@models/package';
 import { getUserCountry } from '@utils/helpers';
+import { UserCountry } from '@utils/constants';
 
 @Component({
   selector: 'app-home',
@@ -57,14 +58,14 @@ export class Home implements OnInit {
           const remainingTimeInSec = Math.floor((new Date(end_date).getTime() - Date.now()) / 1000);
           this.packageJsonData.set({
             title:
-              countryCode === 'EG'
+              countryCode === UserCountry.EG
                 ? eg_section_title
-                : countryCode === 'SA'
+                : countryCode === UserCountry.SA
                 ? sa_section_title
                 : default_section_title,
-            data: (countryCode === 'EG'
+            data: (countryCode === UserCountry.EG
               ? eg_packages
-              : countryCode === 'SA'
+              : countryCode === UserCountry.SA
               ? sa_packages
               : default_packages
             )

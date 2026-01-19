@@ -48,11 +48,11 @@
       </p>
       <div class="flex justify-center gap-5 lg:gap-16">
         <div class="text-center">
-          <h3 class="text-body-5 font-bold mb-3 text-2xl lg:text-5xl">+100K</h3>
+          <h3 class="text-body-5 font-bold mb-3 text-2xl lg:text-5xl">+200K</h3>
           <p class="text-sm lg:text-base text-body-2">طلابنا المسجلين</p>
         </div>
         <div class="text-center">
-          <h3 class="text-body-5 font-bold mb-3 text-2xl lg:text-5xl">+100K</h3>
+          <h3 class="text-body-5 font-bold mb-3 text-2xl lg:text-5xl">+100</h3>
           <p class="text-sm lg:text-base text-body-2">مدربينا</p>
         </div>
         <div class="text-center">
@@ -116,9 +116,13 @@
                     >{{
                       (course.discountPrice || course.originalPrice || 0) * currency.value
                         | number : '1.0-0'
-                    }}<span [class]="{ 'font-saudi-riyal': isSaudi, 'text-lg': isSaudi }">{{
-                      currency.code
-                    }}</span></span
+                    }}<span
+                      [class]="{
+                        'font-saudi-riyal': userCountry === UserCountry.SA,
+                        'text-lg': userCountry === UserCountry.SA
+                      }"
+                      >{{ currency.code }}</span
+                    ></span
                   >
                 </div>
               </div>
@@ -152,11 +156,21 @@
       class="mt-5 lg:mt-0 lg:-mb-11 w-full bg-neutral border border-dashed border-base-content shadow pb-5 pt-2 lg:py-2 px-5.5 flex justify-center flex-wrap gap-x-6.5 lg:gap-x-10 xl:gap-x-12 2xl:lg:gap-x-16"
     >
       <img class="w-14 lg:w-auto" src="/images/Master-card.svg" />
-      <img class="w-14 lg:w-auto" src="/images/Mada.svg" />
-      <img class="w-14 lg:w-auto" src="/images/Paypal.svg" />
+      @if(userCountry === UserCountry.SA || userCountry === UserCountry.EG){
+      <img
+        class="w-14 lg:w-auto object-contain"
+        src="/images/{{ userCountry === UserCountry.SA ? 'Mada.svg' : 'vc.jpg' }}"
+      />
+      }
+      <img class="w-14 lg:h-26 lg:w-auto" src="/images/paypal.png" />
       <img class="w-14 lg:w-auto" src="/images/Applepay.svg" />
       <img class="w-14 lg:w-auto" src="/images/Googlepay.svg" />
-      <img class="w-14 lg:w-auto" src="/images/Tabby.svg" />
+      @if(userCountry === UserCountry.SA || userCountry === UserCountry.EG){
+      <img
+        class="w-14 lg:w-auto object-contain"
+        src="/images/{{ userCountry === UserCountry.SA ? 'Tabby.svg' : 'fawry-seeklogo.png' }}"
+      />
+      }
     </div>
   </div>
 </section>

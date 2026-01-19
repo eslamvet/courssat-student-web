@@ -25,6 +25,7 @@ import { ToastService } from '@services/toast-service';
 import { OrderService } from '@services/order-service';
 import { UserService } from '@services/user-service';
 import { CertificateService } from '@services/certificate-service';
+import { UserCountry } from '@utils/constants';
 
 @Component({
   selector: 'app-cart',
@@ -48,7 +49,7 @@ export class Cart {
   toastService = inject(ToastService);
   router = inject(Router);
   currency = inject(CurrencyService).currency();
-  isSaudi = getUserCountry() == 'SA';
+  isSaudi = getUserCountry() === UserCountry.SA;
   cartSignal = this.cartService.cart;
   couponLoading = signal(false);
   couponCode = new FormControl('', { nonNullable: true });

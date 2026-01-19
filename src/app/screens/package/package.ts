@@ -14,6 +14,7 @@ import { getUserCountry } from '@utils/helpers';
 import { forkJoin, retry } from 'rxjs';
 import { PaymentMethods } from '@components/payment-methods/payment-methods';
 import { CertificateService } from '@services/certificate-service';
+import { UserCountry } from '@utils/constants';
 
 @Component({
   selector: 'app-package',
@@ -47,7 +48,7 @@ export class PackageScreen implements OnInit {
   currency = inject(CurrencyService).currency();
   routeParams = inject(ActivatedRoute).snapshot.params;
   user = inject(UserService).user;
-  isSaudi = getUserCountry() == 'SA';
+  isSaudi = getUserCountry() === UserCountry.SA;
   isMobile = matchMedia('(width <= 640px)').matches;
 
   ngOnInit(): void {
@@ -59,9 +60,9 @@ export class PackageScreen implements OnInit {
       .subscribe({
         next: ([packageData, { eg_packages, sa_packages, default_packages }]) => {
           const selectedPackage = (
-            getUserCountry() === 'EG'
+            getUserCountry() === UserCountry.EG
               ? eg_packages
-              : getUserCountry() === 'SA'
+              : getUserCountry() === UserCountry.SA
               ? sa_packages
               : default_packages
           ).find((p) => p.id == this.routeParams['packageId']);

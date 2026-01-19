@@ -6,7 +6,7 @@
   <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-8">
     @for(category of categories(); track $index) {
     <a
-      class="h-12.5 lg:h-auto flex cursor-pointer items-center gap-4 border px-3 py-3 lg:px-[30px] lg:py-7 border-dashed border-custom-2 rounded-sm"
+      class="h-12.5 lg:h-auto flex cursor-pointer items-center gap-3 lg:gap-4 border px-3 py-3 lg:px-[30px] lg:py-7 border-dashed border-custom-2 rounded-sm"
       [routerLink]="category.path"
       [state]="{ title: category.name }"
     >

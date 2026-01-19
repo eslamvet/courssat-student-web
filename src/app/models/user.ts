@@ -1,3 +1,5 @@
+import { UserCountry } from '@utils/constants';
+
 export type User = {
   id: string;
   email: string;
@@ -25,3 +27,5 @@ export type SocialUser = {
 };
 
 export type SOCIALPROVIDER = 'GOOGLE';
+
+export type Country = (typeof UserCountry)[keyof typeof UserCountry];

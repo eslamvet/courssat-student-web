@@ -1,6 +1,7 @@
 import { DatePipe, SlicePipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { CourseCertificate } from '@models/certificate';
+import { PaginatorPipe } from '@pipes/paginator-pipe';
 import { CertificateService } from '@services/certificate-service';
 import { ToastService } from '@services/toast-service';
 import { UserService } from '@services/user-service';
@@ -9,7 +10,7 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-my-certificates',
-  imports: [SlicePipe, DatePipe],
+  imports: [SlicePipe, DatePipe, PaginatorPipe],
   templateUrl: './my-certificates.html',
   styleUrl: './my-certificates.css',
   providers: [CertificateService],
@@ -21,7 +22,6 @@ export class MyCertificates {
   page = signal(0);
   size = signal(10);
   userCertificates = signal<CourseCertificate[]>(Array(this.size()));
-  paginationPages = signal<number[] | null>(null);
   certificatebaseUrl = environment.baseUrl + '/api/FileManage/Image/5/false/';
   ngOnInit(): void {
     this.certificateService
@@ -53,9 +53,6 @@ export class MyCertificates {
       .subscribe({
         next: (data) => {
           this.userCertificates.set(data);
-          this.paginationPages.set(
-            Array.from({ length: Math.ceil(data.length / this.size()) }, (_, index) => ++index)
-          );
         },
         error: (error) => {
           this.toastService.addToast({

@@ -5,6 +5,7 @@ import { ImgUrlPipe } from '@pipes/img-url-pipe';
 import { CurrencyService } from '@services/currency-service';
 import { getUserCountry } from '@utils/helpers';
 import { RouterLink } from '@angular/router';
+import { UserCountry } from '@utils/constants';
 
 @Component({
   selector: 'app-course-card',
@@ -19,6 +20,6 @@ export class CourseCard {
     alias: 'course',
   });
   isPurchased = input(false);
-  isSaudi = getUserCountry() == 'SA';
+  isSaudi = getUserCountry() === UserCountry.SA;
   isMobile = matchMedia('(width <= 640px)').matches;
 }

@@ -13,6 +13,7 @@ import { CouponService } from '@services/coupon-service';
 import { User } from '@models/user';
 import { Router } from '@angular/router';
 import { CourseService } from '@services/course-service';
+import { UserCountry } from '@utils/constants';
 
 @Component({
   selector: 'app-course-sidebar',
@@ -48,7 +49,7 @@ export class CourseSidebar {
   keywords = input.required<CourseKeyword[]>();
   isPaid = input.required<boolean>();
   instructorId = input.required<string>();
-  isSaudi = getUserCountry() == 'SA';
+  isSaudi = getUserCountry() === UserCountry.SA;
   addToCart = output<void>();
   applyCoupon = output<Coupon | null>();
   changePrice = output<number>();

@@ -6,10 +6,11 @@ import { UserService } from '@services/user-service';
 import { forkJoin, iif, map, of, retry, switchMap } from 'rxjs';
 import { CourseCard } from '@components/course-card/course-card';
 import { SlicePipe } from '@angular/common';
+import { PaginatorPipe } from '@pipes/paginator-pipe';
 
 @Component({
   selector: 'app-my-courses',
-  imports: [CourseCard, SlicePipe],
+  imports: [CourseCard, SlicePipe, PaginatorPipe],
   templateUrl: './my-courses.html',
   styleUrl: './my-courses.css',
   providers: [CourseService],
@@ -21,7 +22,6 @@ export class MyCourses implements OnInit {
   page = signal(0);
   size = signal(10);
   userCourses = signal<Course[]>(Array(this.size()));
-  paginationPages = signal<number[] | null>(null);
 
   ngOnInit(): void {
     this.courseService
@@ -53,9 +53,6 @@ export class MyCourses implements OnInit {
       .subscribe({
         next: (data) => {
           this.userCourses.set(data);
-          this.paginationPages.set(
-            Array.from({ length: Math.ceil(data.length / this.size()) }, (_, index) => ++index)
-          );
         },
         error: (error) => {
           this.toastService.addToast({

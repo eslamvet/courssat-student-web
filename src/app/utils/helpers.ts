@@ -2,11 +2,12 @@ import { inject, Renderer2 } from '@angular/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { Course } from '@models/course';
 import { CoursePurchase } from '@models/CoursePurchase';
-import { User } from '@models/user';
+import { Country, User } from '@models/user';
 import { CurrencyService } from '@services/currency-service';
 import { UserService } from '@services/user-service';
 import { T } from 'node_modules/tailwindcss/dist/types-WlZgYgM8.mjs';
 import { catchError, EMPTY, forkJoin, map } from 'rxjs';
+import { UserCountry } from './constants';
 
 export const appInitializerFn = () => {
   const userService = inject(UserService);
@@ -14,7 +15,7 @@ export const appInitializerFn = () => {
   const userCountry = getUserCountry();
   return forkJoin([
     userService.getUserProfile(localStorage.getItem('courssat-user-id')),
-    currencyService.getCurrencyApi(userCountry),
+    currencyService.getCurrencyApi(userCountry as typeof UserCountry.EG | typeof UserCountry.SA),
   ]).pipe(
     map(([user, currency]) => {
       user && userService.setUser(user);
@@ -29,9 +30,13 @@ export const appInitializerFn = () => {
   );
 };
 
-export const getUserCountry = () => {
+export const getUserCountry = (): Country => {
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  return timezone == 'Africa/Cairo' ? 'EG' : timezone == 'Asia/Riyadh' ? 'SA' : 'Other';
+  return timezone == 'Africa/Cairo'
+    ? UserCountry.EG
+    : timezone == 'Asia/Riyadh'
+    ? UserCountry.EG
+    : UserCountry.OTHER;
 };
 
 export const generateOrderBody = (
