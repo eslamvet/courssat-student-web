@@ -44,12 +44,12 @@ export class HeroSection implements AfterViewInit {
   });
   isInputFocused = signal(false);
   constructor() {
-    const maxImage = 15;
+    const maxImage = 20;
     let current = 1;
     let direction = 1;
     this.gridCols = signal(
       Array.from({ length: this.isMobile ? 4 : 8 }, () =>
-        Array.from({ length: this.isMobile ? 6 : 8 }, () => {
+        Array.from({ length: this.isMobile ? 6 : 7 }, () => {
           if (current === maxImage) direction = -1;
           else if (current === 1) direction = 1;
           current += direction;
