@@ -53,7 +53,7 @@ export class HeroSection implements AfterViewInit {
           if (current === maxImage) direction = -1;
           else if (current === 1) direction = 1;
           current += direction;
-          return `/images/instructor-${current}.jpg`;
+          return `images/instructor-${current}.jpg`;
         })
       )
     );

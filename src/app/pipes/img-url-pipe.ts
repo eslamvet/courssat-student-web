@@ -10,6 +10,6 @@ export class ImgUrlPipe implements PipeTransform {
       ? `${environment.baseUrl}/api/FileManage/Image/${
           type === 'course' ? '1' : type === 'package' ? '2' : '3'
         }/true/${src}`
-      : '/images/package-placeholder.svg';
+      : 'images/package-placeholder.svg';
   }
 }

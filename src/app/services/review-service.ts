@@ -7,6 +7,8 @@ export class ReviewService {
   http = inject(HttpClient);
 
   getHomeReviews() {
-    return this.http.get<Review[]>('/json/reviews.json', { params: { d: Date.now() } });
+    return this.http.get<Review[]>('json/reviews.json', {
+      params: { d: Date.now() },
+    });
   }
 }

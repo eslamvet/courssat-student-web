@@ -10,7 +10,7 @@ export class PackageService {
     return this.http.get<Package[]>(`/api/Packages/Latest/${count}`);
   }
   getCoursePackageJson() {
-    return this.http.get<PackageJson>('/json/course-package.json', {
+    return this.http.get<PackageJson>('json/course-package.json', {
       params: { d: Date.now() },
     });
   }

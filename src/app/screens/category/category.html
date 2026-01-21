@@ -3,7 +3,7 @@ courses.length|paginator:size():currentPage;
 <section class="container flex flex-col gap-7 lg:gap-10 py-14">
   <div class="flex items-center flex-col">
     <h2 class="text-2xl lg:text-[45px] text-body-5 font-bold">{{ category().name }}</h2>
-    <img class="w-20.5 lg:w-auto" src="/images/check.svg" />
+    <img class="w-20.5 lg:w-auto" src="images/check.svg" />
   </div>
   <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5 lg:gap-5">
     @for(course of courses|slice:page()*size():page()*size()+size();track $index){

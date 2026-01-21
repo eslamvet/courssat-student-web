@@ -64,7 +64,7 @@
 
 @font-face {
   font-family: 'STC';
-  src: url('/fonts/STC-Regular.ttf') format('truetype');
+  src: url('public/fonts/STC-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -72,7 +72,7 @@
 
 @font-face {
   font-family: 'STC';
-  src: url('/fonts/STC-Medium.ttf') format('truetype');
+  src: url('public/fonts/STC-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -80,7 +80,7 @@
 
 @font-face {
   font-family: 'STC';
-  src: url('/fonts/STC-Bold.ttf') format('truetype');
+  src: url('public/fonts/STC-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -88,7 +88,7 @@
 
 @font-face {
   font-family: 'saudi_riyal';
-  src: url('/fonts/saudi_riyal_regular.ttf') format('truetype');
+  src: url('public/fonts/saudi_riyal_regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -96,7 +96,7 @@
 
 @font-face {
   font-family: 'saudi_riyal_bold';
-  src: url('/fonts/saudi_riyal_bold.ttf') format('truetype');
+  src: url('public/fonts/saudi_riyal_bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
   font-display: swap;

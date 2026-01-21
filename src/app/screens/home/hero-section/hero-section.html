@@ -22,9 +22,11 @@
     "
   >
     <div class="absolute right-0 top-0 w-1/4 h-2/3">
-      <div class="bg-[url(/images/dots.svg)] absolute w-full h-full bg-no-repeat bg-cover"></div>
       <div
-        class="bg-[url(/images/dots-overlay.svg)] absolute w-full h-full bg-no-repeat bg-cover"
+        class="bg-[url('/courssat-student-web/images/dots.svg')] absolute w-full h-full bg-no-repeat bg-cover"
+      ></div>
+      <div
+        class="bg-[url('/courssat-student-web/images/dots-overlay.svg')] absolute w-full h-full bg-no-repeat bg-cover"
       ></div>
     </div>
   </div>
@@ -33,7 +35,7 @@
   >
     <div class="w-76 lg:w-[558px] text-center">
       <h1
-        class="text-2xl lg:text-[40px]/14 font-bold mb-3 lg:mb-8 text-body-5 bg-[url(/images/hero-section-content-bg-light.svg)] dark:bg-[url(/images/hero-section-content-bg-dark.svg)] bg-no-repeat bg-bottom"
+        class="text-2xl lg:text-[40px]/14 font-bold mb-3 lg:mb-8 text-body-5 bg-[url('/courssat-student-web/courssat-student-web/images/hero-section-content-bg-light.svg')] dark:bg-[url('/images/hero-section-content-bg-dark.svg')] bg-no-repeat bg-bottom"
       >
         نوفر لك أكثر من <span class="text-secondary align-sub text-3xl lg:text-5xl">+500</span
         ><br />
@@ -152,20 +154,20 @@
     <div
       class="mt-5 lg:mt-0 lg:-mb-11 w-full bg-neutral border border-dashed border-base-content shadow pb-5 pt-2 lg:py-2 px-5.5 flex justify-center flex-wrap gap-x-6.5 lg:gap-x-10 xl:gap-x-12 2xl:lg:gap-x-16"
     >
-      <img class="w-14 lg:w-auto" src="/images/Master-card.svg" />
+      <img class="w-14 lg:w-auto" src="images/Master-card.svg" />
       @if(userCountry === UserCountry.SA || userCountry === UserCountry.EG){
       <img
         class="w-14 lg:w-25 object-contain"
-        src="/images/{{ userCountry === UserCountry.SA ? 'Mada.svg' : 'vodafone__cash.png' }}"
+        src="images/{{ userCountry === UserCountry.SA ? 'Mada.svg' : 'vodafone__cash.png' }}"
       />
       }
-      <img class="w-14 object-contain lg:w-25" src="/images/paypal.png" />
-      <img class="w-14 lg:w-auto" src="/images/Applepay.svg" />
-      <img class="w-14 lg:w-auto" src="/images/Googlepay.svg" />
+      <img class="w-14 object-contain lg:w-25" src="images/paypal.png" />
+      <img class="w-14 lg:w-auto" src="images/Applepay.svg" />
+      <img class="w-14 lg:w-auto" src="images/Googlepay.svg" />
       @if(userCountry === UserCountry.SA || userCountry === UserCountry.EG){
       <img
         class="w-14 object-contain lg:w-25"
-        src="/images/{{ userCountry === UserCountry.SA ? 'Tabby.svg' : 'fawry-seeklogo.png' }}"
+        src="images/{{ userCountry === UserCountry.SA ? 'Tabby.svg' : 'fawry-seeklogo.png' }}"
       />
       }
     </div>

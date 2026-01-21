@@ -4,7 +4,8 @@ export const environment = {
   secondServerUrl: 'https://courssatserver-production-1c00.up.railway.app/api',
   stripeKey:
     'pk_live_51I9SM8C9d90vVvJ8rvzBrGRq6WQ0owumvMgN1QXY6vWlGhhFDLB0sBsRHEtG4M59Cl45a6sXVZZqpdqmRukIukZC00Sletsgt6',
-  fawateerk_hash_key: '54d52a70ea32657caae2daab899229a9116d5c03b40c17532fd94770630ee2bf',
+  // fawateerk_hash_key: '54d52a70ea32657caae2daab899229a9116d5c03b40c17532fd94770630ee2bf',
+  fawateerk_hash_key: 'c32ca1aba89dd021714b22a9d10fa713c405e5ac5ef9736d3be3a784fdbc1629',
   tap_merchant_id: '43092984',
   tap_public_key: 'pk_live_zRiWHhNgLBKQlqTfv49rpJEk',
   paypalClientId:

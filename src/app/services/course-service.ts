@@ -21,7 +21,7 @@ export class CourseService {
 
   getLatestCourseIds() {
     return this.http.get<{ popularCourseIds: number[]; newCourseIds: number[] }>(
-      '/json/course-ids.json',
+      'json/course-ids.json',
       { params: { d: Date.now() } }
     );
   }
@@ -37,25 +37,25 @@ export class CourseService {
   }
 
   getCustomCourseData() {
-    return this.http.get<CustomCourseData[]>('/json/custom-course-data.json', {
+    return this.http.get<CustomCourseData[]>('json/custom-course-data.json', {
       params: { d: Date.now() },
     });
   }
 
   getCustomCourseLabels() {
-    return this.http.get<CustomCourseLabel[]>('/json/custom-course-labels.json', {
+    return this.http.get<CustomCourseLabel[]>('json/custom-course-labels.json', {
       params: { d: Date.now() },
     });
   }
 
   getCustomCoursePrices() {
-    return this.http.get<CustomCoursePrice[]>('/json/custom-course-prices.json', {
+    return this.http.get<CustomCoursePrice[]>('json/custom-course-prices.json', {
       params: { d: Date.now() },
     });
   }
 
   getCourseFreeLessons() {
-    return this.http.get<CustomCourseData[]>('/json/course-free-lessons.json', {
+    return this.http.get<CustomCourseData[]>('json/course-free-lessons.json', {
       params: { d: Date.now() },
     });
   }
@@ -72,7 +72,7 @@ export class CourseService {
   }
 
   payAsyouWantMinPrice() {
-    return this.http.get<{ min_price: number }>('/json/pay-as-you-want-min-price.json', {
+    return this.http.get<{ min_price: number }>('json/pay-as-you-want-min-price.json', {
       params: { d: Date.now() },
     });
   }

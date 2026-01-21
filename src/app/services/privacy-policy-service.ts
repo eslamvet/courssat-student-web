@@ -13,10 +13,14 @@ export class PrivacyPolicyService {
   http = inject(HttpClient);
 
   getTerms() {
-    return this.http.get<PrivacyData[]>('/json/terms.json', { params: { d: Date.now() } });
+    return this.http.get<PrivacyData[]>('json/terms.json', {
+      params: { d: Date.now() },
+    });
   }
 
   getPrivacyPolicy() {
-    return this.http.get<PrivacyData[]>('/json/privacy.json', { params: { d: Date.now() } });
+    return this.http.get<PrivacyData[]>('json/privacy.json', {
+      params: { d: Date.now() },
+    });
   }
 }
