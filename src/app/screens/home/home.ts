@@ -83,16 +83,10 @@ export class Home implements OnInit {
             startTime: remainingTimeInSec,
           });
           this.newCourses.set(
-            newCourseIds
-              .map((id) => courses.find((c) => c.id === id))
-              .filter((c) => !!c)
-              .slice(0, 8)
+            newCourseIds.map((id) => courses.find((c) => c.id === id)).filter((c) => !!c)
           );
           this.popularCourses.set(
-            popularCourseIds
-              .map((id) => courses.find((c) => c.id === id))
-              .filter((c) => !!c)
-              .slice(0, 4)
+            popularCourseIds.map((id) => courses.find((c) => c.id === id)).filter((c) => !!c)
           );
         },
         error: noop,
