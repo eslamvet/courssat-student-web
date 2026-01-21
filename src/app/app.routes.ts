@@ -68,6 +68,12 @@ export const routes: Routes = [
     canMatch: [authGuard],
   },
   {
+    path: 'all-packages',
+    loadComponent: () =>
+      import('./screens/packages-list/packages-list').then((c) => c.PackagesList),
+    title: 'جميع الباقات',
+  },
+  {
     path: 'resetpassword',
     redirectTo: (route) => {
       const params = new URLSearchParams(route.queryParams);

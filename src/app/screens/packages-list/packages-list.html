@@ -1,21 +1,20 @@
-@let currentPage = page(); @let courses = favCourses(); @let pages =
-courses.length|paginator:size():currentPage;
-<section class="flex flex-col gap-10">
-  <h2
-    class="text-lg lg:text-3xl font-bold text-body-5 pb-4 border-b border-dashed border-base-content dark:border-custom-1"
-  >
-    كورساتي المفضله
-  </h2>
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-    @for(course of courses|slice:currentPage*size():currentPage*size()+size();track $index){
-    <app-course-card [course]="course" [isPurchased]="course.isPaied" />
+@let packages = allPackages(); @let currentPage = page(); @let pages =
+packages.length|paginator:size():currentPage;
+<section class="container flex flex-col gap-7 lg:gap-10 py-14">
+  <div class="flex items-center flex-col">
+    <h2 class="text-2xl lg:text-[45px] text-body-5 font-bold">الباقات</h2>
+    <img class="w-20.5 lg:w-auto" src="/images/check.svg" />
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
+    @for(package of packages|slice:currentPage*size():currentPage*size()+size();track $index){
+    <app-package-card [packageInput]="package" />
     } @empty {
     <div role="alert" class="col-span-4 alert alert-info justify-center alert-soft">
-      <span>لا توجد كورسات حاليا.</span>
+      <span>لا توجد باقات حاليا.</span>
     </div>
     }
   </div>
-  @if(courses.length){
+  @if(pages){ @if(pages.length){
   <div class="join self-center">
     <button
       class="join-item btn btn-square"
@@ -42,5 +41,7 @@ courses.length|paginator:size():currentPage;
       »
     </button>
   </div>
+  } } @else{
+  <div class="skeleton self-center w-4/5 lg:w-1/4 h-6 lg:h-10"></div>
   }
 </section>

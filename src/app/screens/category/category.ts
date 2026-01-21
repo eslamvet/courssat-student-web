@@ -1,6 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ListApi, MakeOptional } from '@models/Api';
 import { Course } from '@models/course';
 import { CourseService } from '@services/course-service';
 import { ToastService } from '@services/toast-service';
@@ -20,11 +19,11 @@ export class Category implements OnInit {
   route = inject(ActivatedRoute);
   courseService = inject(CourseService);
   toastService = inject(ToastService);
-  courseDepartmentSignal = signal<
-    MakeOptional<ListApi<Course>, 'pagination'> & Partial<(typeof categories)[0]>
-  >({
-    list: Array(12),
-  });
+  category = signal(
+    categories.find((c) => c.path.includes(this.route.snapshot.params['categoryId'])) ??
+      categories[0]
+  );
+  categoryCourses = signal<Course[]>(Array(12));
   page = signal(0);
   size = signal(12);
 
@@ -33,21 +32,9 @@ export class Category implements OnInit {
   }
 
   getCoursesByDepartmentHandler() {
-    const department =
-      categories.find((c) => c.path.includes(this.route.snapshot.params['categoryId'])) ??
-      categories[0];
-    this.courseService.getAllCoursesByDepartmentId(department.id).subscribe({
+    this.courseService.getAllCoursesByDepartmentId(this.category().id).subscribe({
       next: (data) => {
-        this.courseDepartmentSignal.set({
-          ...department,
-          list: data,
-          pagination: {
-            current_page: 0,
-            total_count: data.length,
-            total_pages: Math.ceil(data.length / this.size()),
-            total_items: data.length,
-          },
-        });
+        this.categoryCourses.set(data);
       },
       error: (error) => {
         this.toastService.addToast({
@@ -62,9 +49,5 @@ export class Category implements OnInit {
 
   paginateHandler(page: number) {
     this.page.set(page);
-    this.courseDepartmentSignal.update((d) => ({
-      ...d,
-      pagination: { ...d.pagination!, current_page: page },
-    }));
   }
 }

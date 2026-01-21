@@ -4,9 +4,12 @@
     <img [ngSrc]="course.coverImageURL | imgUrl" width="750" height="422" priority />
   </figure>
   <div class="card-body p-2.5 lg:p-4">
-    <h2 class="card-title text-sm lg:text-xl line-clamp-2 text-body-5 font-bold flex-1">
+    <a
+      class="card-title text-sm lg:text-xl line-clamp-2 text-body-5 font-bold cursor-pointer flex-1"
+      [routerLink]="['/course', course.id]"
+    >
       {{ course.courseName_AR }}
-    </h2>
+    </a>
     <div class="flex items-center gap-1 lg:mb-2">
       <span class="iconify solar--user-circle-broken text-lg lg:text-xl text-label"></span>
       <h5 class="text-xs lg:text-sm text-label">

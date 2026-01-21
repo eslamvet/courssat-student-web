@@ -8,7 +8,7 @@ export class PaginatorPipe implements PipeTransform {
     totalRecords: number,
     rows: number,
     currentPage: number,
-    pageLinkSize: number = 1
+    pageLinkSize: number = 5
   ): (number | string)[] {
     if (!totalRecords || !rows) return [];
 

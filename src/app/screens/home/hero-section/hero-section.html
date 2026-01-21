@@ -155,16 +155,16 @@
       <img class="w-14 lg:w-auto" src="/images/Master-card.svg" />
       @if(userCountry === UserCountry.SA || userCountry === UserCountry.EG){
       <img
-        class="w-14 lg:w-auto object-contain"
-        src="/images/{{ userCountry === UserCountry.SA ? 'Mada.svg' : 'vc.jpg' }}"
+        class="w-14 lg:w-25 object-contain"
+        src="/images/{{ userCountry === UserCountry.SA ? 'Mada.svg' : 'vodafone__cash.png' }}"
       />
       }
-      <img class="w-14 lg:h-26 lg:w-auto" src="/images/paypal.png" />
+      <img class="w-14 object-contain lg:w-25" src="/images/paypal.png" />
       <img class="w-14 lg:w-auto" src="/images/Applepay.svg" />
       <img class="w-14 lg:w-auto" src="/images/Googlepay.svg" />
       @if(userCountry === UserCountry.SA || userCountry === UserCountry.EG){
       <img
-        class="w-14 lg:w-auto object-contain"
+        class="w-14 object-contain lg:w-25"
         src="/images/{{ userCountry === UserCountry.SA ? 'Tabby.svg' : 'fawry-seeklogo.png' }}"
       />
       }

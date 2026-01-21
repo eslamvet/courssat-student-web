@@ -1,16 +1,12 @@
-@let courseDepartment = courseDepartmentSignal();
+@let courses = categoryCourses(); @let currentPage = page(); @let pages =
+courses.length|paginator:size():currentPage;
 <section class="container flex flex-col gap-7 lg:gap-10 py-14">
   <div class="flex items-center flex-col">
-    @if(courseDepartment.name){
-    <h2 class="text-2xl lg:text-[45px] text-body-5 font-bold">{{ courseDepartment.name }}</h2>
+    <h2 class="text-2xl lg:text-[45px] text-body-5 font-bold">{{ category().name }}</h2>
     <img class="w-20.5 lg:w-auto" src="/images/check.svg" />
-    } @else {
-    <div class="skeleton w-3/4 lg:w-1/6 h-8 lg:h-14 mb-3"></div>
-    <div class="skeleton w-17 lg:w-28 h-6 lg:h-10"></div>
-    }
   </div>
   <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5 lg:gap-5">
-    @for(course of courseDepartment.list|slice:page()*size():page()*size()+size();track $index){
+    @for(course of courses|slice:page()*size():page()*size()+size();track $index){
     <app-course-card [course]="course" />
     } @empty {
     <div role="alert" class="col-span-4 alert alert-info justify-center alert-soft">
@@ -18,34 +14,34 @@
     </div>
     }
   </div>
-  @if(courseDepartment.pagination){
+  @if(pages){ @if(pages.length){
   <div class="join self-center">
     <button
       class="join-item btn btn-square"
-      [disabled]="page() == 0"
-      (click)="page() > 0 && paginateHandler(page() - 1)"
+      [disabled]="currentPage == 0"
+      (click)="currentPage > 0 && paginateHandler(currentPage - 1)"
     >
       «
     </button>
-    @for(page of courseDepartment.pagination.total_count!|paginator:size():page();track $index){
-    <input
+    @for(page of pages;track $index){
+    <button
       class="join-item btn btn-square"
-      type="radio"
-      [attr.aria-label]="page"
-      [checked]="courseDepartment.pagination.current_page === +page - 1"
-      (change)="page !== '...' && paginateHandler(+page - 1)"
-      [class.btn-disabled]="page === '...'"
-    />
+      [disabled]="page === '...'"
+      [class.bg-primary]="page === currentPage + 1"
+      (click)="page !== '...' && paginateHandler(+page - 1)"
+    >
+      {{ page }}
+    </button>
     }
     <button
       class="join-item btn btn-square"
-      [disabled]="page() == courseDepartment.pagination.total_pages - 1"
-      (click)="page() < courseDepartment.pagination.total_pages && paginateHandler(page() + 1)"
+      [disabled]="currentPage == pages.length - 1"
+      (click)="currentPage < pages.length && paginateHandler(currentPage + 1)"
     >
       »
     </button>
   </div>
-  } @else{
+  } } @else{
   <div class="skeleton self-center w-4/5 lg:w-1/4 h-6 lg:h-10"></div>
   }
 </section>

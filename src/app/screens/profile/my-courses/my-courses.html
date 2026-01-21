@@ -26,14 +26,14 @@ courses.length|paginator:size():currentPage;
       «
     </button>
     @for(page of pages;track $index){
-    <input
+    <button
       class="join-item btn btn-square"
-      type="radio"
-      [attr.aria-label]="page"
-      [checked]="currentPage === +page - 1"
-      (change)="page !== '...' && paginateHandler(+page - 1)"
-      [class.btn-disabled]="page === '...'"
-    />
+      [disabled]="page === '...'"
+      [class.bg-primary]="page === currentPage + 1"
+      (click)="page !== '...' && paginateHandler(+page - 1)"
+    >
+      {{ page }}
+    </button>
     }
     <button
       class="join-item btn btn-square"

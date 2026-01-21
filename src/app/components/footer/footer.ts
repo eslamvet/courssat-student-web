@@ -11,4 +11,5 @@ import { UserService } from '@services/user-service';
 })
 export class Footer {
   user = inject(UserService).user;
+  currentYear = new Date().getFullYear();
 }
