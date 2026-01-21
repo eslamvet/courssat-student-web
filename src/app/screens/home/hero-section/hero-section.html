@@ -6,7 +6,7 @@
     @for(col of gridCols(); track $index){
     <div class="gallery__grid__col flex flex-col gap-3" [class.pt-6]="$index % 2 !== 0">
       @for(instructorImg of col; track $index){
-      <img class="rounded-lg w-full h-24 lg:h-45" [src]="instructorImg" />
+      <img class="rounded-lg w-full h-24 lg:h-50" [src]="instructorImg" />
       }
     </div>
     }
