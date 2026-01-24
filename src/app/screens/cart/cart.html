@@ -106,7 +106,6 @@ totalPriceAfterDiscount = cart.items|sum:'discountPrice';
             type="text"
             [formControl]="couponCode"
             placeholder="أدخل رمز الكوبون"
-            [readOnly]="!!cart.coupon"
             class="text-base-content placeholder:text-base-content placeholder:opacity-50"
           />
         </label>

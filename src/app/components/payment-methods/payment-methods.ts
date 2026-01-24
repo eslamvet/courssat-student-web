@@ -182,7 +182,7 @@ export class PaymentMethods implements OnChanges {
               type: 'success',
               title: 'تم الشراء بنجاح',
             });
-            this.router.navigate(['profile', 'my-courses']);
+            this.router.navigate(['profile', 'courses']);
           },
           error: (error) => {
             this.toastService.addToast({
@@ -220,7 +220,7 @@ export class PaymentMethods implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['totalValue'].currentValue !== changes['totalValue'].previousValue) {
+    if (changes['totalValue']?.currentValue !== changes['totalValue']?.previousValue) {
       this.selectedPaymentMethod.set(null);
       this.payPalConfig = {
         ...this.payPalConfig,
@@ -584,7 +584,7 @@ export class PaymentMethods implements OnChanges {
             type: 'success',
             title: 'تم الشراء بنجاح',
           });
-          this.router.navigate(['profile', 'my-courses']);
+          this.router.navigate(['profile', 'courses']);
         },
         error: (error) => {
           this.toastService.addToast({
@@ -624,7 +624,7 @@ export class PaymentMethods implements OnChanges {
                 type: 'success',
                 title: 'تم الشراء بنجاح',
               });
-              this.router.navigate(['profile', 'my-courses']);
+              this.router.navigate(['profile', 'courses']);
             },
             error: (error) => {
               this.toastService.addToast({
@@ -682,7 +682,7 @@ export class PaymentMethods implements OnChanges {
                 type: 'success',
                 title: 'تم الشراء بنجاح',
               });
-              this.router.navigate(['profile', 'my-courses']);
+              this.router.navigate(['profile', 'courses']);
             },
             error: (error) => {
               this.toastService.addToast({

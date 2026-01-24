@@ -54,7 +54,7 @@ export class SseService {
                   ? null
                   : prev.coupon,
             }));
-          this.router.navigate(['profile', 'my-courses']);
+          this.router.navigate(['profile', 'courses']);
         }
       }
     };

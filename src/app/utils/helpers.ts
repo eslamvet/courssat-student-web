@@ -5,7 +5,6 @@ import { CoursePurchase } from '@models/CoursePurchase';
 import { Country, User } from '@models/user';
 import { CurrencyService } from '@services/currency-service';
 import { UserService } from '@services/user-service';
-import { T } from 'node_modules/tailwindcss/dist/types-WlZgYgM8.mjs';
 import { catchError, EMPTY, forkJoin, map } from 'rxjs';
 import { UserCountry } from './constants';
 
@@ -13,6 +12,7 @@ export const appInitializerFn = () => {
   const userService = inject(UserService);
   const currencyService = inject(CurrencyService);
   const userCountry = getUserCountry();
+
   return forkJoin([
     userService.getUserProfile(localStorage.getItem('courssat-user-id')),
     currencyService.getCurrencyApi(userCountry as typeof UserCountry.EG | typeof UserCountry.SA),
@@ -35,7 +35,7 @@ export const getUserCountry = (): Country => {
   return timezone == 'Africa/Cairo'
     ? UserCountry.EG
     : timezone == 'Asia/Riyadh'
-    ? UserCountry.EG
+    ? UserCountry.SA
     : UserCountry.OTHER;
 };
 

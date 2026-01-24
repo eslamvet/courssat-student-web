@@ -21,7 +21,7 @@ export class CourseService {
 
   getLatestCourseIds() {
     return this.http.get<{ popularCourseIds: number[]; newCourseIds: number[] }>(
-      '/json/course-ids.json',
+      '/assets/courses.json',
       { params: { d: Date.now() } }
     );
   }

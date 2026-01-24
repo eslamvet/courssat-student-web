@@ -52,7 +52,7 @@ export class Cart {
   isSaudi = getUserCountry() === UserCountry.SA;
   cartSignal = this.cartService.cart;
   couponLoading = signal(false);
-  couponCode = new FormControl('', { nonNullable: true });
+  couponCode = new FormControl(this.cartSignal().coupon?.coboneCode ?? '', { nonNullable: true });
   couponService = inject(CouponService);
 
   removeCartItemHandler(index: number) {
@@ -141,7 +141,7 @@ export class Cart {
                             type: 'success',
                             title: 'تم الشراء بنجاح',
                           });
-                          this.router.navigate(['profile', 'my-courses']);
+                          this.router.navigate(['profile', 'courses']);
                         },
                         error: (error) => {
                           this.toastService.addToast({

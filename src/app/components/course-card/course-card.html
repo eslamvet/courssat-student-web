@@ -1,15 +1,18 @@
 @let course = courseInput(); @let isPaid = isPurchased(); @if(course){
-<div class="card bg-neutral h-full">
+<a
+  class="card bg-neutral h-full"
+  [routerLink]="['/course', course.id]"
+  [state]="{ title: course.courseName_AR }"
+>
   <figure>
     <img [ngSrc]="course.coverImageURL | imgUrl" width="750" height="422" priority />
   </figure>
   <div class="card-body p-2.5 lg:p-4">
-    <a
+    <h3
       class="card-title text-sm lg:text-xl line-clamp-2 text-body-5 font-bold cursor-pointer flex-1"
-      [routerLink]="['/course', course.id]"
     >
       {{ course.courseName_AR }}
-    </a>
+    </h3>
     <div class="flex items-center gap-1 lg:mb-2">
       <span class="iconify solar--user-circle-broken text-lg lg:text-xl text-label"></span>
       <h5 class="text-xs lg:text-sm text-label">
@@ -17,11 +20,7 @@
       </h5>
     </div>
     <div class="card-actions">
-      <a
-        [routerLink]="['/course', course.id]"
-        [state]="{ title: course.courseName_AR }"
-        class="btn btn-sm lg:btn-md btn-primary w-full px-1 lg:px-4"
-      >
+      <div class="btn btn-sm lg:btn-md btn-primary w-full px-1 lg:px-4">
         <span>{{ isPaid ? ' ابدأ الكورس' : 'إشترك الآن' }}</span>
         @if(!isPaid){
         <span class="text-secondary ms-0.5"
@@ -38,10 +37,10 @@
           }}</span></span
         >
         } }
-      </a>
+      </div>
     </div>
   </div>
-</div>
+</a>
 } @else {
 <div>
   <div class="skeleton h-21 lg:h-[171.6px] w-full mb-2"></div>

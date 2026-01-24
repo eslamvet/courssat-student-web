@@ -81,7 +81,7 @@ export class CourseSidebar {
                 catchError(() => of(coupon))
               )
           ),
-          catchError(() => this.couponService.applyCoupon(this.couponCode.value))
+          catchError(() => this.couponService.applyCoupon(this.couponCode.value, 0))
         )
         .subscribe({
           next: (coupon) => {

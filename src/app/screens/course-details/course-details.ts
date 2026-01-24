@@ -334,10 +334,22 @@ export class CourseDetails implements OnInit {
             [{ ...this.courseSignal(), coupon, discountPrice: 0 }],
             coupon.id
           )
-          .pipe(finalize(() => this.loaderService.toggleLoader(false)))
+          .pipe(
+            switchMap(() =>
+              this.courseService.getCourseDetails(
+                this.courseSignal().id.toString(),
+                this.userService.user()?.id
+              )
+            ),
+            finalize(() => this.loaderService.toggleLoader(false))
+          )
           .subscribe({
-            next: () => {
-              this.courseSignal.update((c) => ({ ...c, isPaied: true }));
+            next: (course) => {
+              this.courseSignal.update((c) => ({
+                ...c,
+                isPaied: true,
+                topics: [c.topics[0], ...course.topics],
+              }));
               this.toastService.addToast({
                 id: Date.now(),
                 type: 'success',

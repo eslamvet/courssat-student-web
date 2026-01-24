@@ -37,8 +37,8 @@ export class Home implements OnInit {
   ngOnInit(): void {
     forkJoin([
       this.courseService.getLatestCourseIds(),
-      this.courseService.getLatestCourses(100),
-      this.packageService.getLatestPackages(100),
+      this.courseService.getLatestCourses(1000),
+      this.packageService.getLatestPackages(1000),
       this.packageService.getCoursePackageJson(),
     ])
       .pipe(retry(3))

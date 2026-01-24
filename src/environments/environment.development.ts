@@ -1,8 +1,8 @@
 export const environment = {
   baseUrl: 'https://api.courssat.com',
   invalid_course_ids: [29, 51, 48, 47, 155],
-  secondServerUrl: 'http://localhost:3000/api',
-  // secondServerUrl: 'https://courssatserver-production-1c00.up.railway.app/api',
+  // secondServerUrl: 'http://localhost:3000/api',
+  secondServerUrl: 'https://courssatserver-production-1c00.up.railway.app/api',
   stripeKey:
     'pk_live_51I9SM8C9d90vVvJ8rvzBrGRq6WQ0owumvMgN1QXY6vWlGhhFDLB0sBsRHEtG4M59Cl45a6sXVZZqpdqmRukIukZC00Sletsgt6',
   // 'pk_test_51PItUq1rWIVBTdjid1HKXa91sSYFNtQ8tMJjN39A7UgJ7bO8nGmIGvupT1wEjOU3zcfonkP4e3Uc4qWTLAYinUMh00wcJjOH1h',
